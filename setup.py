@@ -3,7 +3,7 @@ from os import path
 
 setup(name='sf2_loader',
       packages=find_packages(),
-      version='0.11',
+      version='0.12',
       license='GPLv3',
       description=
       'This is an easy-to-use soundfonts loader and audio renderer in python',
