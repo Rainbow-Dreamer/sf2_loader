@@ -1,5 +1,4 @@
-include matrixpro.editor.pyw
-include bg.jpg
-include config.py
+include read_sf2/*
+include read_sf2_32bit/*
 include README.md
 include LICENSE
