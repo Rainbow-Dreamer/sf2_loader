@@ -1,4 +1,3 @@
-include read_sf2/*
-include read_sf2_32bit/*
+include sf2_loader/*
 include README.md
 include LICENSE
