@@ -1,0 +1,3 @@
+simpleaudio
+pydub
+musicpy
