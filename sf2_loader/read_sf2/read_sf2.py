@@ -4,7 +4,6 @@ import sys
 abs_path = os.path.abspath(os.path.dirname(__file__))
 os.chdir(abs_path)
 os.environ['PATH'] += os.pathsep + abs_path
-os.chdir('../..')
 sys.path.append('.')
 import musicpy.musicpy as mp
 import simpleaudio
