@@ -66,6 +66,8 @@ You can load a soundfont file when you initialize a `sf2_loader` by passing a so
 
 Each time you load a soundfont file, the sf2 loader will save the soundfont file name and the soundfont id, you can get and use them by calling the attributes `file` and `sfid_list` of the sf2 loader.
 
+You can unload a loaded soundfont file by index (1-based) using `unload` function of the sf2 loader.
+
 ```python
 loader = sf.sf2_loader(soundfont_file_path)
 loader.load(soundfont_file_path2)
@@ -81,6 +83,11 @@ loader.load(r'C:\Users\Administrator\Desktop\celeste2.sf2')
 
 >>> loader.sfid_list
 [1, 2]
+
+loader.unload(2) # unload the second loaded soundfont files of the sf2 loader
+
+>>> loader.file
+['C:\\Users\\Administrator\\Desktop\\celeste.sf2']
 ```
 
 
@@ -454,4 +461,120 @@ loader.play_piece(current_midi_file)
 
 # you will hear the same thing as using play_midi_file function
 ```
+
+
+
+### Export notes, chords, pieces and midi files
+
+You can export notes, chords, pieces and midi files using loaded soundfont files in the sf2 loader using `export_note`, `export_chord`, `export_piece`, `export_midi_file` function of the sf2 loader.
+
+All of the parameters of these export functions can refer to their corresponding play functions, except a parameter `get_audio`, if this parameter is set to True, then the export functions will return an AudioSegment instance (this is an audio instance in pydub) which contains raw audio data for further audio process. If this parameter is set to False (which is default), then the export functions will export the rendered audio data to an audio file with the file name and the audio file format you specify.
+
+```python
+# examples
+
+# render a midi file with current soundfont files and export as a mp3 file 'test,mp3'
+loader.export_midi_file(r'C:\Users\Administrator\Desktop\test.mid', name='test.mp3', format='mp3')
+```
+
+
+
+### Export sound modules
+
+You can export sound modules of a specified instrument of the loaded soundfont files using `export_sound_modules` function of the sf2 loader.
+
+You can specify the pitch range of the notes, the default is from A0 to C8, which is the most common 88 keys on the piano.
+
+The duration of the notes is 6 seconds by default, you can set the duration of the notes in the function.
+
+The format of the export audio files is wav by default, you can set the export audio file format in the function.
+
+The exported audio file name of each note will be in the format `pitch.format` by default, where pitch is the note name such as `C5`, format is the audio file format you specify such as `wav`, so for example, the exported audio file names of notes will be like `C5.wav`, `C#5.wav`, `D5.wav`. You can custom the name format of each note with the parameter `name` in the function, it could either be a list of each note's name (without file extension) or a function to format each note's name (without file extension).
+
+```python
+loader.export_sound_modules(track=None,
+                            sfid=None,
+                            bank_num=None,
+                            preset_num=None,
+                            start='A0',
+                            stop='C8',
+                            duration=6,
+                            decay=1,
+                            volume=127,
+                            sample_width=2,
+                            channels=2,
+                            frame_rate=44100,
+                            format='wav',
+                            folder_name='Untitled',
+                            other_effects=None,
+                            bpm=80,
+                            name=None,
+                            show_full_path=False)
+
+# track, sfid, bank_num, preset_num: use which instrument to play, you can refer to
+# program_select function
+
+# start, stop: the pitch range, note that these must be strings representing pitches
+
+# duration - format: refer to play_note function
+
+# folder_name: the folder name of the exported sound modules
+
+# other_effects: refer to play_note function, will be applied to each note
+
+# bpm: refer to play_note function
+
+# name: if not None, then set each note's file name with this parameter,
+# this could be a list of each note's name (without file extension) or a function to format each note's name (without file extension), for example, ['C5', 'C#5' 'D5'],
+# lambda s: f'piano{s}'
+
+# show_full_path: when this function is running, it will print the export messages
+# for each note, showing which soundfont file and which bank and preset
+# you use to export which note, if this is set to True, then the file path of the soundfont file will be full path, otherwise the file path will be only the file name
+
+
+# examples
+
+# export notes from A0 to C8 of current instrument
+loader.export_sound_modules()
+
+# export notes from C5 to C6 of current instrument
+loader.export_sound_modules(start='C5', stop='C6')
+
+# export notes from A0 to C8 of current instrument of
+# the loaded soundfont file with id 2
+# (or you can change current soundfont file in advance)
+loader.export_sound_modules(sfid=2)
+```
+
+
+
+### Audio effects
+
+There is a `other_effects` parameter in the play and export functions, but how to use it?
+
+This python package provides a class `effect`, which could store a type of audio effect, such as reverse, offset, fade in, fade out, ADSR envelope. You can use `effect` class to package an audio effect message and put it as an element in a list, the list could be used as the value of `other_effects` in the play and export functions.
+
+```python
+effect(effect, value=None)
+
+# effect: the type of audio effect, could be one of 'reverse', 'offset', 'fade',
+# 'adsr'
+
+# value: the parameters of the audio effect, will be used in offset, fade and adsr,
+# if there are multiple parameters, this could be a list or a tuple
+
+
+# examples
+
+# play a note C5 using current instrument with a reverse audio effect
+loader.play_note('C5', other_effects=[effect('reverse')])
+
+# export a note C5 using current instrument with a reverse audio effect
+loader.export_note('C5', other_effects=[effect('reverse')])
+```
+
+
+
+For the parameters of each type of audio effects, please refer to the sampler module of musicpy, here is the [link](https://github.com/Rainbow-Dreamer/musicpy/wiki/musicpy-sampler-module#audio-mixing-and-editing) for the documentation of the audio effects.
 
