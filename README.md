@@ -212,11 +212,206 @@ Here is an example of get all of the instrument names in current bank number.
 
 You can use `play_note` function of the sf2 loader to play a note with specified pitch using current track, soundfont id, bank number and preset number. The note could be a strings representing a pitch (for example, `C5`) or a musicpy note instance. If you want to play the note by another instrument, you need to change current preset (and other program parameters if needed) before you use `play_note` function, the same goes for other play functions.
 
+```python
+loader.play_note(note_name,
+                 duration=2,
+                 decay=1,
+                 volume=100,
+                 track=0,
+                 start_time=0,
+                 sample_width=2,
+                 channels=2,
+                 frame_rate=44100,
+                 name=None,
+                 format='wav',
+                 other_effects=None,
+                 bpm=80)
+
+# note_name: the name of the note, i.e. C5, D5, C (if the octave number
+# is not specified, then the default octave number is 4), or musicpy note instance
+
+# duration: the duration of the note in seconds
+
+# decay: the decay time of the note in seconds
+
+# volume: the volume of the note in midi velocity from 0 - 127
+
+# track: the track to play the note
+
+# start_time: the start time of the note in seconds
+
+# sample_width: the sample width of the rendered audio
+
+# channels: the number of channels of the rendered audio
+
+#  frame_rate: the frame rate of the rendered audio
+
+# name: the file name of the exported audio file,
+# this is only used in export_note function
+
+# format: the audio file format of the exported audio file, this is only used
+# in export_note function
+
+# other_effects: audio effects you want to add to the rendered audio
+
+# bpm: the BPM of the note
+
+
+# examples
+loader.play_note('C5') # play a note C5 using current instrument
+
+# you will hear a note C5 playing using current instrument
+
+loader < 25 # change to another instrument at preset number 25
+
+loader.play_note('C5') # play a note C5 using the instrument we have changed to
+
+# you will hear a note C5 playing using a new instrument
+
+loader.play_note('D') # play a note without octave number specified, will play
+# the note D4
+
+loader.play_note(sf.mp.N('C5')) # play a note using musicpy note structure
+
+loader.play_note('C5', duration=3) # play a note C5 for 3 seconds
+```
+
+
+
 You can use `play_chord` function of the sf2 loader to play a chord using current track, soundfont id, bank number and preset number. The chord must be a musicpy chord instance.
+
+```python
+loader.play_chord(current_chord,
+                  decay=0.5,
+                  track=0,
+                  start_time=0,
+                  sample_width=2,
+                  channels=2,
+                  frame_rate=44100,
+                  name=None,
+                  format='wav',
+                  bpm=80,
+                  fixed_decay=False,
+                  other_effects=None,
+                  pan=None,
+                  volume=None)
+
+# current_chord: musicpy chord instance
+
+# decay: the decay time unit in seconds, each note's decay time will be calculated
+# with decay * duration of the note, or if fixed_decay is True, this decay time
+# will be applied to every note, this decay time could also be a list of each note's
+# decay time
+
+# track - bpm: same as play_note
+
+# fixed_decay: if this is set to True, the decay time will be applied to every note
+
+# other_effects: same as play_note
+
+# pan: the pan effects you want to add to the rendered audio
+
+# volume: the volume effects you want to add to the rendered audio
+
+# the pan and volume effects are corresponding to the midi CC messages
+
+
+# examples
+loader.play_chord(sf.mp.C('C')) # play a C major chord starts at C4 (default when
+# no octave number is specified)
+
+loader.play_chord(sf.mp.C('Cmaj7', 5)) # play a Cmaj7 chord starts at C5
+```
+
+
 
 You can use `play_piece` function of the sf2 loader to play a piece using current track and soundfont id. The chord must be a musicpy piece instance. Here piece means a piece of music with multiple individual tracks with different instruments on each of them (it is also ok if you want some or all of the tracks has the same instruments). You can custom which instrument you want the soundfont to play for each track by setting the `instruments_numbers` attribute of the piece instance, instrument of a track of the piece instance could be preset_num or [preset_num, bank_num, (track), (sfid)].
 
+```python
+loader.play_piece(current_chord,
+                  decay=0.5,
+                  track=0,
+                  start_time=0,
+                  sample_width=2,
+                  channels=2,
+                  frame_rate=44100,
+                  name=None,
+                  format='wav',
+                  fixed_decay=False,
+                  other_effects=None,
+                  clear_program_change=True)
+
+# current_chord: musicpy piece instance
+
+# decay: the decay time for the tracks of the piece instance, which is musicpy chord
+# instance, note that this decay time will be applied to every track
+
+# track - other_effects: same as play_chord
+
+# clear_progra_change: when there are program change messages in the piece instance,
+# the instruments are forced to change during rendering, so you cannot use the
+# instrument you want to play, if you clear these messages, then you can specify
+# which instruments you want to play
+
+
+# examples
+
+# construct a musicpy piece instance and play it using the sf2 loader
+current_piece = sf.mp.P([sf.mp('C'), sf.mp.chord('A2')], [2, 35], tempo=150)
+loader.play_piece(current_piece)
+
+# read a midi file to a musicpy piece instance and play it using the sf2 loader
+current_midi_file = sf.mp.read(midi_file_path, mode='all', to_piece=True, get_off_drums=False)
+loader.play_piece(current_midi_file)
+```
+
+
+
 You can use `play_midi_file` function of the sf2 loader to play a midi file using current track and soundfont id. You can set the first parameter to the midi file path, and then the sf2 loader will read the midi file and analyze it into a musicpy piece instance, and then render it to audio data.
+
+```python
+loader.play_midi_file(current_chord,
+                      decay=0.5,
+                      track=0,
+                      start_time=0,
+                      sample_width=2,
+                      channels=2,
+                      frame_rate=44100,
+                      name=None,
+                      format='wav',
+                      fixed_decay=False,
+                      other_effects=None,
+                      clear_program_change=True,
+                      instruments=None,
+                      **read_args)
+
+# current_chord: the midi file path
+
+# decay - clear_program_change: same as play_piece
+
+# instruments: the list of the instruments you want to play, the sf2 loader
+# will use this instrument list instead of the instrument settings in the midi file,
+# note that this instruments list must be the same length as the number of tracks
+# of the midi file
+
+# **read_args: this is the keyword arguments for the musicpy read function
+
+
+# examples
+
+# play a midi file given a file path using current soundfont file
+loader.play_midi_file(r'C:\Users\Administrator\Desktop\test.mid')
+
+loader.change_soundfont('celeste2.sf2') # change to another loaded soundfont file
+
+# play a midi file given a file path using another soundfont file
+loader.play_midi_file(r'C:\Users\Administrator\Desktop\test.mid')
+
+# you can also specify which track use which soundfont files in the instruments
+# parameter by specifying the soundfont id
+```
+
+
 
 Note that by default the drum track of the midi file is ignored, if you want to include the drum track as well, you can add `get_off_drums=False` when you use `play_midi_file` function.
 
