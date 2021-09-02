@@ -9,7 +9,8 @@ If you are not familiar with musicpy data structures and is not willing to learn
 
 This sf2 loader is compatible with both 32-bit and 64-bit python versions, for python >= 3.6, so be sure your installed python version match the requirements for this package to use.
 
-
+This package is currently only being tested on windows, I am going to test on Linux and macOS recently and make compatible versions of this package for Linux and macOS.
+Once it is finished, I will put the download links for Linux and macOS compatible versions of sf2 loader here (and maybe some instructions for installation and using exclusively for Linux or macOS).
 
 ## Installation
 
@@ -21,7 +22,8 @@ Run this line in cmd/terminal to install.
 pip install sf2_loader
 ```
 
-
+Note: This package uses pydub as a required python package, which requires ffmpeg or libav installed to have abilities to deal with non-wav files (like mp3, ogg files),
+so I strongly recommend to install ffmpeg/libav and configure it correctly to make pydub working perfectly, you can refer to this [link](https://github.com/jiaaro/pydub#getting-ffmpeg-set-up) which is pydub's github main page readme to see how to do it.
 
 ## Usage
 
