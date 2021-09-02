@@ -1,3 +1,4 @@
 simpleaudio
 pydub
 musicpy
+numpy

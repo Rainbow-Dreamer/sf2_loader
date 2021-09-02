@@ -13,7 +13,7 @@ setup(name='sf2_loader',
       download_url=
       'https://github.com/Rainbow-Dreamer/sf2_loader/archive/0.25.tar.gz',
       keywords=['soundfont', 'sf2', 'python'],
-      install_requires=['pydub', 'simpleaudio', 'musicpy'],
+      install_requires=['pydub', 'simpleaudio', 'musicpy', 'numpy'],
       classifiers=[
           'Development Status :: 3 - Alpha',
           'Intended Audience :: Developers',
