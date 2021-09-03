@@ -261,11 +261,9 @@ loader.play_note(note_name,
 
 #  frame_rate: the frame rate of the rendered audio
 
-# name: the file name of the exported audio file,
-# this is only used in export_note function
+# name: the file name of the exported audio file, this is only used in export_note function
 
-# format: the audio file format of the exported audio file, this is only used
-# in export_note function
+# format: the audio file format of the exported audio file, this is only used in export_note function
 
 # other_effects: audio effects you want to add to the rendered audio
 
@@ -283,8 +281,7 @@ loader.play_note('C5') # play a note C5 using the instrument we have changed to
 
 # you will hear a note C5 playing using a new instrument
 
-loader.play_note('D') # play a note without octave number specified, will play
-# the note D4
+loader.play_note('D') # play a note without octave number specified, will play the note D4
 
 loader.play_note(sf.mp.N('C5')) # play a note using musicpy note structure
 
@@ -363,7 +360,7 @@ loader.play_piece(current_chord,
 
 # track - other_effects: same as play_chord
 
-# clear_progra_change: when there are program change messages in the piece instance,
+# clear_program_change: when there are program change messages in the piece instance,
 # the instruments are forced to change during rendering, so you cannot use the
 # instrument you want to play, if you clear these messages, then you can specify
 # which instruments you want to play
