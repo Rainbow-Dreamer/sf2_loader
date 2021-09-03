@@ -461,7 +461,8 @@ loader.play_midi_file(midi_file_path, get_off_drums=False, instruments=[41, 41, 
 
 # when the rendering process is finished, you can hear the midi file playing with current soundfont files
 
-# or you can use play_piece function since you have a piece instance by reading the midi file, and you don't need to specify instruments since the instrument numbers is an attribute of the piece instance
+# or you can use play_piece function since you have a piece instance by reading the midi file,
+# and you don't need to specify instruments since the instrument numbers is an attribute of the piece instance
 loader.play_piece(current_midi_file)
 
 # you will hear the same thing as using play_midi_file function
@@ -530,12 +531,13 @@ loader.export_sound_modules(track=None,
 # bpm: refer to play_note function
 
 # name: if not None, then set each note's file name with this parameter,
-# this could be a list of each note's name (without file extension) or a function to format each note's name (without file extension), for example, ['C5', 'C#5' 'D5'],
-# lambda s: f'piano{s}'
+# this could be a list of each note's name (without file extension) or a function
+# to format each note's name (without file extension), for example, ['C5', 'C#5' 'D5'], lambda s: f'piano{s}'
 
 # show_full_path: when this function is running, it will print the export messages
 # for each note, showing which soundfont file and which bank and preset
-# you use to export which note, if this is set to True, then the file path of the soundfont file will be full path, otherwise the file path will be only the file name
+# you use to export which note, if this is set to True, then the file path of the soundfont file will be full path,
+# otherwise the file path will be only the file name
 
 
 # examples
@@ -579,7 +581,4 @@ loader.play_note('C5', other_effects=[effect('reverse')])
 loader.export_note('C5', other_effects=[effect('reverse')])
 ```
 
-
-
 For the parameters of each type of audio effects, please refer to the sampler module of musicpy, here is the [link](https://github.com/Rainbow-Dreamer/musicpy/wiki/musicpy-sampler-module#audio-mixing-and-editing) for the documentation of the audio effects.
-
