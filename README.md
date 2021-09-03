@@ -23,7 +23,13 @@ pip install sf2_loader
 ```
 
 Note: This package uses pydub as a required python package, which requires ffmpeg or libav installed to have abilities to deal with non-wav files (like mp3, ogg files),
-so I strongly recommend to install ffmpeg/libav and configure it correctly to make pydub working perfectly, you can refer to this [link](https://github.com/jiaaro/pydub#getting-ffmpeg-set-up) which is pydub's github main page readme to see how to do it.
+so I strongly recommend to install ffmpeg/libav and configure it correctly to make pydub working perfectly. You can refer to this [link](https://github.com/jiaaro/pydub#getting-ffmpeg-set-up) which is pydub's github main page readme to see how to do it, or you can follow the steps I provide here, which is easier and faster.
+
+Firstly, download the ffmpeg rar file from this [link](https://github.com/Rainbow-Dreamer/musicpy/releases/download/3.39/ffmpeg.rar), this is from the release page of musicpy which requires ffmpeg for the musicpy's sampler module.  
+Then, unzip the folder `ffmpeg` from the rar file, put the folder in C:\ (or equivalent root path if you are using Linux/macOS).  
+Then, add the path `C:\\ffmpeg\\bin` (this will be different for Linux/macOS) to the system environment variable PATH.  
+Finally, restart the computer.  
+Now you are all done with the set up of ffmpeg for pydub. If there are no warnings about ffmpeg from pydub pop up after you import this package, then you are good to go.
 
 ## Usage
 
