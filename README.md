@@ -456,7 +456,8 @@ current_midi_file.instruments_numbers[3] = [1, 128]
 >>> current_midi_file.instruments_numbers
 [41, 41, 49, [1, 128], 69, 73, 46]
 
-# now you can copy this instruments numbers list to be the value of the instruments parameter of the play_midi_file function
+# now you can copy this instruments numbers list to be the value of
+# the instruments parameter of the play_midi_file function
 loader.play_midi_file(midi_file_path, get_off_drums=False, instruments=[41, 41, 49, [1, 128], 69, 73, 46])
 
 # when the rendering process is finished, you can hear the midi file playing with current soundfont files
