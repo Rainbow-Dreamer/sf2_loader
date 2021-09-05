@@ -9,10 +9,10 @@ If you are not familiar with musicpy data structures and is not willing to learn
 
 This sf2 loader is compatible with both 32-bit and 64-bit python versions, for python >= 3.6, so be sure your installed python version match the requirements for this package to use.
 
-This package is currently only being tested on windows, I am going to test on Linux and macOS recently and make compatible versions of this package for Linux and macOS.
-Once it is finished, I will put the download links for Linux and macOS compatible versions of sf2 loader here (and maybe some instructions for installation and using exclusively for Linux or macOS).
+This package is currently only being tested on windows and Linux, I am going to test on macOS recently and make compatible versions of this package for macOS.
+Once it is finished, I will put the download links for macOS compatible versions of sf2 loader here (and maybe some instructions for installation and using exclusively for macOS).
 
-Update: (2021/9/5) The Linux compatible version is ready, you can download the Linux compatible version of sf2_loader from release page of this project, or just click this link to download. You don't need to pip install this package, just open terminal in the direcotry of sf2_loader, and run `python setup.py install` to install this package. Then, there are some important and necessary steps to configure this package in order to use it on Linux:
+Update: (2021/9/5) The Linux compatible version is ready, you can download the Linux compatible version of sf2_loader from release page of this project, or just click this link to download. You don't need to pip install this package, just open terminal in the folder `sf2_loader(linux compatible)`, and run `python setup.py install` to install this package. Then, there are some important and necessary steps to configure this package in order to use it on Linux:
 
 Firstly, you need to install fluidsynth on Linux, you can refer to this [link](https://github.com/FluidSynth/fluidsynth/wiki/Download#distributions) to see how to install fluidsynth on different Linux systems. Here I will put the install command for Ubuntu and Debian:
 ```
