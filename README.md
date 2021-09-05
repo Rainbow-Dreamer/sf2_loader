@@ -12,24 +12,11 @@ This sf2 loader is compatible with both 32-bit and 64-bit python versions, for p
 This package is currently only being tested on windows and Linux, I am going to test on macOS recently and make compatible versions of this package for macOS.
 Once it is finished, I will put the download links for macOS compatible versions of sf2 loader here (and maybe some instructions for installation and using exclusively for macOS).
 
-Update: (2021/9/5) The Linux compatible version is ready, you can download the Linux compatible version of sf2_loader from [release page](https://github.com/Rainbow-Dreamer/sf2_loader/releases/latest) of this project. You don't need to pip install this package, just open terminal in the folder `sf2_loader(linux compatible)`, and run `python setup.py install` to install this package. Then, there are some important and necessary steps to configure this package in order to use it on Linux:
-
-Firstly, you need to install fluidsynth on Linux, you can refer to this [link](https://github.com/FluidSynth/fluidsynth/wiki/Download#distributions) to see how to install fluidsynth on different Linux systems. Here I will put the install command for Ubuntu and Debian:
-```
-sudo apt-get install fluidsynth
-```
-Run this command in terminal on Ubuntu or Debian, and waiting for fluidsynth to finish installing.
-
-Secondly, you need to install ffmpeg on Linux, you can just run this command in terminal to install ffmpeg on Linux:
-```
-apt-get install ffmpeg libavcodec-extra
-```
-Thirdly, I strongly recommend you to pip install simpleaudio on Linux, since it is the recommended way to play the pydub audio objects (which is used in play functions in this package). But install simpleaudio on Linux isn't as straightforward as on windows, you can refer to this [link](https://simpleaudio.readthedocs.io/en/latest/installation.html) to see how to install simpleaudio on Linux. If your installation of simpleaudio on Linux is successful, then simpleaudio is used when you use this package. If you are failed to install simpleaudio on Linux (which happens in some Linux systems actually, I have encountered this when testing on a Ubuntu system), this package will use ffplay to play the audio, which has been installed when you install ffmpeg.
-
-This linux compatible version of sf2_loader is tested on Ubuntu 18.04.5.
+Update: (2021/9/5) The Linux compatible version is ready, the installation and configuration of linux compatible version is at the installation section of this readme. This linux compatible version of sf2_loader is tested on Ubuntu 18.04.5.
 
 ## Installation
 
+### Windows
 You can use pip to install this sf2 loader.
 
 Run this line in cmd/terminal to install.
@@ -46,6 +33,26 @@ Then, unzip the folder `ffmpeg` from the rar file, put the folder in C:\ (or equ
 Then, add the path `C:\\ffmpeg\\bin` (this will be different for Linux/macOS) to the system environment variable PATH.  
 Finally, restart the computer.  
 Now you are all done with the set up of ffmpeg for pydub. If there are no warnings about ffmpeg from pydub pop up after you import this package, then you are good to go.
+
+### Linux
+
+You can download the Linux compatible version of sf2_loader from [release page](https://github.com/Rainbow-Dreamer/sf2_loader/releases/latest) of this project. You don't need to pip install this package, just open terminal in the folder `sf2_loader(linux compatible)`, and run `python setup.py install` to install this package. Then, there are some important and necessary steps to configure this package in order to use it on Linux:
+
+Firstly, you need to install fluidsynth on Linux, you can refer to this [link](https://github.com/FluidSynth/fluidsynth/wiki/Download#distributions) to see how to install fluidsynth on different Linux systems. Here I will put the install command for Ubuntu and Debian:
+```
+sudo apt-get install fluidsynth
+```
+Run this command in terminal on Ubuntu or Debian, and waiting for fluidsynth to finish installing.
+
+Secondly, you need to install ffmpeg on Linux, you can just run this command in terminal to install ffmpeg on Linux:
+```
+apt-get install ffmpeg libavcodec-extra
+```
+Thirdly, I strongly recommend you to pip install simpleaudio on Linux, since it is the recommended way to play the pydub audio objects (which is used in play functions in this package). But install simpleaudio on Linux isn't as straightforward as on windows, you can refer to this [link](https://simpleaudio.readthedocs.io/en/latest/installation.html) to see how to install simpleaudio on Linux. If your installation of simpleaudio on Linux is successful, then simpleaudio is used when you use this package. If you are failed to install simpleaudio on Linux (which happens in some Linux systems actually, I have encountered this when testing on a Ubuntu system), this package will use ffplay to play the audio, which has been installed when you install ffmpeg.
+
+### macOS
+
+Coming soon
 
 ## Usage
 
