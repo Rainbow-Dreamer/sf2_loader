@@ -12,6 +12,22 @@ This sf2 loader is compatible with both 32-bit and 64-bit python versions, for p
 This package is currently only being tested on windows, I am going to test on Linux and macOS recently and make compatible versions of this package for Linux and macOS.
 Once it is finished, I will put the download links for Linux and macOS compatible versions of sf2 loader here (and maybe some instructions for installation and using exclusively for Linux or macOS).
 
+Update: (2021/9/5) The Linux compatible version is ready, you can download the Linux compatible version of sf2_loader from release page of this project, or just click this link to download. You don't need to pip install this package, just open terminal in the direcotry of sf2_loader, and run `python setup.py install` to install this package. Then, there are some important and necessary steps to configure this package in order to use it on Linux:
+
+Firstly, you need to install fluidsynth on Linux, you can refer to this [link](https://github.com/FluidSynth/fluidsynth/wiki/Download#distributions) to see how to install fluidsynth on different Linux systems. Here I will put the install command for Ubuntu and Debian:
+```
+sudo apt-get install fluidsynth
+```
+Run this command in terminal on Ubuntu or Debian, and waiting for fluidsynth to finish installing.
+
+Secondly, you need to install ffmpeg on Linux, you can just run this command in terminal to install ffmpeg on Linux:
+```
+apt-get install ffmpeg libavcodec-extra
+```
+Thirdly, I strongly recommend you to pip install simpleaudio on Linux, since it is the recommended way to play the pydub audio objects (which is used in play functions in this package). But install simpleaudio on Linux isn't as straightforward as on windows, you can refer to this [link](https://simpleaudio.readthedocs.io/en/latest/installation.html) to see how to install simpleaudio on Linux. If your installtion of simpleaudio on Linux is successful, then simpleaudio is used when you use this package. If you are failed to install simpleaudio on Linux (which happens in some Linux systems actually, I have encountered this when testing on a Ubuntu system), this package will use ffplay to play the audio, which has been installed when you install ffmpeg.
+
+This linux compatible version of sf2_loader is tested on Ubuntu 18.04.5.
+
 ## Installation
 
 You can use pip to install this sf2 loader.
