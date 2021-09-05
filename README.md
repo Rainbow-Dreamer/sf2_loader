@@ -9,10 +9,11 @@ If you are not familiar with musicpy data structures and is not willing to learn
 
 This sf2 loader is compatible with both 32-bit and 64-bit python versions, for python >= 3.6, so be sure your installed python version match the requirements for this package to use.
 
-This package is currently only being tested on windows and Linux, I am going to test on macOS recently and make compatible versions of this package for macOS.
-Once it is finished, I will put the download links for macOS compatible versions of sf2 loader here (and maybe some instructions for installation and using exclusively for macOS).
+This package is currently being tested on Windows, Linux and macOS. For Windows version, this package is tested on Windows 10.
 
 Update: (2021/9/5) The Linux compatible version is ready, the installation and configuration of linux compatible version is at the installation section of this readme. This linux compatible version of sf2_loader is tested on Ubuntu 18.04.5.
+
+Update: (2021/9/5) The macOS compatible version is ready, the installation and configuration of linux compatible version is at the installation section of this readme. This macOS compatible version of sf2_loader is tested on Catalina.10.15.5.
 
 ## Installation
 
@@ -44,15 +45,27 @@ sudo apt-get install fluidsynth
 ```
 Run this command in terminal on Ubuntu or Debian, and waiting for fluidsynth to finish installing.
 
-Secondly, you need to install ffmpeg on Linux, you can just run this command in terminal to install ffmpeg on Linux:
+Secondly, you need to install ffmpeg on Linux (the same reason as in Windows), you can just run this command in terminal to install ffmpeg on Linux:
 ```
 apt-get install ffmpeg libavcodec-extra
 ```
-Thirdly, I strongly recommend you to pip install simpleaudio on Linux, since it is the recommended way to play the pydub audio objects (which is used in play functions in this package). But install simpleaudio on Linux isn't as straightforward as on windows, you can refer to this [link](https://simpleaudio.readthedocs.io/en/latest/installation.html) to see how to install simpleaudio on Linux. If your installation of simpleaudio on Linux is successful, then simpleaudio is used when you use this package. If you are failed to install simpleaudio on Linux (which happens in some Linux systems actually, I have encountered this when testing on a Ubuntu system), this package will use ffplay to play the audio, which has been installed when you install ffmpeg.
+Thirdly, I strongly recommend you to pip install simpleaudio on Linux, since it is the recommended way to play the pydub audio objects (which is used in play functions in this package). But install simpleaudio on Linux isn't as straightforward as on Windows, you can refer to this [link](https://simpleaudio.readthedocs.io/en/latest/installation.html) to see how to install simpleaudio on Linux. If your installation of simpleaudio on Linux is successful, then simpleaudio is used when you use this package. If you are failed to install simpleaudio on Linux (which happens in some Linux systems actually, I have encountered this when testing on a Ubuntu system), this package will use ffplay to play the audio, which has been installed when you install ffmpeg.
 
 ### macOS
 
-Coming soon
+You can download the macOS compatible version of sf2_loader from [release page](https://github.com/Rainbow-Dreamer/sf2_loader/releases/latest) of this project. You don't need to pip install this package, just open terminal in the folder `sf2_loader(macOS compatible)`, and run `python setup.py install` to install this package. Then, there are some important and necessary steps to configure this package in order to use it on macOS:
+
+Firstly, you need to install fluidsynth on macOS, the easiest way to install ffmpeeg in macOS is using homebrew. You need to make sure you have installed homebrew in macOS first, and then run `brew install fluidsynth` in terminal, and waiting for fluidsynth to be installed.
+
+If you haven't installed homebrew before and cannot find a good way to install homebrew, here I will provide a very easy way to install homebrew on macOS, thanks from Ferenc Yim's answer from this [Stack Overflow question](https://stackoverflow.com/questions/29910217/homebrew-installation-on-mac-os-x-failed-to-connect-to-raw-githubusercontent-com):
+
+open this [link](https://raw.githubusercontent.com/Homebrew/install/master/install.sh) in your browser, right-click and save it to your computer, and then open a terminal and run it with:  
+`/bin/bash path-to/install.sh`, and waiting for homebrew to be installed.
+
+Secondly, you need to install ffmpeg on macOS (the same reason as in Windows), you can just run this command in terminal to install ffmpeg on macOS using homebrew:
+```
+brew install ffmpeg
+```
 
 ## Usage
 
