@@ -12,7 +12,7 @@ This sf2 loader is compatible with both 32-bit and 64-bit python versions, for p
 This package is currently only being tested on windows and Linux, I am going to test on macOS recently and make compatible versions of this package for macOS.
 Once it is finished, I will put the download links for macOS compatible versions of sf2 loader here (and maybe some instructions for installation and using exclusively for macOS).
 
-Update: (2021/9/5) The Linux compatible version is ready, you can download the Linux compatible version of sf2_loader from release page of this project, or just click this link to download. You don't need to pip install this package, just open terminal in the folder `sf2_loader(linux compatible)`, and run `python setup.py install` to install this package. Then, there are some important and necessary steps to configure this package in order to use it on Linux:
+Update: (2021/9/5) The Linux compatible version is ready, you can download the Linux compatible version of sf2_loader from [release page](https://github.com/Rainbow-Dreamer/sf2_loader/releases/latest) of this project. You don't need to pip install this package, just open terminal in the folder `sf2_loader(linux compatible)`, and run `python setup.py install` to install this package. Then, there are some important and necessary steps to configure this package in order to use it on Linux:
 
 Firstly, you need to install fluidsynth on Linux, you can refer to this [link](https://github.com/FluidSynth/fluidsynth/wiki/Download#distributions) to see how to install fluidsynth on different Linux systems. Here I will put the install command for Ubuntu and Debian:
 ```
