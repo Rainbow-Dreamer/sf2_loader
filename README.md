@@ -37,7 +37,7 @@ Now you are all done with the set up of ffmpeg for pydub. If there are no warnin
 
 ### Linux
 
-You can download the Linux compatible version of sf2_loader from [release page](https://github.com/Rainbow-Dreamer/sf2_loader/releases/latest) of this project. You don't need to pip install this package, just open terminal in the folder `sf2_loader(linux compatible)`, and run `python setup.py install` to install this package. Then, there are some important and necessary steps to configure this package in order to use it on Linux:
+You can download the Linux compatible version of sf2_loader from [release page](https://github.com/Rainbow-Dreamer/sf2_loader/releases/latest) of this project. You don't need to pip install this package, just open terminal in the folder `sf2_loader(linux compatible)`, firstly run `pip install midiutil`, and then run `sudo python setup.py install` to install this package. Then, there are some important and necessary steps to configure this package in order to use it on Linux:
 
 Firstly, you need to install fluidsynth on Linux, you can refer to this [link](https://github.com/FluidSynth/fluidsynth/wiki/Download#distributions) to see how to install fluidsynth on different Linux systems. Here I will put the install command for Ubuntu and Debian:
 ```
