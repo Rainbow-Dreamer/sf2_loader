@@ -39,7 +39,9 @@ Now you are all done with the set up of ffmpeg for pydub. If there are no warnin
 
 You can download the Linux compatible version of sf2_loader from [release page](https://github.com/Rainbow-Dreamer/sf2_loader/releases/latest) of this project.
 
-Open terminal in the folder `sf2_loader(linux compatible)`, firstly run `pip install midiutil`, and then run `sudo python setup.py install` to install this package. (some of the codes are changed for Linux compatible versions of this pakcage for compatibility, so you cannot use pip to install this package, because that will install the version for Windows)
+Open terminal in the folder `sf2_loader(linux compatible)`, firstly run `pip install midiutil`, and then run `sudo python setup.py install` to install this package.
+
+(some of the codes are changed for Linux compatible version of this pakcage for compatibility, so you cannot use pip to install this package, because that will install the version for Windows)
 
 Then, there are some important and necessary steps to configure this package in order to use it on Linux:
 
@@ -59,7 +61,9 @@ Thirdly, I strongly recommend you to pip install simpleaudio on Linux, since it 
 
 You can download the macOS compatible version of sf2_loader from [release page](https://github.com/Rainbow-Dreamer/sf2_loader/releases/latest) of this project.
 
-Open terminal in the folder `sf2_loader(macOS compatible)`, firstly run `pip install midiutil`, and then run `python setup.py install` to install this package. (some of the codes are changed for macOS compatible versions of this pakcage for compatibility, so you cannot use pip to install this package, because that will install the version for Windows)
+Open terminal in the folder `sf2_loader(macOS compatible)`, firstly run `pip install midiutil`, and then run `python setup.py install` to install this package.
+
+(some of the codes are changed for macOS compatible version of this pakcage for compatibility, so you cannot use pip to install this package, because that will install the version for Windows)
 
 Then, there are some important and necessary steps to configure this package in order to use it on macOS:
 
