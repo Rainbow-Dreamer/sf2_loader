@@ -47,7 +47,7 @@ Run this command in terminal on Ubuntu or Debian, and waiting for fluidsynth to 
 
 Secondly, you need to install ffmpeg on Linux (the same reason as in Windows), you can just run this command in terminal to install ffmpeg on Linux:
 ```
-apt-get install ffmpeg libavcodec-extra
+sudo apt-get install ffmpeg libavcodec-extra
 ```
 Thirdly, I strongly recommend you to pip install simpleaudio on Linux, since it is the recommended way to play the pydub audio objects (which is used in play functions in this package). But install simpleaudio on Linux isn't as straightforward as on Windows, you can refer to this [link](https://simpleaudio.readthedocs.io/en/latest/installation.html) to see how to install simpleaudio on Linux. If your installation of simpleaudio on Linux is successful, then simpleaudio is used when you use this package. If you are failed to install simpleaudio on Linux (which happens in some Linux systems actually, I have encountered this when testing on a Ubuntu system), this package will use ffplay to play the audio, which has been installed when you install ffmpeg.
 
@@ -333,6 +333,7 @@ loader.play_chord(current_chord,
                   decay=0.5,
                   track=0,
                   start_time=0,
+                  piece_start_time=0,
                   sample_width=2,
                   channels=2,
                   frame_rate=44100,
@@ -352,6 +353,8 @@ loader.play_chord(current_chord,
 # decay time
 
 # track - bpm: same as play_note
+
+# piece_start_time: this is used when dealing with a musicpy piece instance, you won't need to set this generally
 
 # fixed_decay: if this is set to True, the decay time will be applied to every note
 
