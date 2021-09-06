@@ -39,7 +39,11 @@ Now you are all done with the set up of ffmpeg for pydub. If there are no warnin
 
 You can download the Linux compatible version of sf2_loader from [release page](https://github.com/Rainbow-Dreamer/sf2_loader/releases/latest) of this project.
 
-You don't need to pip install this package, just open terminal in the folder `sf2_loader(linux compatible)`, firstly run `pip install midiutil`, and then run `sudo python setup.py install` to install this package.
+You can use pip to install this package, run `pip install sf2_loader` in terminal.
+
+If this package is installed successfully, then you can move on to the configuration steps.
+
+If the installation is not successful, open terminal in the folder `sf2_loader(linux compatible)`, firstly run `pip install midiutil`, and then run `sudo python setup.py install` to install this package.
 
 Then, there are some important and necessary steps to configure this package in order to use it on Linux:
 
@@ -59,7 +63,11 @@ Thirdly, I strongly recommend you to pip install simpleaudio on Linux, since it 
 
 You can download the macOS compatible version of sf2_loader from [release page](https://github.com/Rainbow-Dreamer/sf2_loader/releases/latest) of this project.
 
-You don't need to pip install this package, just open terminal in the folder `sf2_loader(macOS compatible)`, firstly run `pip install midiutil`, and then run `python setup.py install` to install this package.
+You can use pip to install this package, run `pip install sf2_loader` in terminal.
+
+If this package is installed successfully, then you can move on to the configuration steps.
+
+If the installation is not successful, open terminal in the folder `sf2_loader(macOS compatible)`, firstly run `pip install midiutil`, and then run `python setup.py install` to install this package.
 
 Then, there are some important and necessary steps to configure this package in order to use it on macOS:
 
