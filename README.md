@@ -355,7 +355,9 @@ loader.play_chord(current_chord,
                   fixed_decay=False,
                   other_effects=None,
                   pan=None,
-                  volume=None)
+                  volume=None,
+                  length=None,
+                  extra_length=None)
 
 # current_chord: musicpy chord instance
 
@@ -378,6 +380,10 @@ loader.play_chord(current_chord,
 
 # the pan and volume effects are corresponding to the midi CC messages
 
+# length: you can specify the whole length of the rendered audio in seconds (used in case of audio effects)
+
+# extra_length: you can specify the extra length of the rendered audio in seconds (used in case of audio effects)
+
 
 # examples
 loader.play_chord(sf.mp.C('C')) # play a C major chord starts at C4 (default when
@@ -394,7 +400,6 @@ You can use `play_piece` function of the sf2 loader to play a piece using curren
 loader.play_piece(current_chord,
                   decay=0.5,
                   track=0,
-                  start_time=0,
                   sample_width=2,
                   channels=2,
                   frame_rate=44100,
@@ -402,12 +407,19 @@ loader.play_piece(current_chord,
                   format='wav',
                   fixed_decay=False,
                   other_effects=None,
-                  clear_program_change=True)
+                  clear_program_change=True,
+                  length=None,
+                  extra_length=None,
+                  track_lengths=None,
+                  track_extra_lengths=None)
 
 # current_chord: musicpy piece instance
 
-# decay: the decay time for the tracks of the piece instance, which is musicpy chord
-# instance, note that this decay time will be applied to every track
+# decay: the decay time for the tracks of the piece instancewhich is musicpy chord
+# instance), note that if this decay time is a list or a tuple,
+# then it will be treated as the decay time for each track separately,
+# otherwise it will be applied to each track. If you want to pass the same list
+# to each track, you need to pass a list of lists which elements are identical.
 
 # track - other_effects: same as play_chord
 
@@ -415,6 +427,14 @@ loader.play_piece(current_chord,
 # the instruments are forced to change during rendering, so you cannot use the
 # instrument you want to play, if you clear these messages, then you can specify
 # which instruments you want to play
+
+# length: you can specify the whole length of the rendered audio in seconds (used in case of audio effects)
+
+# extra_length: you can specify the extra length of the rendered audio in seconds (used in case of audio effects)
+
+# track_lengths: the length settings of each track, could be a list or a tuple
+
+# track_extra_lengths: the extra length settings of each track, could be a list or a tuple
 
 
 # examples
@@ -436,7 +456,6 @@ You can use `play_midi_file` function of the sf2 loader to play a midi file usin
 loader.play_midi_file(current_chord,
                       decay=0.5,
                       track=0,
-                      start_time=0,
                       sample_width=2,
                       channels=2,
                       frame_rate=44100,
@@ -446,6 +465,10 @@ loader.play_midi_file(current_chord,
                       other_effects=None,
                       clear_program_change=True,
                       instruments=None,
+                      length=None,
+                      extra_length=None,
+                      track_lengths=None,
+                      track_extra_lengths=None,
                       **read_args)
 
 # current_chord: the midi file path
@@ -456,6 +479,8 @@ loader.play_midi_file(current_chord,
 # will use this instrument list instead of the instrument settings in the midi file,
 # note that this instruments list must be the same length as the number of tracks
 # of the midi file
+
+# length - track_extra_lengths: same as play_piece
 
 # **read_args: this is the keyword arguments for the musicpy read function
 
