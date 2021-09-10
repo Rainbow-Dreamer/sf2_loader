@@ -15,6 +15,13 @@ Update: (2021/9/5) The Linux compatible version is ready, the installation and c
 
 Update: (2021/9/5) The macOS compatible version is ready, the installation and configuration of linux compatible version is at the installation section of this readme. This macOS compatible version of sf2_loader is tested on Catalina.10.15.5.
 
+**Important note: the required python package musicpy is updated very frequently, so please regularly update musicpy by running**
+
+```python
+pip install --upgrade musicpy
+```
+**in cmd/terminal.**
+
 ## Installation
 
 ### Windows
@@ -287,7 +294,7 @@ loader.play_note(note_name,
                  frame_rate=44100,
                  name=None,
                  format='wav',
-                 other_effects=None,
+                 effects=None,
                  bpm=80)
 
 # note_name: the name of the note, i.e. C5, D5, C (if the octave number
@@ -313,7 +320,7 @@ loader.play_note(note_name,
 
 # format: the audio file format of the exported audio file, this is only used in export_note function
 
-# other_effects: audio effects you want to add to the rendered audio
+# effects: audio effects you want to add to the rendered audio
 
 # bpm: the BPM of the note
 
@@ -353,7 +360,7 @@ loader.play_chord(current_chord,
                   format='wav',
                   bpm=80,
                   fixed_decay=False,
-                  other_effects=None,
+                  effects=None,
                   pan=None,
                   volume=None,
                   length=None,
@@ -372,7 +379,7 @@ loader.play_chord(current_chord,
 
 # fixed_decay: if this is set to True, the decay time will be applied to every note
 
-# other_effects: same as play_note
+# effects: same as play_note
 
 # pan: the pan effects you want to add to the rendered audio
 
@@ -406,7 +413,7 @@ loader.play_piece(current_chord,
                   name=None,
                   format='wav',
                   fixed_decay=False,
-                  other_effects=None,
+                  effects=None,
                   clear_program_change=True,
                   length=None,
                   extra_length=None,
@@ -421,7 +428,7 @@ loader.play_piece(current_chord,
 # otherwise it will be applied to each track. If you want to pass the same list
 # to each track, you need to pass a list of lists which elements are identical.
 
-# track - other_effects: same as play_chord
+# track - effects: same as play_chord
 
 # clear_program_change: when there are program change messages in the piece instance,
 # the instruments are forced to change during rendering, so you cannot use the
@@ -462,7 +469,7 @@ loader.play_midi_file(current_chord,
                       name=None,
                       format='wav',
                       fixed_decay=False,
-                      other_effects=None,
+                      effects=None,
                       clear_program_change=True,
                       instruments=None,
                       length=None,
@@ -590,7 +597,7 @@ loader.export_sound_modules(track=None,
                             frame_rate=44100,
                             format='wav',
                             folder_name='Untitled',
-                            other_effects=None,
+                            effects=None,
                             bpm=80,
                             name=None,
                             show_full_path=False)
@@ -604,7 +611,7 @@ loader.export_sound_modules(track=None,
 
 # folder_name: the folder name of the exported sound modules
 
-# other_effects: refer to play_note function, will be applied to each note
+# effects: refer to play_note function, will be applied to each note
 
 # bpm: refer to play_note function
 
@@ -638,27 +645,32 @@ loader.export_sound_modules(sfid=2)
 
 ### Audio effects
 
-There is a `other_effects` parameter in the play and export functions, but how to use it?
+There is a `effects` parameter in the play and export functions, but how to use it?
 
-This python package provides a class `effect`, which could store a type of audio effect, such as reverse, offset, fade in, fade out, ADSR envelope. You can use `effect` class to package an audio effect message and put it as an element in a list, the list could be used as the value of `other_effects` in the play and export functions.
+This python package provides a class `effect`, which could store a type of audio effect, such as reverse, offset, fade in, fade out, ADSR envelope, and you can customize your own audio effect functions. You can use `effect` class to package an audio effect function and put it as an element in a list, the list could be used as the value of `effects` in the play and export functions. There are already some predefined effect instances such as `reverse`, `fade`, `adsr`.
+
+For more details and usages of `effect` class, and the parameters of predefined audio effects, please refer to the sampler module of musicpy, here is the [link](https://github.com/Rainbow-Dreamer/musicpy/wiki/musicpy-sampler-module#audio-mixing-and-editing) for the documentation of the audio effects.
 
 ```python
-effect(effect, value=None)
+effect(func, name=None, *args, unknown_args=None, **kwargs)
 
-# effect: the type of audio effect, could be one of 'reverse', 'offset', 'fade',
-# 'adsr'
+# func: the function to process the audio effect, the first parameter must be a pydub AudioSegment instance, the other parameters could be customized as you like, the return value must be a pydub AudioSegment instance
 
-# value: the parameters of the audio effect, will be used in offset, fade and adsr,
-# if there are multiple parameters, this could be a list or a tuple
+# name: the name of the audio effect
 
+# *args, **kwargs: the positional arguments and keyword arguments that the function to process the audio effect could receive
+
+# unknow_args: the keyword arguments that the function to process the audio effect could receive, but cannot be known when packaged (for example, the bpm in real time)
 
 # examples
 
 # play a note C5 using current instrument with a reverse audio effect
-loader.play_note('C5', other_effects=[effect('reverse')])
+loader.play_note('C5', effects=[reverse])
+
+# play a note C5 using current instrument with a fade in audio effect of 2s
+loader.play_note('C5', effects=[fade_in(duration=2000)])
 
 # export a note C5 using current instrument with a reverse audio effect
-loader.export_note('C5', other_effects=[effect('reverse')])
+loader.export_note('C5', effects=[reverse])
 ```
 
-For the parameters of each type of audio effects, please refer to the sampler module of musicpy, here is the [link](https://github.com/Rainbow-Dreamer/musicpy/wiki/musicpy-sampler-module#audio-mixing-and-editing) for the documentation of the audio effects.
