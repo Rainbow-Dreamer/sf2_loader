@@ -13,7 +13,7 @@ This package is currently being tested on Windows, Linux and macOS. For Windows 
 
 Update: (2021/9/5) The Linux compatible version is ready, the installation and configuration of linux compatible version is at the installation section of this readme. This linux compatible version of sf2_loader is tested on Ubuntu 18.04.5.
 
-Update: (2021/9/5) The macOS compatible version is ready, the installation and configuration of linux compatible version is at the installation section of this readme. This macOS compatible version of sf2_loader is tested on Catalina.10.15.5.
+Update: (2021/9/5) The macOS compatible version is ready, the installation and configuration of linux compatible version is at the installation section of this readme. This macOS compatible version of sf2_loader is tested on Catalina 10.15.5.
 
 **Important note: the required python package musicpy is updated very frequently, so please regularly update musicpy by running**
 
