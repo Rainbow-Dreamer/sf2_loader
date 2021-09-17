@@ -295,7 +295,8 @@ loader.play_note(note_name,
                  name=None,
                  format='wav',
                  effects=None,
-                 bpm=80)
+                 bpm=80,
+                 export_args={})
 
 # note_name: the name of the note, i.e. C5, D5, C (if the octave number
 # is not specified, then the default octave number is 4), or musicpy note instance
@@ -323,6 +324,13 @@ loader.play_note(note_name,
 # effects: audio effects you want to add to the rendered audio
 
 # bpm: the BPM of the note
+
+# export_args: a keyword dictionary, the other keyword arguments for exporting,
+# you can refer to the keyword parameters of pydub's AudioSegment's export function,
+# a useful situation is to specify the bitrate of the exported mp3 file
+# to be exported (when you set the format parameter to 'mp3'), for example,
+# we want to specify the bitrate to be 320Kbps,
+# then this parameter could be {'bitrate': '320k'}
 
 
 # examples
@@ -364,7 +372,8 @@ loader.play_chord(current_chord,
                   pan=None,
                   volume=None,
                   length=None,
-                  extra_length=None)
+                  extra_length=None,
+                  export_args={})
 
 # current_chord: musicpy chord instance
 
@@ -390,6 +399,8 @@ loader.play_chord(current_chord,
 # length: you can specify the whole length of the rendered audio in seconds (used in case of audio effects)
 
 # extra_length: you can specify the extra length of the rendered audio in seconds (used in case of audio effects)
+
+# export_args: same as play_note
 
 
 # examples
@@ -418,7 +429,8 @@ loader.play_piece(current_chord,
                   length=None,
                   extra_length=None,
                   track_lengths=None,
-                  track_extra_lengths=None)
+                  track_extra_lengths=None,
+                  export_args={})
 
 # current_chord: musicpy piece instance
 
@@ -442,6 +454,8 @@ loader.play_piece(current_chord,
 # track_lengths: the length settings of each track, could be a list or a tuple
 
 # track_extra_lengths: the extra length settings of each track, could be a list or a tuple
+
+# export_args: same as play_note
 
 
 # examples
@@ -476,6 +490,7 @@ loader.play_midi_file(current_chord,
                       extra_length=None,
                       track_lengths=None,
                       track_extra_lengths=None,
+                      export_args={},
                       **read_args)
 
 # current_chord: the midi file path
@@ -488,6 +503,8 @@ loader.play_midi_file(current_chord,
 # of the midi file
 
 # length - track_extra_lengths: same as play_piece
+
+# export_args: same as play_note
 
 # **read_args: this is the keyword arguments for the musicpy read function
 
@@ -564,8 +581,11 @@ All of the parameters of these export functions can refer to their corresponding
 ```python
 # examples
 
-# render a midi file with current soundfont files and export as a mp3 file 'test,mp3'
+# render a midi file with current soundfont files and export as a mp3 file 'test.mp3'
 loader.export_midi_file(r'C:\Users\Administrator\Desktop\test.mid', name='test.mp3', format='mp3')
+
+# if you want to specify the bitrate of the exported mp3 file to be 320Kbps
+loader.export_midi_file(r'C:\Users\Administrator\Desktop\test.mid', name='test.mp3', format='mp3', export_args={'bitrate': '320k'})
 ```
 
 
@@ -600,7 +620,8 @@ loader.export_sound_modules(track=None,
                             effects=None,
                             bpm=80,
                             name=None,
-                            show_full_path=False)
+                            show_full_path=False,
+                            export_args={})
 
 # track, sfid, bank_num, preset_num: use which instrument to play, you can refer to
 # program_select function
@@ -625,6 +646,8 @@ loader.export_sound_modules(track=None,
 # you use to export which note, if this is set to True,
 # then the file path of the soundfont file will be full path,
 # otherwise the file path will be only the file name
+
+# export_args: same as play_note
 
 
 # examples
