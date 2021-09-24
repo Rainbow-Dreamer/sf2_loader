@@ -461,7 +461,7 @@ loader.play_piece(current_chord,
 # examples
 
 # construct a musicpy piece instance and play it using the sf2 loader
-current_piece = sf.mp.P([sf.mp('C'), sf.mp.chord('A2')], [2, 35], tempo=150)
+current_piece = sf.mp.P([sf.mp('C'), sf.mp.chord('A2')], [2, 35], bpm=150)
 loader.play_piece(current_piece)
 
 # read a midi file to a musicpy piece instance and play it using the sf2 loader
