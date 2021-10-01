@@ -226,7 +226,7 @@ loader % (2, 9, 3) # change current track to 2, current bank number to 9, curren
 
 ### Get the instrument names
 
-If you want to get the instrument names of the soundfont files you load in the sf2 loader, you can use `get_all_instrument_names` function of the sf2 loader, which will give you a list  of instrument names that current bank number and current soundfont file has (or you can specify them), with given maximum number of preset number to try, start from 0. Sometimes, some of the preset numbers does not have instruments in current bank number, when it happens, fluidsynth will throw out warning messages, but it doesn't crash your programs, just print on the screen. By default, the maximum number of the preset number to try is 128, which is from 0 to 127. If you want to get the exact preset numbers for all of the instrument names in current bank number, you can set the parameter `get_ind` to `True`.
+If you want to get the instrument names of the soundfont files you load in the sf2 loader, you can use `get_all_instrument_names` function of the sf2 loader, which will give you a list  of instrument names that current soundfont file's current bank number has (or you can specify them), with given maximum number of preset number to try, start from 0. Sometimes, some of the preset numbers does not have instruments in current bank number, when it happens, fluidsynth will throw out warning messages, but it doesn't crash your programs, just print on the screen. By default, the maximum number of the preset number to try is 128, which is from 0 to 127. If you want to get the exact preset numbers for all of the instrument names in current bank number, you can set the parameter `get_ind` to `True`.
 
 ```python
 loader.get_all_instrument_names(track=None,
@@ -235,10 +235,33 @@ loader.get_all_instrument_names(track=None,
                                 num=0,
                                 max_num=128,
                                 get_ind=False,
-                                mode=0)
+                                mode=0,
+                                return_mode=0)
 
 # mode: if mode is 1, the current preset number will be set to the first available
 # instrument in the current bank number
+
+# return_mode: if it is 0, then when get_ind is set to True, this function
+# will return a dictionary which key is the preset number, value is the 
+# corresponding instrument name; if it is 1, then when get_ind is set to True,
+# this function will return a tuple of 2 elements, which first element is
+# a list of instrument names and second element is a list of the
+# corresponding preset numbers
+```
+
+If you want to get all of the instrument names of all of the available banks of the soundfont files you load in the sf2 loader, you can use `all_instruments` function of the sf2 loader, which will give you a dictionary which key is the available bank number, value is a dictionary of the presets of this bank, which key is the preset number and value is the instrument name. You can specify the maximum of bank number and preset number to try, the default value of maximum bank number to try is 129, which is from 0 to 128, the default value of maximum preset number for each bank to try is 128, which is from 0 to 127. You can also specify the soundfont id to get all of the instrument names of a specific soundfont file you loaded, in case you have loaded multiple soundfont files in the sf2 loader.
+
+```python
+loader.all_instruments(max_bank_num=129, max_preset_num=128, sfid=None)
+
+# max_bank_num: the maximum bank number to try,
+# the default value is 129, which is from 0 to 128
+
+# max_preset_num: the maximum preset number to try,
+# the default value is 128, which is from 0 to 127
+
+# sfid: you can specify the soundfont id to get the instrument names
+# of the soundfont file with the soundfont id
 ```
 
 
