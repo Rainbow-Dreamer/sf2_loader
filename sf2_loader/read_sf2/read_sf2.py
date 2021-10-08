@@ -1,23 +1,17 @@
 import os
 import sys
 import py
-
-current_path = os.getcwd()
-abs_path = os.path.abspath(os.path.dirname(__file__))
-os.chdir(abs_path)
-os.environ['PATH'] += os.pathsep + abs_path
-sys.path.append('.')
-import musicpy.musicpy as mp
+import musicpy as mp
 import simpleaudio
 from pydub.playback import _play_with_simpleaudio as play_sound
 import time
 import numpy
-import fluidsynth
+
+os.environ['PATH'] += os.pathsep + os.path.dirname(__file__)
+from . import fluidsynth
 from pydub import AudioSegment
 from io import BytesIO
 from copy import deepcopy as copy
-
-os.chdir(current_path)
 
 
 def bar_to_real_time(bar, bpm, mode=0):
