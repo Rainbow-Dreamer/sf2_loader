@@ -7,7 +7,7 @@ from pydub.playback import _play_with_simpleaudio as play_sound
 import time
 import numpy
 
-os.environ['PATH'] = ';'.join(os.environ['PATH'].split(';')[:-1])
+os.environ['PATH'] = os.pathsep.join(os.environ['PATH'].split(os.pathsep)[:-1])
 os.environ['PATH'] += os.pathsep + os.path.dirname(__file__)
 from . import fluidsynth
 from pydub import AudioSegment
