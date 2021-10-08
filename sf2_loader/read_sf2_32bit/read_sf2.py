@@ -255,7 +255,7 @@ current preset name: {self.get_current_instrument()}'''
             if type(preset_num) == str:
                 if not self.instruments:
                     self.instruments, self.instruments_ind = self.get_all_instrument_names(
-                        get_ind=True)
+                        return_mode=1, get_ind=True)
                 if preset_num in self.instruments:
                     current_ind = self.instruments_ind[self.instruments.index(
                         preset_num)]
@@ -399,7 +399,7 @@ current preset name: {self.get_current_instrument()}'''
         if type(preset) == str:
             if not self.instruments:
                 self.instruments, self.instruments_ind = self.get_all_instrument_names(
-                    get_ind=True)
+                    return_mode=1, get_ind=True)
             if preset in self.instruments:
                 current_ind = self.instruments_ind[self.instruments.index(
                     preset)]
