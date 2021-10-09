@@ -495,7 +495,7 @@ current_piece = sf.mp.P([sf.mp('C'), sf.mp.chord('A2')], [2, 35], bpm=150)
 loader.play_piece(current_piece)
 
 # read a midi file to a musicpy piece instance and play it using the sf2 loader
-current_midi_file = sf.mp.read(midi_file_path, mode='all', to_piece=True, get_off_drums=False)
+current_midi_file = sf.mp.read(midi_file_path, mode='all', to_piece=True)
 loader.play_piece(current_midi_file)
 ```
 
@@ -554,9 +554,6 @@ loader.play_midi_file(r'C:\Users\Administrator\Desktop\test.mid')
 ```
 
 
-
-Note that by default the drum track of the midi file is ignored, if you want to include the drum track as well, you can add `get_off_drums=False` when you use `play_midi_file` function.
-
 You can specify which bank and preset (including track and sfid) that each track of the midi file uses by setting the `instruments` parameter of the `play_midi_file` function.
 
 This is sometimes very important, for example, if you want to correctly play the drum track of a midi file, you will firstly need to change the instrument of the drum track to the bank number that the soundfont file has drums instruments, which is usually 128 (the indexing is 0-based).
@@ -566,7 +563,7 @@ But here you may encounter a problem: how do I know which preset that each track
 No, you don't need to use a DAW, you can just use musicpy's `read` function to read the midi file as a piece instance, and then you can get the instruments list including the instrument names and instrument numbers for each track of the midi file.
 
 ```python
-current_midi_file = sf.mp.read(midi_file_path, mode='all', to_piece=True, get_off_drums=False)
+current_midi_file = sf.mp.read(midi_file_path, mode='all', to_piece=True)
 
 >>> current_midi_file.instruments_list
 ['Violin', 'Violin', 'String Ensemble 1', 'Acoustic Grand Piano', 'Oboe', 'Piccolo', 'Pizzicato Strings']
@@ -588,7 +585,7 @@ current_midi_file.instruments_numbers[3] = [1, 128]
 
 # now you can copy this instruments numbers list to be the value of
 # the instruments parameter of the play_midi_file function
-loader.play_midi_file(midi_file_path, get_off_drums=False, instruments=[41, 41, 49, [1, 128], 69, 73, 46])
+loader.play_midi_file(midi_file_path, instruments=[41, 41, 49, [1, 128], 69, 73, 46])
 
 # when the rendering process is finished, you can hear the midi file playing with current soundfont files
 
