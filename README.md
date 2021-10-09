@@ -226,7 +226,7 @@ loader % (2, 9, 3) # change current track to 2, current bank number to 9, curren
 
 ### Get the instrument names
 
-If you want to get the instrument names of the soundfont files you load in the sf2 loader, you can use `get_all_instrument_names` function of the sf2 loader, which will give you a list  of instrument names that current soundfont file's current bank number has (or you can specify them), with given maximum number of preset number to try, start from 0. Sometimes, some of the preset numbers does not have instruments in current bank number, when it happens, fluidsynth will throw out warning messages, but it doesn't crash your programs, just print on the screen. By default, the maximum number of the preset number to try is 128, which is from 0 to 127. If you want to get the exact preset numbers for all of the instrument names in current bank number, you can set the parameter `get_ind` to `True`.
+If you want to get the instrument names of the soundfont files you load in the sf2 loader, you can use `get_all_instrument_names` function of the sf2 loader, which will give you a list  of instrument names that current soundfont file's current bank number has (or you can specify them), with given maximum number of preset number to try, start from 0. By default, the maximum number of the preset number to try is 128, which is from 0 to 127. If you want to get the exact preset numbers for all of the instrument names in current bank number, you can set the parameter `get_ind` to `True`.
 
 ```python
 loader.get_all_instrument_names(track=None,
