@@ -513,7 +513,18 @@ current preset name: {self.get_current_instrument()}'''
 
         if piece_start_time != 0:
             current_chord = copy(current_chord)
-            current_chord.apply_start_time_to_changes(-piece_start_time)
+            current_chord.apply_start_time_to_changes(-piece_start_time,
+                                                      msg=True)
+            pan = copy(pan)
+            volume = copy(volume)
+            for each in pan:
+                each.start_time -= piece_start_time
+                if each.start_time < 1:
+                    each.start_time = 1
+            for each in volume:
+                each.start_time -= piece_start_time
+                if each.start_time < 1:
+                    each.start_time = 1
         self.audio_array = []
         if any(type(i) == mp.tempo for i in current_chord.notes):
             current_chord = copy(current_chord)
@@ -578,7 +589,8 @@ current preset name: {self.get_current_instrument()}'''
                 if not check_effect(each):
                     self.synth.noteoff(track, each.degree)
             elif current.event_type == 'pitch_bend':
-                self.synth.pitch_bend(track, each.value)
+                current_channel = each.channel if each.channel is not None else track
+                self.synth.pitch_bend(current_channel, each.value)
             elif current.event_type == 'message':
                 if type(each) == mp.controller_event:
                     self.synth.cc(each.channel, each.controller_number,
@@ -647,6 +659,8 @@ current preset name: {self.get_current_instrument()}'''
         if decay_type == list or decay_type == tuple:
             decay_is_list = True
         current_chord = copy(current_chord)
+        current_chord.apply_start_time_to_changes(
+            [-i for i in current_chord.start_times], msg=True, pan_volume=True)
         bpm = current_chord.bpm
         current_chord.normalize_tempo()
         if clear_program_change:
@@ -687,11 +701,10 @@ current preset name: {self.get_current_instrument()}'''
                                 preset_num=current_instrument[0])
 
             current_audio = self.export_chord(
-                each, decay if not decay_is_list else decay[i], track, 0,
-                current_chord.start_times[i], sample_width, channels,
-                frame_rate, None, format, bpm, True, fixed_decay,
-                each.effects if check_effect(each) else None, current_pan,
-                current_volume,
+                each, decay if not decay_is_list else decay[i], track, 0, 0,
+                sample_width, channels, frame_rate, None, format, bpm, True,
+                fixed_decay, each.effects if check_effect(each) else None,
+                current_pan, current_volume,
                 None if not track_lengths else track_lengths[i],
                 None if not track_extra_lengths else track_extra_lengths[i])
             silent_audio = silent_audio.overlay(current_audio,
