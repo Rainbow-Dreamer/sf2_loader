@@ -646,21 +646,25 @@ current preset name: {self.get_current_instrument()}'''
                      get_audio=False,
                      fixed_decay=False,
                      effects=None,
-                     clear_program_change=True,
+                     clear_program_change=False,
                      length=None,
                      extra_length=None,
                      track_lengths=None,
                      track_extra_lengths=None,
-                     export_args={}):
+                     export_args={},
+                     show_msg=False):
         decay_is_list = False
         decay_type = type(decay)
         if decay_type == list or decay_type == tuple:
             decay_is_list = True
         current_chord = copy(current_chord)
+        current_chord.normalize_tempo()
         current_chord.apply_start_time_to_changes(
             [-i for i in current_chord.start_times], msg=True, pan_volume=True)
+        current_chord.reset_channel(0,
+                                    reset_pitch_bend=True,
+                                    reset_pan_volume=True)
         bpm = current_chord.bpm
-        current_chord.normalize_tempo()
         if clear_program_change:
             current_chord.clear_program_change()
         if length:
@@ -670,7 +674,10 @@ current preset name: {self.get_current_instrument()}'''
             if extra_length:
                 whole_duration += extra_length * 1000
         silent_audio = AudioSegment.silent(duration=whole_duration)
-        for i in range(len(current_chord.tracks)):
+        track_number = len(current_chord.tracks)
+        for i in range(track_number):
+            if show_msg:
+                print(f'rendering track {i+1}/{track_number} ...')
             each = current_chord.tracks[i]
             current_start_time = bar_to_real_time(current_chord.start_times[i],
                                                   bpm, 1)
@@ -721,6 +728,8 @@ current preset name: {self.get_current_instrument()}'''
                                           current_chord.effects,
                                           bpm=bpm)
 
+        if show_msg:
+            print('rendering finished')
         if name is None:
             name = f'Untitled.{format}'
         if not get_audio:
@@ -740,7 +749,7 @@ current preset name: {self.get_current_instrument()}'''
                          get_audio=False,
                          fixed_decay=False,
                          effects=None,
-                         clear_program_change=True,
+                         clear_program_change=False,
                          instruments=None,
                          length=None,
                          extra_length=None,
@@ -828,7 +837,7 @@ current preset name: {self.get_current_instrument()}'''
                    format='wav',
                    fixed_decay=False,
                    effects=None,
-                   clear_program_change=True,
+                   clear_program_change=False,
                    length=None,
                    extra_length=None,
                    track_lengths=None,
@@ -854,7 +863,7 @@ current preset name: {self.get_current_instrument()}'''
                        format='wav',
                        fixed_decay=False,
                        effects=None,
-                       clear_program_change=True,
+                       clear_program_change=False,
                        instruments=None,
                        length=None,
                        extra_length=None,
