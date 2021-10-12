@@ -503,16 +503,16 @@ current preset name: {self.get_current_instrument()}'''
         else:
             current_decay = decay
         whole_length = bar_to_real_time(current_chord.bars(), bpm, 1) / 1000
-        temp = current_chord.copy()
+        temp = copy(current_chord)
         whole_length_with_decay = mp.chord(temp.notes, [
             temp.notes[i].duration + current_decay[i]
             for i in range(len(temp.notes))
         ], temp.interval).bars()
         whole_length_with_decay = bar_to_real_time(whole_length_with_decay,
                                                    bpm, 1) / 1000
-
+        current_chord = copy(current_chord)
+        current_chord.normalize_tempo(bpm=bpm)
         if piece_start_time != 0:
-            current_chord = copy(current_chord)
             current_chord.apply_start_time_to_changes(-piece_start_time,
                                                       msg=True)
             pan = copy(pan)
@@ -526,9 +526,7 @@ current preset name: {self.get_current_instrument()}'''
                 if each.start_time < 1:
                     each.start_time = 1
         self.audio_array = []
-        if any(type(i) == mp.tempo for i in current_chord.notes):
-            current_chord = copy(current_chord)
-            current_chord.normalize_tempo(bpm=bpm)
+
         current_timestamps = get_timestamps(current_chord,
                                             bpm,
                                             pan=pan,
