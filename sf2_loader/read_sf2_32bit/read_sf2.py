@@ -661,9 +661,7 @@ current preset name: {self.get_current_instrument()}'''
         current_chord.normalize_tempo()
         current_chord.apply_start_time_to_changes(
             [-i for i in current_chord.start_times], msg=True, pan_volume=True)
-        current_chord.reset_channel(0,
-                                    reset_pitch_bend=True,
-                                    reset_pan_volume=True)
+        current_chord.reset_channel(0)
         bpm = current_chord.bpm
         if clear_program_change:
             current_chord.clear_program_change()
