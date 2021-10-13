@@ -455,7 +455,7 @@ loader.play_piece(current_chord,
                   format='wav',
                   fixed_decay=False,
                   effects=None,
-                  clear_program_change=True,
+                  clear_program_change=False,
                   length=None,
                   extra_length=None,
                   track_lengths=None,
@@ -514,7 +514,7 @@ loader.play_midi_file(current_chord,
                       format='wav',
                       fixed_decay=False,
                       effects=None,
-                      clear_program_change=True,
+                      clear_program_change=False,
                       instruments=None,
                       length=None,
                       extra_length=None,
@@ -604,6 +604,8 @@ loader.play_piece(current_midi_file)
 You can export notes, chords, pieces and midi files using loaded soundfont files in the sf2 loader using `export_note`, `export_chord`, `export_piece`, `export_midi_file` function of the sf2 loader.
 
 All of the parameters of these export functions can refer to their corresponding play functions, except a parameter `get_audio`, if this parameter is set to True, then the export functions will return an AudioSegment instance (this is an audio instance in pydub) which contains raw audio data for further audio process. If this parameter is set to False (which is default), then the export functions will export the rendered audio data to an audio file with the file name and the audio file format you specify.
+
+The `export_piece` function has an extra parameter `show_msg` with a default value `False`, if it is set to `True`, then when the sf2 loader is rendering a piece instance to audio, it will print some messages showing current process, such as `rendering track 1/16 ...` (rendering the first track of the total 16 tracks).
 
 ```python
 # examples
