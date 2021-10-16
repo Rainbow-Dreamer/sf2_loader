@@ -436,23 +436,20 @@ current preset name: {self.get_current_instrument()}'''
                     effects=None,
                     bpm=80,
                     export_args={}):
-        self.audio_array = []
+        whole_arrays = []
         if type(note_name) != mp.note:
             current_note = mp.N(note_name)
         else:
             current_note = note_name
         note_name = current_note.degree
         if start_time > 0:
-            self.audio_array = numpy.append(
-                self.audio_array,
+            whole_arrays.append(
                 self.synth.get_samples(int(frame_rate * start_time)))
         self.synth.noteon(track, note_name, volume)
-        self.audio_array = numpy.append(
-            self.audio_array,
-            self.synth.get_samples(int(frame_rate * duration)))
+        whole_arrays.append(self.synth.get_samples(int(frame_rate * duration)))
         self.synth.noteoff(track, note_name)
-        self.audio_array = numpy.append(
-            self.audio_array, self.synth.get_samples(int(frame_rate * decay)))
+        whole_arrays.append(self.synth.get_samples(int(frame_rate * decay)))
+        self.audio_array = numpy.concatenate(whole_arrays, axis=None)
         current_samples = fluidsynth.raw_audio_string(self.audio_array)
         current_audio = AudioSegment.from_raw(BytesIO(current_samples),
                                               sample_width=sample_width,
@@ -514,24 +511,24 @@ current preset name: {self.get_current_instrument()}'''
         if piece_start_time != 0:
             current_chord.apply_start_time_to_changes(-piece_start_time,
                                                       msg=True)
-            pan = copy(pan)
-            volume = copy(volume)
-            for each in pan:
-                each.start_time -= piece_start_time
-                if each.start_time < 1:
-                    each.start_time = 1
-            for each in volume:
-                each.start_time -= piece_start_time
-                if each.start_time < 1:
-                    each.start_time = 1
-        self.audio_array = []
+            if pan:
+                pan = copy(pan)
+                for each in pan:
+                    each.start_time -= piece_start_time
+                    if each.start_time < 1:
+                        each.start_time = 1
+            if volume:
+                volume = copy(volume)
+                for each in volume:
+                    each.start_time -= piece_start_time
+                    if each.start_time < 1:
+                        each.start_time = 1
 
         current_timestamps = get_timestamps(current_chord,
                                             bpm,
                                             pan=pan,
                                             volume=volume)
         current_timestamps_length = len(current_timestamps)
-        current_length = 0
         if length:
             current_whole_length = length * 1000
         else:
@@ -571,10 +568,9 @@ current preset name: {self.get_current_instrument()}'''
                     current_note_audio,
                     position=(start_time + current.start_time) * 1000)
 
-        self.audio_array = []
+        whole_arrays = []
         if start_time > 0:
-            self.audio_array = numpy.append(
-                self.audio_array,
+            whole_arrays.append(
                 self.synth.get_samples(int(frame_rate * start_time)))
         for k in range(current_timestamps_length):
             current = current_timestamps[k]
@@ -597,17 +593,14 @@ current preset name: {self.get_current_instrument()}'''
             if k != current_timestamps_length - 1:
                 append_time = current_timestamps[
                     k + 1].start_time - current.start_time
-                self.audio_array = numpy.append(
-                    self.audio_array,
+                whole_arrays.append(
                     self.synth.get_samples(int(frame_rate * append_time)))
-                current_length += append_time
-
         remain_times = whole_length_with_decay - whole_length
         if remain_times > 0:
-            self.audio_array = numpy.append(
-                self.audio_array,
+            whole_arrays.append(
                 self.synth.get_samples(int(frame_rate * remain_times)))
 
+        self.audio_array = numpy.concatenate(whole_arrays, axis=None)
         current_samples = fluidsynth.raw_audio_string(self.audio_array)
         current_audio = AudioSegment.from_raw(BytesIO(current_samples),
                                               sample_width=sample_width,
