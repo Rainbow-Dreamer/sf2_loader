@@ -79,8 +79,9 @@ def get_timestamps(current_chord,
             general_event(
                 'message',
                 bar_to_real_time(i.start_time - 1, bpm, 1) / 1000,
-                mp.controller_event(controller_number=10, parameter=i.value))
-            for i in pan
+                mp.controller_event(channel=i.channel,
+                                    controller_number=10,
+                                    parameter=i.value)) for i in pan
         ]
         result += pan_part
     if volume:
@@ -88,8 +89,9 @@ def get_timestamps(current_chord,
             general_event(
                 'message',
                 bar_to_real_time(i.start_time - 1, bpm, 1) / 1000,
-                mp.controller_event(controller_number=7, parameter=i.value))
-            for i in volume
+                mp.controller_event(channel=i.channel,
+                                    controller_number=7,
+                                    parameter=i.value)) for i in volume
         ]
         result += volume_part
     result.sort(key=lambda s: (s.start_time, s.event_type))
@@ -577,10 +579,13 @@ current preset name: {self.get_current_instrument()}'''
             each = current.value
             if current.event_type == 'noteon':
                 if not check_effect(each):
-                    self.synth.noteon(track, each.degree, each.volume)
+                    current_channel = each.channel if each.channel is not None else track
+                    self.synth.noteon(current_channel, each.degree,
+                                      each.volume)
             elif current.event_type == 'noteoff':
                 if not check_effect(each):
-                    self.synth.noteoff(track, each.degree)
+                    current_channel = each.channel if each.channel is not None else track
+                    self.synth.noteoff(current_channel, each.degree)
             elif current.event_type == 'pitch_bend':
                 current_channel = each.channel if each.channel is not None else track
                 self.synth.pitch_bend(current_channel, each.value)
@@ -653,7 +658,6 @@ current preset name: {self.get_current_instrument()}'''
         current_chord.normalize_tempo()
         current_chord.apply_start_time_to_changes(
             [-i for i in current_chord.start_times], msg=True, pan_volume=True)
-        current_chord.reset_channel(0)
         bpm = current_chord.bpm
         if clear_program_change:
             current_chord.clear_program_change()
