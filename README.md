@@ -554,48 +554,8 @@ loader.play_midi_file(r'C:\Users\Administrator\Desktop\test.mid')
 ```
 
 
+
 You can specify which bank and preset (including track and sfid) that each track of the midi file uses by setting the `instruments` parameter of the `play_midi_file` function.
-
-This is sometimes very important, for example, if you want to correctly play the drum track of a midi file, you will firstly need to change the instrument of the drum track to the bank number that the soundfont file has drums instruments, which is usually 128 (the indexing is 0-based).
-
-But here you may encounter a problem: how do I know which preset that each track of the midi file uses and how many tracks are there? I need to change the bank number for the instruments of some tracks of the midi file to correctly play what they are supposed to be.
-
-No, you don't need to use a DAW, you can just use musicpy's `read` function to read the midi file as a piece instance, and then you can get the instruments list including the instrument names and instrument numbers for each track of the midi file.
-
-```python
-current_midi_file = sf.mp.read(midi_file_path, mode='all', to_piece=True)
-
->>> current_midi_file.instruments_list
-['Violin', 'Violin', 'String Ensemble 1', 'Acoustic Grand Piano', 'Oboe', 'Piccolo', 'Pizzicato Strings']
-
->>> current_midi_file.instruments_numbers
-[41, 41, 49, 1, 69, 73, 46]
-
-# usually the drum track is channel 9 (the indexing is 0-based),
-# so you can check out the channel numbers of the midi file
->>> current_midi_file.channels
-[0, 1, 2, 9, 3, 4, 5]
-
-# we can see that the channel 9 is at the index of 3, so we can change
-# the instrument of the drum track by changing the instrument number at the index of 3
-current_midi_file.instruments_numbers[3] = [1, 128]
-
->>> current_midi_file.instruments_numbers
-[41, 41, 49, [1, 128], 69, 73, 46]
-
-# now you can copy this instruments numbers list to be the value of
-# the instruments parameter of the play_midi_file function
-loader.play_midi_file(midi_file_path, instruments=[41, 41, 49, [1, 128], 69, 73, 46])
-
-# when the rendering process is finished, you can hear the midi file playing with current soundfont files
-
-# or you can use play_piece function since you have a piece instance by reading the midi file,
-# and you don't need to specify instruments since the instrument numbers
-# is an attribute of the piece instance
-loader.play_piece(current_midi_file)
-
-# you will hear the same thing as using play_midi_file function
-```
 
 
 
