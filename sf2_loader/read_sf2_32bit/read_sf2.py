@@ -591,11 +591,12 @@ current preset name: {self.get_current_instrument()}'''
                 current_channel = each.channel if each.channel is not None else track
                 self.synth.pitch_bend(current_channel, each.value)
             elif current.event_type == 'message':
-                current_channel = each.channel if each.channel is not None else track
                 if type(each) == mp.controller_event:
+                    current_channel = each.channel if each.channel is not None else track
                     self.synth.cc(current_channel, each.controller_number,
                                   each.parameter)
                 elif type(each) == mp.program_change:
+                    current_channel = each.channel if each.channel is not None else track
                     self.synth.program_change(current_channel, each.program)
             if k != current_timestamps_length - 1:
                 append_time = current_timestamps[
