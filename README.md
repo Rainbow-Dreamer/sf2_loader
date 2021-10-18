@@ -7,7 +7,7 @@ This is probably the most handy soundfont loader, player and renderer via pure p
 * [Introduction](#Introduction)
 * [Installation](#Installation)
 * [Usage](#Usage)
-  - [Initialize a soundfont loader](#Initialize-a-soundfont loader)
+  - [Initialize a soundfont loader](#Initialize-a-soundfont-loader)
   - [Load sondfont files](#Load-sondfont-files)
   - [The representation of the soundfont loader](#The-representation-of-the-soundfont-loader)
   - [Change current track, soundfont id, bank number and preset number](#Change-current-track-soundfont-id-bank-number-and-preset-number)
