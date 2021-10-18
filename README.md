@@ -6,6 +6,9 @@ This is probably the most handy soundfont loader, player and renderer via pure p
 ## Contents
 * [Introduction](#Introduction)
 * [Installation](#Installation)
+  - [Windows](#Windows)
+  - [Linux](#Linux)
+  - [macOS](#macOS)
 * [Usage](#Usage)
   - [Initialize a soundfont loader](#Initialize-a-soundfont-loader)
   - [Load sondfont files](#Load-sondfont-files)
