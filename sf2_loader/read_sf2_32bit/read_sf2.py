@@ -18,16 +18,34 @@ mp.pygame.mixer.set_num_channels(1000)
 
 
 def play_sound(audio, mode=1):
+    if mp.pygame.mixer.get_busy():
+        mp.pygame.mixer.stop()
     current_audio = audio
     if mode == 0:
         current_sound_object = mp.pygame.mixer.Sound(
             buffer=current_audio.raw_data)
         current_sound_object.play()
     elif mode == 1:
-        current_file = BytesIO()
-        current_audio.export(current_file, format='wav')
-        current_sound_object = mp.pygame.mixer.Sound(file=current_file)
+        try:
+            capture = py.io.StdCaptureFD(out=True, in_=False)
+        except:
+            pass
+        try:
+            current_file = BytesIO()
+            current_audio.export(current_file, format='wav')
+            current_sound_object = mp.pygame.mixer.Sound(file=current_file)
+        except:
+            current_path = os.getcwd()
+            os.chdir(os.path.dirname(__file__))
+            current_audio.export('temp.wav', format='wav')
+            current_sound_object = mp.pygame.mixer.Sound(file='temp.wav')
+            os.remove('temp.wav')
+            os.chdir(current_path)
         current_sound_object.play()
+        try:
+            capture.reset()
+        except:
+            pass
 
 
 def stop():
