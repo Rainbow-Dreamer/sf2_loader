@@ -80,8 +80,6 @@ Secondly, you need to install ffmpeg on Linux (the same reason as in Windows), y
 ```
 sudo apt-get install ffmpeg libavcodec-extra
 ```
-Thirdly, I strongly recommend you to pip install simpleaudio on Linux, since it is the recommended way to play the pydub audio objects (which is used in play functions in this package). But install simpleaudio on Linux isn't as straightforward as on Windows, you can refer to this [link](https://simpleaudio.readthedocs.io/en/latest/installation.html) to see how to install simpleaudio on Linux. If your installation of simpleaudio on Linux is successful, then simpleaudio is used when you use this package. If you are failed to install simpleaudio on Linux (which happens in some Linux systems actually, I have encountered this when testing on a Ubuntu system), this package will use ffplay to play the audio, which has been installed when you install ffmpeg.
-
 ### macOS
 
 You can download the macOS compatible version of sf2_loader from [release page](https://github.com/Rainbow-Dreamer/sf2_loader/releases/latest) of this project.

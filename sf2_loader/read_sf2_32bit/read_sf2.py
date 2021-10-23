@@ -2,8 +2,6 @@ import os
 import sys
 import py
 import musicpy as mp
-import simpleaudio
-from pydub.playback import _play_with_simpleaudio as play_sound
 import time
 import numpy
 
@@ -13,6 +11,32 @@ from . import fluidsynth
 from pydub import AudioSegment
 from io import BytesIO
 from copy import deepcopy as copy
+
+mp.pygame.mixer.quit()
+mp.pygame.mixer.init(44100, -16, 2, 1024)
+mp.pygame.mixer.set_num_channels(1000)
+
+
+def play_sound(audio, mode=1):
+    current_audio = audio
+    mp.pygame.mixer.quit()
+    mp.pygame.mixer.init(frequency=current_audio.frame_rate,
+                         channels=current_audio.channels,
+                         size=-current_audio.sample_width * 8)
+    mp.pygame.mixer.set_num_channels(1000)
+    if mode == 0:
+        current_sound_object = mp.pygame.mixer.Sound(
+            buffer=current_audio.raw_data)
+        current_sound_object.play()
+    elif mode == 1:
+        current_file = BytesIO()
+        current_audio.export(current_file, format='wav')
+        current_sound_object = mp.pygame.mixer.Sound(file=current_file)
+        current_sound_object.play()
+
+
+def stop():
+    mp.pygame.mixer.stop()
 
 
 def bar_to_real_time(bar, bpm, mode=0):
@@ -792,7 +816,6 @@ current preset name: {self.get_current_instrument()}'''
                                          track, start_time, sample_width,
                                          channels, frame_rate, name, format,
                                          True, effects, bpm, export_args)
-        simpleaudio.stop_all()
         play_sound(current_audio)
 
     def play_chord(self,
@@ -820,7 +843,6 @@ current preset name: {self.get_current_instrument()}'''
                                           name, format, bpm, True, fixed_decay,
                                           effects, pan, volume, length,
                                           extra_length, export_args)
-        simpleaudio.stop_all()
         play_sound(current_audio)
 
     def play_piece(self,
@@ -846,7 +868,6 @@ current preset name: {self.get_current_instrument()}'''
                                           effects, clear_program_change,
                                           length, extra_length, track_lengths,
                                           track_extra_lengths, export_args)
-        simpleaudio.stop_all()
         play_sound(current_audio)
 
     def play_midi_file(self,
@@ -873,7 +894,6 @@ current preset name: {self.get_current_instrument()}'''
             name, format, True, fixed_decay, effects, clear_program_change,
             instruments, length, extra_length, track_lengths,
             track_extra_lengths, export_args, **read_args)
-        simpleaudio.stop_all()
         play_sound(current_audio)
 
     def export_sound_modules(self,

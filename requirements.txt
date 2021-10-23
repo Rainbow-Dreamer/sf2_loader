@@ -1,4 +1,3 @@
-simpleaudio
 pydub
 musicpy
 numpy
