@@ -492,8 +492,10 @@ current preset name: {self.get_current_instrument()}'''
         current_samples = fluidsynth.raw_audio_string(self.audio_array)
         current_audio = AudioSegment.from_raw(BytesIO(current_samples),
                                               sample_width=sample_width,
-                                              channels=channels,
+                                              channels=2,
                                               frame_rate=frame_rate)
+        if channels == 1:
+            current_audio = current_audio.set_channels(1)
         self.synth.system_reset()
         self.program_select()
         self.synth.get_samples(int(frame_rate * 1))
@@ -648,8 +650,10 @@ current preset name: {self.get_current_instrument()}'''
         current_samples = fluidsynth.raw_audio_string(self.audio_array)
         current_audio = AudioSegment.from_raw(BytesIO(current_samples),
                                               sample_width=sample_width,
-                                              channels=channels,
+                                              channels=2,
                                               frame_rate=frame_rate)
+        if channels == 1:
+            current_audio = current_audio.set_channels(1)
         current_silent_audio = current_silent_audio.overlay(current_audio)
         self.synth.system_reset()
         self.program_select()
