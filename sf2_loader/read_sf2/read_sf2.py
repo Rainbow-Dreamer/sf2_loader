@@ -212,19 +212,18 @@ class sf2_loader:
         self.synth = fluidsynth.Synth()
         self.sfid_list = []
         self.sfid = 1
-        if file:
-            self.file.append(file)
-            self.sfid = self.synth.sfload(file)
-            self.sfid_list.append(copy(self.sfid))
         self.current_track = 0
         self.current_sfid = copy(self.sfid)
         self.current_bank_num = 0
         self.current_preset_num = 0
-        if file:
-            self.program_select()
-        self.audio_array = []
         self.instruments = []
         self.instruments_ind = []
+        if file:
+            self.file.append(file)
+            self.sfid = self.synth.sfload(file)
+            self.synth.system_reset()
+            self.sfid_list.append(copy(self.sfid))
+            self.program_select()
 
     def __repr__(self):
         return f'''[soundfont loader]
@@ -488,8 +487,8 @@ current preset name: {self.get_current_instrument()}'''
         whole_arrays.append(self.synth.get_samples(int(frame_rate * duration)))
         self.synth.noteoff(track, note_name)
         whole_arrays.append(self.synth.get_samples(int(frame_rate * decay)))
-        self.audio_array = numpy.concatenate(whole_arrays, axis=None)
-        current_samples = fluidsynth.raw_audio_string(self.audio_array)
+        audio_array = numpy.concatenate(whole_arrays, axis=None)
+        current_samples = fluidsynth.raw_audio_string(audio_array)
         current_audio = AudioSegment.from_raw(BytesIO(current_samples),
                                               sample_width=sample_width,
                                               channels=2,
@@ -646,8 +645,8 @@ current preset name: {self.get_current_instrument()}'''
             whole_arrays.append(
                 self.synth.get_samples(int(frame_rate * remain_times)))
 
-        self.audio_array = numpy.concatenate(whole_arrays, axis=None)
-        current_samples = fluidsynth.raw_audio_string(self.audio_array)
+        audio_array = numpy.concatenate(whole_arrays, axis=None)
+        current_samples = fluidsynth.raw_audio_string(audio_array)
         current_audio = AudioSegment.from_raw(BytesIO(current_samples),
                                               sample_width=sample_width,
                                               channels=2,
@@ -982,17 +981,18 @@ current preset name: {self.get_current_instrument()}'''
         self.file = [file]
         self.synth = fluidsynth.Synth()
         self.sfid = self.synth.sfload(file)
+        self.synth.system_reset()
         self.sfid_list = [copy(self.sfid)]
-        self.program_select(preset_num=0)
         self.current_track = 0
         self.current_sfid = copy(self.sfid)
         self.current_bank_num = 0
         self.current_preset_num = 0
-        self.audio_array = []
+        self.program_select()
 
     def load(self, file):
         self.file.append(file)
         current_sfid = self.synth.sfload(file)
+        self.synth.system_reset()
         self.sfid_list.append(current_sfid)
         if len(self.file) == 1:
             self.program_select()
