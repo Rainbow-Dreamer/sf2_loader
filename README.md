@@ -308,14 +308,14 @@ To get the instrument name in current track of a given soundfont id, bank number
 loader.preset_name(sfid=None, bank_num=None, preset_num=None)
 ```
 
-Here is an example of get all of the instrument names in current bank number.
+Here is an example of getting all of the instrument names in current bank number.
 
 ```python
 >>> loader.get_all_instrument_names()
 ['Stereo Grand', 'Bright Yamaha Grand', 'Electric Piano', 'Honky-tonk EMU2', 'Electric Piano 1', 'Legend EP 2', 'St.Harpsichd_Lite', 'Clavinet', 'Celesta', 'Glockenspiel', 'Music Box', 'VivesPS06', 'prc:Marimba', 'Xylophone', 'Tubular Bells', 'Dulcimer', 'DrawbarOrgan', 'PercOrganSinkla', 'Rock Organ', 'Church Organ', 'Reed Organ', 'Accordian', 'Harmonica', 'Bandoneon', 'TyrosNylonLight', 'Steel Guitar', 'Jazz Gt', 'Dry Clean Guitar', 'Palm Muted Guitar', 'Garcia _0_29', 'Les Sus_0_30', 'Guitar Harmonic', 'Acoustic Bass', 'MM JZ.F_0_33', 'BassPick&Mutes', 'Fretless Bass', 'Slap Bass 1', 'Slap Bass 2', 'Synth Bass 1', 'Synth Bass 2', 'Violin', 'Viola', 'Cello', 'Contrabass', 'Tremolo', 'Pizzicato Section', 'ClavinovaHarp', 'Timpani', 'Strings Orchest', 'Slow Strings', 'Synth Strings 1', 'Synth Strings 2', 'Ahh Choir', 'Ohh Voices', 'SynVoxUT', 'Orchestra Hit', 'Romantic Tp', 'Solo Bo_0_57', 'Tuba', 'Sweet Muted', 'FH LONG_0_60', 'BRASS', 'AccesVirusBrass', 'Synth B_0_63', 'Soprano Sax', 'Altsoft vib', 'Blow Tenor', 'Bari Sax', 'Oboe', 'English Horn', 'Bassoon', 'Clarinet', 'Piccolo', 'Flute', 'Recorder', 'ClavinovaPanFlu', 'Bottle Blow', 'Shakuhachi', 'Whistle', 'Ocarina', 'Square Wave', 'Saw Wave', 'Calliope Lead', 'Chiffer Lead', 'Charang', 'Solo Vox', 'Fifth Sawtooth Wave', 'Bass & Lead', 'Fantasia', 'Warm Pad', 'Polysynth', 'Space Voice', 'Bowed Glass', 'Metal Pad', 'Halo Pad', 'Sweep Pad', 'Ice Rain', 'Soundtrack', 'Crystal', 'Atmosphere', 'Brightness', 'Goblin', 'Echo Drops', 'Star Theme', 'Sitar', 'Banjo', 'Shamisen', 'Koto', 'Kalimba', 'BagPipe', 'Fiddle', 'Shenai', 'Tinker Bell', 'Agogo', 'Steel Drums', 'Woodblock', 'Taiko Drum', 'Melodic Tom', 'Synth Drum', 'Reverse Cymbal', 'Fret Noise', 'Breath Noise', 'Sea Shore', 'Bird Tweet', 'Telephone', 'Helicopter', 'Applause', 'Gun Shot']
 ```
 
-Here is an example of get all of the instrument names of all of the available banks.
+Here is an example of getting all of the instrument names of all of the available banks.
 
 ```python
 >>> loader.all_instruments()
@@ -326,7 +326,7 @@ Here is an example of get all of the instrument names of all of the available ba
 
 ### Play notes, chords, pieces and midi files
 
-You can use `play_note` function of the sf2 loader to play a note with specified pitch using current track, soundfont id, bank number and preset number. The note could be a strings representing a pitch (for example, `C5`) or a musicpy note instance. If you want to play the note by another instrument, you need to change current preset (and other program parameters if needed) before you use `play_note` function, the same goes for other play functions.
+You can use `play_note` function of the sf2 loader to play a note with specified pitch using current track, soundfont id, bank number and preset number. The note could be a string representing a pitch (for example, `C5`) or a musicpy note instance. If you want to play the note by another instrument, you need to change current preset (and other program parameters if needed) before you use `play_note` function, the same goes for other play functions.
 
 ```python
 loader.play_note(note_name,
