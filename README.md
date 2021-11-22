@@ -361,7 +361,7 @@ loader.play_note(note_name,
 
 # channels: the number of channels of the rendered audio
 
-#  frame_rate: the frame rate of the rendered audio
+# frame_rate: the frame rate of the rendered audio
 
 # name: the file name of the exported audio file, this is only used in export_note function
 
