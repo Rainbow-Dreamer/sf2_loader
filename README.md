@@ -13,7 +13,7 @@ This is probably the most handy soundfont loader, player and renderer via pure p
   - [Initialize a soundfont loader](#Initialize-a-soundfont-loader)
   - [Load sondfont files](#Load-sondfont-files)
   - [The representation of the soundfont loader](#The-representation-of-the-soundfont-loader)
-  - [Change current track, soundfont id, bank number and preset number](#Change-current-track-soundfont-id-bank-number-and-preset-number)
+  - [Change current channel, soundfont id, bank number and preset number](#Change-current-channel-soundfont-id-bank-number-and-preset-number)
   - [Get the instrument names](#Get-the-instrument-names)
   - [Play notes, chords, pieces and midi files](#Play-notes-chords-pieces-and-midi-files)
   - [Export notes, chords, pieces and midi files](#Export-notes-chords-pieces-and-midi-files)
@@ -23,7 +23,7 @@ This is probably the most handy soundfont loader, player and renderer via pure p
 ## Introduction
 This sf2 loader is heavily combined with [musicpy](https://github.com/Rainbow-Dreamer/musicpy), which is one of my most popular project, focusing on music programming and music analysis and composition. If you have already learned how to use musicpy to build notes, chords and pieces, you can straightly pass them to the sf2 loader and let it play what you write. Besides of playing music with the loaded soundfonts files, I also write an audio renderer in the sf2 loader, which could render the audio from the loaded soundfont files with the input musicpy data structures and output as audio files, you can choose the output format, such as wav, mp3, ogg, and output file names, sample width, frame rate, channels and so on. In fact, this project borns with my attempt at making muscipy's sampler module being able to load soundfont files to play and export audio files.
 
-If you are not familiar with musicpy data structures and is not willing to learn it in recent times, you can also straightly using midi files as input to the sf2 loader, and export the rendered audio files using the loaded soundfont files. However, I still recommend you to learn about musicpy, even not to consider music programming and analysis, it could also be very useful for midi files editing and reconstructing. But if you want to change the instruments for some of the tracks or even with different soundfont files in the midi files, you will need to do it in the DAW or using musicpy to load midi files as a piece instance.
+If you are not familiar with musicpy data structures and is not willing to learn it in recent times, you can also straightly using midi files as input to the sf2 loader, and export the rendered audio files using the loaded soundfont files. However, I still recommend you to learn about musicpy, even not to consider music programming and analysis, it could also be very useful for midi files editing and reconstructing.
 
 This sf2 loader is compatible with both 32-bit and 64-bit python versions, for python >= 3.6, so be sure your installed python version match the requirements for this package to use.
 
@@ -180,7 +180,7 @@ You can print the sf2 loader and get the information that the sf2 loader current
 [soundfont loader]
 loaded soundfonts: ['C:\\Users\\Administrator\\Desktop\\celeste.sf2', 'C:\\Users\\Administrator\\Desktop\\celeste2.sf2']
 soundfonts id: [1, 2]
-current track: 0
+current channel: 0
 current soundfont id: 1
 current soundfont name: celeste.sf2
 current bank number: 0
@@ -190,20 +190,20 @@ current preset name: Stereo Grand
 
 
 
-### Change current track, soundfont id, bank number and preset number
+### Change current channel, soundfont id, bank number and preset number
 
-You can use the `program_select` function of the sf2 loader to change either one or some or all of the current track, soundfont id, bank number and preset number of the sf2 loader.
+You can use the `program_select` function of the sf2 loader to change either one or some or all of the current channel, soundfont id, bank number and preset number of the sf2 loader.
 
 There are also some syntactic sugar I added for this sf2 loader, which is very convenient in many cases. 
 
-For example, you can use `loader < preset` to change the current preset number of the sf2 loader to change the instrument of the soundfont files that the sf2 loader will use to play and export, while current track, soundfont id and bank number remain unchanged. This syntactic sugar also accept second parameter as the bank number, which is used as `loader < (preset, bank_num)`.
+For example, you can use `loader < preset` to change the current preset number of the sf2 loader to change the instrument of the soundfont files that the sf2 loader will use to play and export, while current channel, soundfont id and bank number remain unchanged. This syntactic sugar also accept second parameter as the bank number, which is used as `loader < (preset, bank)`.
 
-You can also use `loader % (track, bank_num, preset_num)` to change current track, bank number and preset number of the sf2 loader, while current soundfont file that is using remain unchanged.
+You can also use `loader % channel` to change current channel.
 
-There are also a change function for each attribute of current track, soundfont id, bank number and preset number. Note that if you want to change the preset by the name of the preset, you can use `change_preset` function or the syntactic sugar `loader < preset` and `loader < (preset, bank_num)`, but not to use `program_select` function because it only accepts numbers.
+There are also a change function for each attribute of current channel, soundfont id, bank number and preset number. Note that if you want to change the preset by the name of the preset, you can use `change_preset` function or the syntactic sugar `loader < preset` and `loader < (preset, bank)`, but not to use `program_select` function because it only accepts numbers.
 
 ```python
-loader.program_select(track, sfid, bank_num, preset_num)
+loader.program_select(channel, sfid, bank, preset)
 # If you only need to change one or some of the attributes,
 # you can just specify the parameters you want to change,
 # the unspecified parameters will remain unchanged.
@@ -216,14 +216,14 @@ loader.program_select(track, sfid, bank_num, preset_num)
 # instruments or not.
 
 # examples
-loader.program_select(preset_num=2) # change current preset number to 2
+loader.program_select(preset=2) # change current preset number to 2
 
-loader.program_select(bank_num=9, preset_num=3) # change current bank number to 9 and current preset number to 3
+loader.program_select(bank=9, preset=3) # change current bank number to 9 and current preset number to 3
 
 loader.change_preset(2) # change current preset number to 2
 loader.change_preset('Strings') # change current preset to Strings
 loader.change_bank(9) # change current bank number to 9
-loader.change_track(2) # change current track to 2
+loader.change_channel(2) # change current channel to 2
 loader.change_sfid(2) # change current soundfont id to 2
 loader.change_soundfont('celeste2.sf2')
 # change current soundfont file to celeste2.sf2, the parameter could be full path or
@@ -234,8 +234,7 @@ loader < 2 # change current preset number to 2
 loader < 'Strings' # change current preset to Strings
 loader < (3, 9) # change current bank number to 9, current preset number to 3
 loader < ('Strings', 9) # change current bank number to 9, current preset to Strings
-loader % (2, 9, 3) # change current track to 2, current bank number to 9, current
-# preset number to 3
+loader % 1 # change current channel to 1
 ```
 
 
@@ -245,9 +244,9 @@ loader % (2, 9, 3) # change current track to 2, current bank number to 9, curren
 If you want to get the instrument names of the soundfont files you load in the sf2 loader, you can use `get_all_instrument_names` function of the sf2 loader, which will give you a list  of instrument names that current soundfont file's current bank number has (or you can specify them), with given maximum number of preset number to try, start from 0. By default, the maximum number of the preset number to try is 128, which is from 0 to 127. If you want to get the exact preset numbers for all of the instrument names in current bank number, you can set the parameter `get_ind` to `True`.
 
 ```python
-loader.get_all_instrument_names(track=None,
+loader.get_all_instrument_names(channel=None,
                                	sfid=None,
-                               	bank_num=None,
+                               	bank=None,
                                 num=0,
                                 max_num=128,
                                 get_ind=False,
@@ -268,12 +267,12 @@ loader.get_all_instrument_names(track=None,
 If you want to get all of the instrument names of all of the available banks of the soundfont files you load in the sf2 loader, you can use `all_instruments` function of the sf2 loader, which will give you a dictionary which key is the available bank number, value is a dictionary of the presets of this bank, which key is the preset number and value is the instrument name. You can specify the maximum of bank number and preset number to try, the default value of maximum bank number to try is 129, which is from 0 to 128, the default value of maximum preset number for each bank to try is 128, which is from 0 to 127. You can also specify the soundfont id to get all of the instrument names of a specific soundfont file you loaded, in case you have loaded multiple soundfont files in the sf2 loader.
 
 ```python
-loader.all_instruments(max_bank_num=129, max_preset_num=128, sfid=None)
+loader.all_instruments(max_bank=129, max_preset=128, sfid=None)
 
-# max_bank_num: the maximum bank number to try,
+# max_bank: the maximum bank number to try,
 # the default value is 129, which is from 0 to 128
 
-# max_preset_num: the maximum preset number to try,
+# max_preset: the maximum preset number to try,
 # the default value is 128, which is from 0 to 127
 
 # sfid: you can specify the soundfont id to get the instrument names
@@ -282,13 +281,13 @@ loader.all_instruments(max_bank_num=129, max_preset_num=128, sfid=None)
 
 
 
-To get the instrument name of  a given track, soundfont id, bank number and preset number, you can use `get_instrument_name` function.
+To get the instrument name of  a given channel, soundfont id, bank number and preset number, you can use `get_instrument_name` function.
 
 ```python
-loader.get_instrument_name(track=None,
+loader.get_instrument_name(channel=None,
                            sfid=None,
-                           bank_num=None,
-                           preset_num=None,
+                           bank=None,
+                           preset=None,
                            num=0)
 ```
 
@@ -302,11 +301,21 @@ loader.get_current_instrument(num=0)
 
 
 
-To get the instrument name in current track of a given soundfont id, bank number and preset number, you can use `preset_name` function.
+To get the instrument name in current channel of a given soundfont id, bank number and preset number, you can use `preset_name` function.
 
 ```python
-loader.preset_name(sfid=None, bank_num=None, preset_num=None)
+loader.preset_name(sfid=None, bank=None, preset=None)
 ```
+
+To get current soundfont id, bank number and preset number of a given channel, you can use `channel_info` function, which returns a tuple `(sfid, bank, preset, preset_name)`.
+
+```python
+loader.channel_info(channel=None)
+
+# channel: if channel is None, then returns the channel info of current channel
+```
+
+
 
 Here is an example of getting all of the instrument names in current bank number.
 
@@ -326,14 +335,14 @@ Here is an example of getting all of the instrument names of all of the availabl
 
 ### Play notes, chords, pieces and midi files
 
-You can use `play_note` function of the sf2 loader to play a note with specified pitch using current track, soundfont id, bank number and preset number. The note could be a string representing a pitch (for example, `C5`) or a musicpy note instance. If you want to play the note by another instrument, you need to change current preset (and other program parameters if needed) before you use `play_note` function, the same goes for other play functions.
+You can use `play_note` function of the sf2 loader to play a note with specified pitch using current channel, soundfont id, bank number and preset number. The note could be a string representing a pitch (for example, `C5`) or a musicpy note instance. If you want to play the note by another instrument, you need to change current preset (and other program parameters if needed) before you use `play_note` function, the same goes for other play functions.
 
 ```python
 loader.play_note(note_name,
                  duration=2,
                  decay=1,
                  volume=100,
-                 track=0,
+                 channel=0,
                  start_time=0,
                  sample_width=2,
                  channels=2,
@@ -353,7 +362,7 @@ loader.play_note(note_name,
 
 # volume: the volume of the note in midi velocity from 0 - 127
 
-# track: the track to play the note
+# channel: the channel to play the note
 
 # start_time: the start time of the note in seconds
 
@@ -399,12 +408,12 @@ loader.play_note('C5', duration=3) # play a note C5 for 3 seconds
 
 
 
-You can use `play_chord` function of the sf2 loader to play a chord using current track, soundfont id, bank number and preset number. The chord must be a musicpy chord instance.
+You can use `play_chord` function of the sf2 loader to play a chord using current channel, soundfont id, bank number and preset number. The chord must be a musicpy chord instance.
 
 ```python
 loader.play_chord(current_chord,
                   decay=0.5,
-                  track=0,
+                  channel=0,
                   start_time=0,
                   piece_start_time=0,
                   sample_width=2,
@@ -413,7 +422,7 @@ loader.play_chord(current_chord,
                   name=None,
                   format='wav',
                   bpm=80,
-                  fixed_decay=False,
+                  fixed_decay=True,
                   effects=None,
                   pan=None,
                   volume=None,
@@ -428,7 +437,7 @@ loader.play_chord(current_chord,
 # will be applied to every note, this decay time could also be a list of each note's
 # decay time
 
-# track - bpm: same as play_note
+# channel - bpm: same as play_note
 
 # piece_start_time: this is used when dealing with a musicpy piece instance, you won't need to set this generally
 
@@ -458,18 +467,17 @@ loader.play_chord(sf.mp.C('Cmaj7', 5)) # play a Cmaj7 chord starts at C5
 
 
 
-You can use `play_piece` function of the sf2 loader to play a piece using current track and soundfont id. The piece must be a musicpy piece instance. Here piece means a piece of music with multiple individual tracks with different instruments on each of them (it is also ok if you want some or all of the tracks has the same instruments). You can custom which instrument you want the soundfont to play for each track by setting the `instruments_numbers` attribute of the piece instance, instrument of a track of the piece instance could be preset_num or [preset_num, bank_num, (track), (sfid)].
+You can use `play_piece` function of the sf2 loader to play a piece using current channel and soundfont id. The piece must be a musicpy piece instance. Here piece means a piece of music with multiple individual tracks with different instruments on each of them (it is also ok if you want some or all of the tracks has the same instruments). You can custom which instrument you want the soundfont to play for each track by setting the `instruments_numbers` attribute of the piece instance, instrument of a track of the piece instance could be preset or [preset, bank, (channel), (sfid)].
 
 ```python
 loader.play_piece(current_chord,
                   decay=0.5,
-                  track=0,
                   sample_width=2,
                   channels=2,
                   frame_rate=44100,
                   name=None,
                   format='wav',
-                  fixed_decay=False,
+                  fixed_decay=True,
                   effects=None,
                   clear_program_change=False,
                   length=None,
@@ -486,7 +494,7 @@ loader.play_piece(current_chord,
 # otherwise it will be applied to each track. If you want to pass the same list
 # to each track, you need to pass a list of lists which elements are identical.
 
-# track - effects: same as play_chord
+# sample_width - effects: same as play_chord
 
 # clear_program_change: when there are program change messages in the piece instance,
 # the instruments are forced to change during rendering, so you cannot use the
@@ -517,18 +525,17 @@ loader.play_piece(current_midi_file)
 
 
 
-You can use `play_midi_file` function of the sf2 loader to play a midi file using current track and soundfont id. You can set the first parameter to the midi file path, and then the sf2 loader will read the midi file and analyze it into a musicpy piece instance, and then render it to audio data.
+You can use `play_midi_file` function of the sf2 loader to play a midi file using current channel and soundfont id. You can set the first parameter to the midi file path, and then the sf2 loader will read the midi file and analyze it into a musicpy piece instance, and then render it to audio data.
 
 ```python
 loader.play_midi_file(current_chord,
                       decay=0.5,
-                      track=0,
                       sample_width=2,
                       channels=2,
                       frame_rate=44100,
                       name=None,
                       format='wav',
-                      fixed_decay=False,
+                      fixed_decay=True,
                       effects=None,
                       clear_program_change=False,
                       instruments=None,
@@ -565,13 +572,13 @@ loader.change_soundfont('celeste2.sf2') # change to another loaded soundfont fil
 # play a midi file given a file path using another soundfont file
 loader.play_midi_file(r'C:\Users\Administrator\Desktop\test.mid')
 
-# you can also specify which track use which soundfont files in the instruments
+# you can also specify which channel use which soundfont files in the instruments
 # parameter by specifying the soundfont id
 ```
 
 
 
-You can specify which bank and preset (including track and sfid) that each track of the midi file uses by setting the `instruments` parameter of the `play_midi_file` function.
+You can specify which bank and preset (including channel and sfid) that each track of the midi file uses by setting the `instruments` parameter of the `play_midi_file` function.
 
 
 
@@ -608,10 +615,10 @@ The format of the export audio files is wav by default, you can set the export a
 The exported audio file name of each note will be in the format `pitch.format` by default, where pitch is the note name such as `C5`, format is the audio file format you specify such as `wav`, so for example, the exported audio file names of notes will be like `C5.wav`, `C#5.wav`, `D5.wav`. You can custom the name format of each note with the parameter `name` in the function, it could either be a list of each note's name (without file extension) or a function to format each note's name (without file extension).
 
 ```python
-loader.export_sound_modules(track=None,
+loader.export_sound_modules(channel=None,
                             sfid=None,
-                            bank_num=None,
-                            preset_num=None,
+                            bank=None,
+                            preset=None,
                             start='A0',
                             stop='C8',
                             duration=6,
@@ -628,7 +635,7 @@ loader.export_sound_modules(track=None,
                             show_full_path=False,
                             export_args={})
 
-# track, sfid, bank_num, preset_num: use which instrument to play, you can refer to
+# channel, sfid, bank, preset: use which instrument to play, you can refer to
 # program_select function
 
 # start, stop: the pitch range, note that these must be strings representing pitches
