@@ -79,18 +79,34 @@ def percentage_to_db(vol):
 def apply_fadeout(current_chord, decay, fixed_decay, new=True):
     if type(current_chord) == mp.piece:
         temp = copy(current_chord)
-        for each in temp.tracks:
-            apply_fadeout(each, decay, fixed_decay, False)
+        if type(decay) == list:
+            for i in range(len(temp.tracks)):
+                apply_fadeout(each, decay[i], fixed_decay, False)
+        else:
+            for each in temp.tracks:
+                apply_fadeout(each, decay, fixed_decay, False)
         return temp
     temp = copy(current_chord) if new else current_chord
     if fixed_decay:
-        for each in temp.notes:
-            if type(each) == mp.note:
-                each.duration += decay
+        if type(decay) == list:
+            for i in range(len(temp.notes)):
+                each = temp.notes[i]
+                if type(each) == mp.note:
+                    each.duration += decay[i]
+        else:
+            for each in temp.notes:
+                if type(each) == mp.note:
+                    each.duration += decay
     else:
-        for each in temp.notes:
-            if type(each) == mp.note:
-                each.duration += each.duration * decay
+        if type(decay) == list:
+            for i in range(len(temp.notes)):
+                each = temp.notes[i]
+                if type(each) == mp.note:
+                    each.duration += each.duration * decay[i]
+        else:
+            for each in temp.notes:
+                if type(each) == mp.note:
+                    each.duration += each.duration * decay
     return temp
 
 
@@ -591,6 +607,11 @@ current preset name: {self.get_current_instrument()}'''
                      length=None,
                      extra_length=None,
                      export_args={}):
+        if fixed_decay:
+            if type(decay) != list:
+                decay = real_time_to_bar(decay * 1000, bpm)
+            else:
+                decay = [real_time_to_bar(i * 1000, bpm) for i in decay]
         whole_length = bar_to_real_time(current_chord.bars(), bpm, 1) / 1000
         whole_length_with_decay = bar_to_real_time(
             apply_fadeout(current_chord, decay, fixed_decay).bars(), bpm,
@@ -740,10 +761,7 @@ current preset name: {self.get_current_instrument()}'''
                      track_extra_lengths=None,
                      export_args={},
                      show_msg=False):
-        decay_is_list = False
-        decay_type = type(decay)
-        if decay_type == list or decay_type == tuple:
-            decay_is_list = True
+        decay_is_list = (type(decay) == list)
         current_chord = copy(current_chord)
         current_chord.normalize_tempo()
         current_chord.apply_start_time_to_changes(

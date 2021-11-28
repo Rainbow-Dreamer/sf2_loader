@@ -488,8 +488,8 @@ loader.play_piece(current_chord,
 
 # current_chord: musicpy piece instance
 
-# decay: the decay time for the tracks of the piece instancewhich is musicpy chord
-# instance), note that if this decay time is a list or a tuple,
+# decay: the decay time for the tracks of the piece instance (which is musicpy chord
+# instance), note that if this decay time is a list,
 # then it will be treated as the decay time for each track separately,
 # otherwise it will be applied to each track. If you want to pass the same list
 # to each track, you need to pass a list of lists which elements are identical.
@@ -505,9 +505,9 @@ loader.play_piece(current_chord,
 
 # extra_length: you can specify the extra length of the rendered audio in seconds (used in case of audio effects)
 
-# track_lengths: the length settings of each track, could be a list or a tuple
+# track_lengths: the length settings list of each track
 
-# track_extra_lengths: the extra length settings of each track, could be a list or a tuple
+# track_extra_lengths: the extra length settings list of each track
 
 # export_args: same as play_note
 
