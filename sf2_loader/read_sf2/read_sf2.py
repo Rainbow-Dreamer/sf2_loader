@@ -863,6 +863,7 @@ current preset name: {self.get_current_instrument()}'''
                          track_lengths=None,
                          track_extra_lengths=None,
                          export_args={},
+                         show_msg=False,
                          **read_args):
         current_chord = mp.read(current_chord,
                                 mode='all',
@@ -874,7 +875,7 @@ current preset name: {self.get_current_instrument()}'''
                                    channels, frame_rate, name, format, True,
                                    fixed_decay, effects, clear_program_change,
                                    length, extra_length, track_lengths,
-                                   track_extra_lengths)
+                                   track_extra_lengths, export_args, show_msg)
 
         if name is None:
             name = f'Untitled.{format}'
@@ -972,12 +973,13 @@ current preset name: {self.get_current_instrument()}'''
                        track_lengths=None,
                        track_extra_lengths=None,
                        export_args={},
+                       show_msg=False,
                        **read_args):
         current_audio = self.export_midi_file(
             current_chord, decay, sample_width, channels, frame_rate, name,
             format, True, fixed_decay, effects, clear_program_change,
             instruments, length, extra_length, track_lengths,
-            track_extra_lengths, export_args, **read_args)
+            track_extra_lengths, export_args, show_msg, **read_args)
         play_sound(current_audio)
 
     def export_sound_modules(self,

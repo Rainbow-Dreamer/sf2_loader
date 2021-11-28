@@ -484,7 +484,8 @@ loader.play_piece(current_chord,
                   extra_length=None,
                   track_lengths=None,
                   track_extra_lengths=None,
-                  export_args={})
+                  export_args={},
+                  show_msg=False)
 
 # current_chord: musicpy piece instance
 
@@ -510,6 +511,8 @@ loader.play_piece(current_chord,
 # track_extra_lengths: the extra length settings list of each track
 
 # export_args: same as play_note
+
+# show_msg: if it is set to True, then when the sf2 loader is rendering a piece instance to audio, it will print some messages showing current process, such as `rendering track 1/16 ...` (rendering the first track of the total 16 tracks), the default value is False
 
 
 # examples
@@ -544,6 +547,7 @@ loader.play_midi_file(current_chord,
                       track_lengths=None,
                       track_extra_lengths=None,
                       export_args={},
+                      show_msg=False,
                       **read_args)
 
 # current_chord: the midi file path
@@ -555,9 +559,7 @@ loader.play_midi_file(current_chord,
 # note that this instruments list must be the same length as the number of tracks
 # of the midi file
 
-# length - track_extra_lengths: same as play_piece
-
-# export_args: same as play_note
+# length - show_msg: same as play_piece
 
 # **read_args: this is the keyword arguments for the musicpy read function
 
@@ -587,8 +589,6 @@ You can specify which bank and preset (including channel and sfid) that each tra
 You can export notes, chords, pieces and midi files using loaded soundfont files in the sf2 loader using `export_note`, `export_chord`, `export_piece`, `export_midi_file` function of the sf2 loader.
 
 All of the parameters of these export functions can refer to their corresponding play functions, except a parameter `get_audio`, if this parameter is set to True, then the export functions will return an AudioSegment instance (this is an audio instance in pydub) which contains raw audio data for further audio process. If this parameter is set to False (which is default), then the export functions will export the rendered audio data to an audio file with the file name and the audio file format you specify.
-
-The `export_piece` function has an extra parameter `show_msg` with a default value `False`, if it is set to `True`, then when the sf2 loader is rendering a piece instance to audio, it will print some messages showing current process, such as `rendering track 1/16 ...` (rendering the first track of the total 16 tracks).
 
 ```python
 # examples
