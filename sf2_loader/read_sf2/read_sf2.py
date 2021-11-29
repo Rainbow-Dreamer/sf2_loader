@@ -244,6 +244,10 @@ class general_event:
 
 class sf2_loader:
     def __init__(self, file=None):
+        try:
+            capture = py.io.StdCaptureFD(out=True, in_=False)
+        except:
+            pass
         self.file = []
         self.synth = fluidsynth.Synth()
         self.sfid_list = []
@@ -255,11 +259,19 @@ class sf2_loader:
         self.instruments = []
         self.instruments_ind = []
         if file:
+
             self.file.append(file)
             self.sfid = self.synth.sfload(file)
+            if self.sfid == -1:
+                raise ValueError('Invalid SoundFont file')
             self.synth.system_reset()
             self.sfid_list.append(copy(self.sfid))
             self.program_select()
+            self.change_channel(0)
+        try:
+            capture.reset()
+        except:
+            pass
 
     @property
     def current_channel(self):
@@ -271,8 +283,14 @@ class sf2_loader:
         try:
             current_channel_info = self.synth.channel_info(value)
         except:
-            self.program_select(value, self.sfid_list[0], 0, 0)
-            current_channel_info = self.synth.channel_info(value)
+            current_channel_info = 1, 0, 0, ''
+            for i in range(128):
+                try:
+                    self.program_select(value, self.sfid_list[0], 0, i)
+                    current_channel_info = self.synth.channel_info(value)
+                    break
+                except:
+                    pass
         self.current_sfid, self.current_bank, self.current_preset, preset_name = current_channel_info
 
     def __repr__(self):
@@ -476,9 +494,8 @@ current preset name: {self.get_current_instrument()}'''
         return instruments
 
     def change_preset(self, preset, channel=None):
-        if channel is not None:
-            current_channel = copy(self.current_channel)
-            self.change_channel(channel)
+        if channel is None:
+            channel = self.current_channel
         if type(preset) == str:
             if not self.instruments:
                 self.instruments, self.instruments_ind = self.get_all_instrument_names(
@@ -486,30 +503,26 @@ current preset name: {self.get_current_instrument()}'''
             if preset in self.instruments:
                 current_ind = self.instruments_ind[self.instruments.index(
                     preset)]
-                self.program_select(preset=current_ind)
+                self.synth.program_select(channel, self.current_sfid,
+                                          self.current_bank, current_ind)
         else:
-            self.program_select(preset=preset)
-        if channel is not None:
-            self.change_channel(current_channel)
+            self.synth.program_select(channel, self.current_sfid,
+                                      self.current_bank, preset)
 
     def change_bank(self, bank, channel=None):
-        if channel is not None:
-            current_channel = copy(self.current_channel)
-            self.change_channel(channel)
-        self.program_select(bank=bank, correct=False)
-        if channel is not None:
-            self.change_channel(current_channel)
+        if channel is None:
+            channel = self.current_channel
+        self.synth.bank_select(channel, bank)
+        self.current_bank = bank
 
     def change_channel(self, channel):
         self.current_channel = channel
 
     def change_sfid(self, sfid, channel=None):
-        if channel is not None:
-            current_channel = copy(self.current_channel)
-            self.change_channel(channel)
-        self.program_select(sfid=sfid, correct=False)
-        if channel is not None:
-            self.change_channel(current_channel)
+        if channel is None:
+            channel = self.current_channel
+        self.synth.sfont_select(channel, sfid)
+        self.current_sfid = sfid
 
     def change_soundfont(self, name, channel=None):
         if name in self.file:
@@ -1055,24 +1068,48 @@ current preset name: {self.get_current_instrument()}'''
                             current_preset)
 
     def reload(self, file):
+        try:
+            capture = py.io.StdCaptureFD(out=True, in_=False)
+        except:
+            pass
         self.file = [file]
         self.synth = fluidsynth.Synth()
         self.sfid = self.synth.sfload(file)
+        if self.sfid == -1:
+            raise ValueError('Invalid SoundFont file')
         self.synth.system_reset()
         self.sfid_list = [copy(self.sfid)]
-        self.current_channel = 0
+        self._current_channel = 0
         self.current_sfid = copy(self.sfid)
         self.current_bank = 0
         self.current_preset = 0
+        self.instruments = []
+        self.instruments_ind = []
         self.program_select()
+        self.change_channel(0)
+        try:
+            capture.reset()
+        except:
+            pass
 
     def load(self, file):
-        self.file.append(file)
+        try:
+            capture = py.io.StdCaptureFD(out=True, in_=False)
+        except:
+            pass
         current_sfid = self.synth.sfload(file)
+        if current_sfid == -1:
+            raise ValueError('Invalid SoundFont file')
+        try:
+            capture.reset()
+        except:
+            pass
         self.synth.system_reset()
+        self.file.append(file)
         self.sfid_list.append(current_sfid)
         if len(self.file) == 1:
             self.program_select()
+            self.change_channel(0)
 
     def unload(self, ind):
         if ind > 0:
