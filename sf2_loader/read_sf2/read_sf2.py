@@ -27,7 +27,10 @@ def play_sound(audio, mode=0):
             buffer=current_audio.raw_data)
         current_sound_object.play()
     elif mode == 1:
-        capture = py.io.StdCaptureFD(out=True, in_=False)
+        try:
+            capture = py.io.StdCaptureFD(out=True, in_=False)
+        except:
+            pass
         try:
             current_file = BytesIO()
             current_audio.export(current_file, format='wav')
@@ -40,7 +43,10 @@ def play_sound(audio, mode=0):
             os.remove('temp.wav')
             os.chdir(current_path)
         current_sound_object.play()
-        capture.reset()
+        try:
+            capture.reset()
+        except:
+            pass
 
 
 def stop():
@@ -238,7 +244,10 @@ class general_event:
 
 class sf2_loader:
     def __init__(self, file=None):
-        capture = py.io.StdCaptureFD(out=True, in_=False)
+        try:
+            capture = py.io.StdCaptureFD(out=True, in_=False)
+        except:
+            pass
         self.file = []
         self.synth = fluidsynth.Synth()
         self.sfid_list = []
@@ -257,7 +266,10 @@ class sf2_loader:
             self.synth.system_reset()
             self.sfid_list.append(copy(self.sfid))
             self.change_channel(0)
-        capture.reset()
+        try:
+            capture.reset()
+        except:
+            pass
 
     @property
     def current_channel(self):
@@ -273,7 +285,10 @@ class sf2_loader:
         self.current_sfid, self.current_bank, self.current_preset, preset_name = current_channel_info
 
     def find_channel_info(self, value):
-        capture = py.io.StdCaptureFD(out=True, in_=False)
+        try:
+            capture = py.io.StdCaptureFD(out=True, in_=False)
+        except:
+            pass
         current_sfid = self.sfid_list[0]
         current_channel_info = current_sfid, 0, 0, ''
         for i in range(128):
@@ -282,7 +297,10 @@ class sf2_loader:
             if select_status != -1:
                 current_channel_info = self.synth.channel_info(value)
                 break
-        capture.reset()
+        try:
+            capture.reset()
+        except:
+            pass
         return current_channel_info
 
     def __repr__(self):
@@ -305,7 +323,10 @@ current preset name: {self.get_current_instrument()}'''
                hide_warnings=True,
                mode=0):
         if hide_warnings:
-            capture = py.io.StdCaptureFD(out=True, in_=False)
+            try:
+                capture = py.io.StdCaptureFD(out=True, in_=False)
+            except:
+                pass
         select_status = 0
         if channel is not None:
             if mode == 0:
@@ -348,7 +369,10 @@ current preset name: {self.get_current_instrument()}'''
                 if channel == self.current_channel:
                     self.current_preset = preset
         if hide_warnings:
-            capture.reset()
+            try:
+                capture.reset()
+            except:
+                pass
         return select_status
 
     def __lt__(self, preset):
@@ -417,7 +441,10 @@ current preset name: {self.get_current_instrument()}'''
                                  return_mode=0,
                                  hide_warnings=True):
         if hide_warnings:
-            capture = py.io.StdCaptureFD(out=True, in_=False)
+            try:
+                capture = py.io.StdCaptureFD(out=True, in_=False)
+            except:
+                pass
         current_channel = self.current_channel
         current_sfid = copy(self.current_sfid)
         current_bank = copy(self.current_bank)
@@ -444,7 +471,10 @@ current preset name: {self.get_current_instrument()}'''
                     ind[0] if mode == 1 else current_preset,
                     hide_warnings=False)
         if hide_warnings:
-            capture.reset()
+            try:
+                capture.reset()
+            except:
+                pass
         if get_ind and return_mode == 1:
             return result, ind
         else:
@@ -456,7 +486,10 @@ current preset name: {self.get_current_instrument()}'''
                         sfid=None,
                         hide_warnings=True):
         if hide_warnings:
-            capture = py.io.StdCaptureFD(out=True, in_=False)
+            try:
+                capture = py.io.StdCaptureFD(out=True, in_=False)
+            except:
+                pass
         current_sfid = copy(self.current_sfid)
         if sfid is not None:
             self.change_sfid(sfid)
@@ -476,7 +509,10 @@ current preset name: {self.get_current_instrument()}'''
         if sfid is not None:
             self.change_sfid(current_sfid)
         if hide_warnings:
-            capture.reset()
+            try:
+                capture.reset()
+            except:
+                pass
         return instruments
 
     def change_preset(self, preset, channel=None):
@@ -1055,7 +1091,10 @@ current preset name: {self.get_current_instrument()}'''
                     current_preset)
 
     def reload(self, file):
-        capture = py.io.StdCaptureFD(out=True, in_=False)
+        try:
+            capture = py.io.StdCaptureFD(out=True, in_=False)
+        except:
+            pass
         self.file = [file]
         self.synth = fluidsynth.Synth()
         self.sfid = self.synth.sfload(file)
@@ -1070,14 +1109,23 @@ current preset name: {self.get_current_instrument()}'''
         self.instruments = []
         self.instruments_ind = []
         self.change_channel(0)
-        capture.reset()
+        try:
+            capture.reset()
+        except:
+            pass
 
     def load(self, file):
-        capture = py.io.StdCaptureFD(out=True, in_=False)
+        try:
+            capture = py.io.StdCaptureFD(out=True, in_=False)
+        except:
+            pass
         current_sfid = self.synth.sfload(file)
         if current_sfid == -1:
             raise ValueError('Invalid SoundFont file')
-        capture.reset()
+        try:
+            capture.reset()
+        except:
+            pass
         self.file.append(file)
         self.sfid_list.append(current_sfid)
         if len(self.file) == 1:
