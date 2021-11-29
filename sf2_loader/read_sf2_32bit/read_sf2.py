@@ -638,6 +638,12 @@ current preset name: {self.get_current_instrument()}'''
                                             bpm,
                                             pan=pan,
                                             volume=volume)
+        current_timestamps.insert(
+            0,
+            general_event(
+                'message', 0,
+                mp.program_change(channel=channel,
+                                  program=copy(self.current_preset))))
         current_timestamps_length = len(current_timestamps)
         if length:
             current_whole_length = length * 1000
