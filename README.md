@@ -175,6 +175,8 @@ loader.unload(2) # unload the second loaded soundfont files of the sf2 loader
 
 You can print the sf2 loader and get the information that the sf2 loader currently has.
 
+The channel number, bank number and preset number are 0-based, the soundfont id is 1-based.
+
 ```python
 >>> loader
 [soundfont loader]
@@ -192,7 +194,7 @@ current preset name: Stereo Grand
 
 ### Change current channel, soundfont id, bank number and preset number
 
-You can use the `program_select` function of the sf2 loader to change either one or some or all of the current channel, soundfont id, bank number and preset number of the sf2 loader.
+You can use the `change` function of the sf2 loader to change either one or some or all of the current channel, soundfont id, bank number and preset number of the sf2 loader.
 
 There are also some syntactic sugar I added for this sf2 loader, which is very convenient in many cases. 
 
@@ -200,36 +202,52 @@ For example, you can use `loader < preset` to change the current preset number o
 
 You can also use `loader % channel` to change current channel.
 
-There are also a change function for each attribute of current channel, soundfont id, bank number and preset number. Note that if you want to change the preset by the name of the preset, you can use `change_preset` function or the syntactic sugar `loader < preset` and `loader < (preset, bank)`, but not to use `program_select` function because it only accepts numbers.
+There are also a change function for each attribute of current channel, soundfont id, bank number and preset number, namely `change_channel`, `change_sfid`, `change_bank`, `change_preset`.
+
+Each change function except `change_channel` has an optional argument `channel` to specify change which channel's attribute, if not specified, then change current channel's attribute by default.
+
+Note that if you want to change the preset by the name of the preset, you can use `change_preset` function or the syntactic sugar `loader < preset` and `loader < (preset, bank)`, but not to use `change` function because it only accepts numbers.
+
+
 
 ```python
-loader.program_select(channel, sfid, bank, preset)
+loader.change(channel=None,
+              sfid=None,
+              bank=None,
+              preset=None,
+              correct=True,
+              hide_warnings=True,
+              mode=0)
 # If you only need to change one or some of the attributes,
 # you can just specify the parameters you want to change,
 # the unspecified parameters will remain unchanged.
 
-# There is also a parameter called correct, if you set it to True,
+# correct: if you set it to True,
 # when the given parameters cannot find any valid instruments,
-# the sf2 loader will go back to the program before the change.
-# If you set it to False, the program will be forced to change to the
+# the sf2 loader will go back to the program before the change,
+# if you set it to False, the program will be forced to change to the
 # given parameters regardless of whether the sf2 loader can find any valid
-# instruments or not.
+# instruments or not
+
+# hide_warnings: prevent warning messages from external C/C++ libraries printed to the terminal or not
+
+# mode: if set to 0, then when channel is specified, the current channel of the sf2 loader will be changed
+# to that channel, and then change other specified attributes, otherwise, change other attributes within the specified channel, but current channel of the sf2 loader remain unchanged
+
 
 # examples
-loader.program_select(preset=2) # change current preset number to 2
-
-loader.program_select(bank=9, preset=3) # change current bank number to 9 and current preset number to 3
-
+loader.change(preset=2) # change current preset number to 2
+loader.change(bank=9, preset=3) # change current bank number to 9 and current preset number to 3
 loader.change_preset(2) # change current preset number to 2
 loader.change_preset('Strings') # change current preset to Strings
 loader.change_bank(9) # change current bank number to 9
+loader.change_bank(9, channel=1) # change current bank number of channel 1 to 9
 loader.change_channel(2) # change current channel to 2
 loader.change_sfid(2) # change current soundfont id to 2
 loader.change_soundfont('celeste2.sf2')
 # change current soundfont file to celeste2.sf2, the parameter could be full path or
 # just the file name of the soundfont file, but it must be loaded in
 # the sf2 loader already
-
 loader < 2 # change current preset number to 2
 loader < 'Strings' # change current preset to Strings
 loader < (3, 9) # change current bank number to 9, current preset number to 3
@@ -241,17 +259,16 @@ loader % 1 # change current channel to 1
 
 ### Get the instrument names
 
-If you want to get the instrument names of the soundfont files you load in the sf2 loader, you can use `get_all_instrument_names` function of the sf2 loader, which will give you a list  of instrument names that current soundfont file's current bank number has (or you can specify them), with given maximum number of preset number to try, start from 0. By default, the maximum number of the preset number to try is 128, which is from 0 to 127. If you want to get the exact preset numbers for all of the instrument names in current bank number, you can set the parameter `get_ind` to `True`.
+If you want to get the instrument names of the soundfont files you load in the sf2 loader, you can use `get_all_instrument_names` function of the sf2 loader, which will give you a list of instrument names that current soundfont file's current bank number has (or you can specify them), with given maximum number of preset number to try, start from 0. By default, the maximum number of the preset number to try is 128, which is from 0 to 127. If you want to get the exact preset numbers for all of the instrument names in current bank number, you can set the parameter `get_ind` to `True`.
 
 ```python
-loader.get_all_instrument_names(channel=None,
-                               	sfid=None,
+loader.get_all_instrument_names(sfid=None,
                                	bank=None,
-                                num=0,
                                 max_num=128,
                                 get_ind=False,
                                 mode=0,
-                                return_mode=0)
+                                return_mode=0,
+                                hide_warnings=True)
 
 # mode: if mode is 1, the current preset number will be set to the first available
 # instrument in the current bank number
@@ -267,7 +284,7 @@ loader.get_all_instrument_names(channel=None,
 If you want to get all of the instrument names of all of the available banks of the soundfont files you load in the sf2 loader, you can use `all_instruments` function of the sf2 loader, which will give you a dictionary which key is the available bank number, value is a dictionary of the presets of this bank, which key is the preset number and value is the instrument name. You can specify the maximum of bank number and preset number to try, the default value of maximum bank number to try is 129, which is from 0 to 128, the default value of maximum preset number for each bank to try is 128, which is from 0 to 127. You can also specify the soundfont id to get all of the instrument names of a specific soundfont file you loaded, in case you have loaded multiple soundfont files in the sf2 loader.
 
 ```python
-loader.all_instruments(max_bank=129, max_preset=128, sfid=None)
+loader.all_instruments(max_bank=129, max_preset=128, sfid=None, hide_warnings=True)
 
 # max_bank: the maximum bank number to try,
 # the default value is 129, which is from 0 to 128
@@ -281,14 +298,13 @@ loader.all_instruments(max_bank=129, max_preset=128, sfid=None)
 
 
 
-To get the instrument name of  a given channel, soundfont id, bank number and preset number, you can use `get_instrument_name` function.
+To get the instrument name of  a given soundfont id, bank number and preset number, you can use `get_instrument_name` function.
 
 ```python
-loader.get_instrument_name(channel=None,
-                           sfid=None,
+loader.get_instrument_name(sfid=None,
                            bank=None,
                            preset=None,
-                           num=0)
+                           hide_warnings=True)
 ```
 
 
@@ -296,12 +312,12 @@ loader.get_instrument_name(channel=None,
 To get current instrument name, you can use `get_current_instrument` function.
 
 ```python
-loader.get_current_instrument(num=0)
+loader.get_current_instrument()
 ```
 
 
 
-To get the instrument name in current channel of a given soundfont id, bank number and preset number, you can use `preset_name` function.
+To get the instrument name of a given soundfont id, bank number and preset number, you can use `preset_name` function.
 
 ```python
 loader.preset_name(sfid=None, bank=None, preset=None)
@@ -636,7 +652,7 @@ loader.export_sound_modules(channel=None,
                             export_args={})
 
 # channel, sfid, bank, preset: use which instrument to play, you can refer to
-# program_select function
+# change function
 
 # start, stop: the pitch range, note that these must be strings representing pitches
 
