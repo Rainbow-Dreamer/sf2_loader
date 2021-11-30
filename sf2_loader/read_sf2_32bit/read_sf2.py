@@ -265,7 +265,11 @@ class sf2_loader:
         if file:
             self.file.append(file)
             capture = get_capture()
-            self.sfid = self.synth.sfload(file)
+            try:
+                self.sfid = self.synth.sfload(file)
+            except:
+                reset_capture(capture)
+                raise ValueError('Invalid SoundFont file')
             if self.sfid == -1:
                 reset_capture(capture)
                 raise ValueError('Invalid SoundFont file')
@@ -391,20 +395,23 @@ current preset name: {self.get_current_instrument()}'''
             result = ''
         return result
 
-    def preset_name(self, sfid=None, bank=None, preset=None):
-        if sfid is None:
-            sfid = self.current_sfid
-        if bank is None:
-            bank = self.current_bank
-        if preset is None:
-            preset = self.current_preset
-        return self.synth.sfpreset_name(sfid, bank, preset)
-
     def get_instrument_name(self,
                             sfid=None,
                             bank=None,
                             preset=None,
                             hide_warnings=True):
+        if fluidsynth.fluid_sfont_get_preset:
+            if sfid is None:
+                sfid = self.current_sfid
+            if bank is None:
+                bank = self.current_bank
+            if preset is None:
+                preset = self.current_preset
+            try:
+                result = self.synth.sfpreset_name(sfid, bank, preset)
+            except:
+                result = None
+            return result
         channel = self.current_channel
         current_sfid = copy(self.current_sfid)
         current_bank = copy(self.current_bank)
@@ -433,18 +440,26 @@ current preset name: {self.get_current_instrument()}'''
                                  hide_warnings=True):
         if hide_warnings:
             capture = get_capture()
-        current_channel = self.current_channel
-        current_sfid = copy(self.current_sfid)
-        current_bank = copy(self.current_bank)
-        current_preset = copy(self.current_preset)
-        self.change(current_channel, sfid, bank, hide_warnings=False)
+        if fluidsynth.fluid_sfont_get_preset:
+            preset_mode = 0
+        else:
+            preset_mode = 1
+            current_channel = self.current_channel
+            current_sfid = copy(self.current_sfid)
+            current_bank = copy(self.current_bank)
+            current_preset = copy(self.current_preset)
+            self.change(current_channel, sfid, bank, hide_warnings=False)
         result = []
         if get_ind:
             ind = []
         for i in range(max_num):
             try:
-                current_name = self.get_instrument_name(preset=i,
-                                                        hide_warnings=False)
+                if preset_mode == 0:
+                    current_name = self.get_instrument_name(
+                        sfid=sfid, bank=bank, preset=i, hide_warnings=False)
+                else:
+                    current_name = self.get_instrument_name(
+                        preset=i, hide_warnings=False)
                 if current_name:
                     result.append(current_name)
                     if get_ind:
@@ -453,11 +468,12 @@ current preset name: {self.get_current_instrument()}'''
                 pass
         if get_ind and return_mode == 0:
             result = {ind[i]: result[i] for i in range(len(result))}
-        self.change(current_channel,
-                    current_sfid,
-                    current_bank,
-                    ind[0] if mode == 1 else current_preset,
-                    hide_warnings=False)
+        if preset_mode == 1:
+            self.change(current_channel,
+                        current_sfid,
+                        current_bank,
+                        ind[0] if mode == 1 else current_preset,
+                        hide_warnings=False)
         if hide_warnings:
             reset_capture(capture)
         if get_ind and return_mode == 1:
@@ -472,24 +488,33 @@ current preset name: {self.get_current_instrument()}'''
                         hide_warnings=True):
         if hide_warnings:
             capture = get_capture()
-        current_sfid = copy(self.current_sfid)
-        if sfid is not None:
-            self.change_sfid(sfid)
+        if fluidsynth.fluid_sfont_get_preset:
+            preset_mode = 0
+        else:
+            preset_mode = 1
+            current_sfid = copy(self.current_sfid)
+            if sfid is not None:
+                self.change_sfid(sfid)
         instruments = {}
         for i in range(max_bank):
             current_bank = {}
             for j in range(max_preset):
                 try:
-                    current_name = self.get_instrument_name(
-                        bank=i, preset=j, hide_warnings=False)
+                    if preset_mode == 0:
+                        current_name = self.get_instrument_name(
+                            sfid=sfid, bank=i, preset=j, hide_warnings=False)
+                    else:
+                        current_name = self.get_instrument_name(
+                            bank=i, preset=j, hide_warnings=False)
                     if current_name:
                         current_bank[j] = current_name
                 except:
                     pass
             if current_bank:
                 instruments[i] = current_bank
-        if sfid is not None:
-            self.change_sfid(current_sfid)
+        if preset_mode == 1:
+            if sfid is not None:
+                self.change_sfid(current_sfid)
         if hide_warnings:
             reset_capture(capture)
         return instruments
@@ -1073,7 +1098,11 @@ current preset name: {self.get_current_instrument()}'''
         capture = get_capture()
         self.file = [file]
         self.synth = fluidsynth.Synth()
-        self.sfid = self.synth.sfload(file)
+        try:
+            self.sfid = self.synth.sfload(file)
+        except:
+            reset_capture(capture)
+            raise ValueError('Invalid SoundFont file')
         if self.sfid == -1:
             reset_capture(capture)
             raise ValueError('Invalid SoundFont file')
@@ -1090,7 +1119,11 @@ current preset name: {self.get_current_instrument()}'''
 
     def load(self, file):
         capture = get_capture()
-        current_sfid = self.synth.sfload(file)
+        try:
+            current_sfid = self.synth.sfload(file)
+        except:
+            reset_capture(capture)
+            raise ValueError('Invalid SoundFont file')
         if current_sfid == -1:
             reset_capture(capture)
             raise ValueError('Invalid SoundFont file')
