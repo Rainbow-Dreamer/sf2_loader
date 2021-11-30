@@ -465,18 +465,22 @@ current preset name: {self.get_current_instrument()}'''
                         ind.append(i)
             except:
                 pass
-        if get_ind and return_mode == 0:
-            result = {ind[i]: result[i] for i in range(len(result))}
         if preset_mode == 1:
             self.change(current_channel,
                         current_sfid,
                         current_bank,
-                        ind[0] if mode == 1 else current_preset,
+                        ind[0] if get_ind and mode == 1 else current_preset,
                         hide_warnings=False)
+        else:
+            if get_ind and mode == 1:
+                self.change(preset=ind[0], hide_warnings=False)
         if hide_warnings:
             reset_capture(capture)
-        if get_ind and return_mode == 1:
-            return result, ind
+        if get_ind:
+            if return_mode == 0:
+                return {ind[i]: result[i] for i in range(len(result))}
+            elif return_mode == 1:
+                return result, ind
         else:
             return result
 

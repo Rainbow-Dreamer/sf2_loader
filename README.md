@@ -270,7 +270,7 @@ loader.get_all_instrument_names(sfid=None,
                                 return_mode=0,
                                 hide_warnings=True)
 
-# mode: if mode is 1, the current preset number will be set to the first available
+# mode: when get_ind is True, if mode is 1, the current preset number will be set to the first available
 # instrument in the current bank number
 
 # return_mode: if it is 0, then when get_ind is set to True, this function
