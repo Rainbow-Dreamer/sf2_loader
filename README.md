@@ -317,12 +317,6 @@ loader.get_current_instrument()
 
 
 
-To get the instrument name of a given soundfont id, bank number and preset number, you can use `preset_name` function.
-
-```python
-loader.preset_name(sfid=None, bank=None, preset=None)
-```
-
 To get current soundfont id, bank number and preset number of a given channel, you can use `channel_info` function, which returns a tuple `(sfid, bank, preset, preset_name)`.
 
 ```python
