@@ -571,7 +571,7 @@ current preset name: {self.get_current_instrument()}'''
     def channel_info(self, channel=None):
         if channel is None:
             channel = self.current_channel
-        if self.synth.program_info(current_channel)[0] != 0:
+        if self.synth.program_info(channel)[0] != 0:
             result = self.synth.channel_info(channel)
         else:
             current_channel = copy(self.current_channel)
