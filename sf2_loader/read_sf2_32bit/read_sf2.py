@@ -547,6 +547,9 @@ current preset name: {self.get_current_instrument()}'''
         self.synth.bank_select(channel, bank)
         if channel == self.current_channel:
             self.current_bank = bank
+        capture = get_capture()
+        self.synth.program_select(channel, *self.synth.program_info(channel))
+        reset_capture(capture)
 
     def change_channel(self, channel):
         self.current_channel = channel
@@ -557,6 +560,9 @@ current preset name: {self.get_current_instrument()}'''
         self.synth.sfont_select(channel, sfid)
         if channel == self.current_channel:
             self.current_sfid = sfid
+        capture = get_capture()
+        self.synth.program_select(channel, *self.synth.program_info(channel))
+        reset_capture(capture)
 
     def change_soundfont(self, name, channel=None):
         if name in self.file:
@@ -747,7 +753,11 @@ current preset name: {self.get_current_instrument()}'''
                                   each.parameter)
                 elif type(each) == mp.program_change:
                     current_channel = each.channel if each.channel is not None else channel
+                    current_channel_info = self.synth.program_info(
+                        current_channel)
                     self.synth.program_change(current_channel, each.program)
+                    self.synth.program_select(current_channel,
+                                              *current_channel_info)
             if k != current_timestamps_length - 1:
                 append_time = current_timestamps[
                     k + 1].start_time - current.start_time
@@ -1124,6 +1134,7 @@ current preset name: {self.get_current_instrument()}'''
             raise ValueError('Invalid SoundFont file')
         reset_capture(capture)
         self.sfid_list.append(current_sfid)
+        self.file.append(file)
         if len(self.file) == 1:
             self.change_channel(0)
 
