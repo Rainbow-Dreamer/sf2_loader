@@ -285,21 +285,20 @@ class sf2_loader:
     @current_channel.setter
     def current_channel(self, value):
         self._current_channel = value
-        try:
-            current_channel_info = self.synth.channel_info(value)
-        except:
+        current_channel_info = self.synth.program_info(value)
+        if current_channel_info[0] == 0:
             current_channel_info = self.find_channel_info(value)
-        self.current_sfid, self.current_bank, self.current_preset, preset_name = current_channel_info
+        self.current_sfid, self.current_bank, self.current_preset = current_channel_info
 
     def find_channel_info(self, value):
         capture = get_capture()
         current_sfid = self.sfid_list[0]
-        current_channel_info = current_sfid, 0, 0, ''
+        current_channel_info = current_sfid, 0, 0
         for i in range(128):
             select_status = self.synth.program_select(value, current_sfid, 0,
                                                       i)
             if select_status != -1:
-                current_channel_info = self.synth.channel_info(value)
+                current_channel_info = self.synth.program_info(value)
                 break
         reset_capture(capture)
         return current_channel_info
@@ -331,11 +330,10 @@ current preset name: {self.get_current_instrument()}'''
                 self.change_channel(channel)
         else:
             channel = self.current_channel
-        try:
-            current_channel_info = self.synth.channel_info(channel)
-        except:
+        current_channel_info = self.synth.program_info(channel)
+        if current_channel_info[0] == 0:
             current_channel_info = self.find_channel_info(channel)
-        current_sfid, current_bank, current_preset, current_preset_name = current_channel_info
+        current_sfid, current_bank, current_preset = current_channel_info
         if sfid is not None:
             self.synth.sfont_select(channel, sfid)
             if channel == self.current_channel:
@@ -389,9 +387,9 @@ current preset name: {self.get_current_instrument()}'''
         self.change_channel(channel)
 
     def get_current_instrument(self):
-        try:
+        if self.synth.program_info(self.current_channel)[0] != 0:
             result = self.synth.channel_info(self.current_channel)[3]
-        except:
+        else:
             result = ''
         return result
 
@@ -466,18 +464,22 @@ current preset name: {self.get_current_instrument()}'''
                         ind.append(i)
             except:
                 pass
-        if get_ind and return_mode == 0:
-            result = {ind[i]: result[i] for i in range(len(result))}
         if preset_mode == 1:
             self.change(current_channel,
                         current_sfid,
                         current_bank,
-                        ind[0] if mode == 1 else current_preset,
+                        ind[0] if get_ind and mode == 1 else current_preset,
                         hide_warnings=False)
+        else:
+            if get_ind and mode == 1:
+                self.change(preset=ind[0], hide_warnings=False)
         if hide_warnings:
             reset_capture(capture)
-        if get_ind and return_mode == 1:
-            return result, ind
+        if get_ind:
+            if return_mode == 0:
+                return {ind[i]: result[i] for i in range(len(result))}
+            elif return_mode == 1:
+                return result, ind
         else:
             return result
 
@@ -569,9 +571,9 @@ current preset name: {self.get_current_instrument()}'''
     def channel_info(self, channel=None):
         if channel is None:
             channel = self.current_channel
-        try:
+        if self.synth.program_info(current_channel)[0] != 0:
             result = self.synth.channel_info(channel)
-        except:
+        else:
             current_channel = copy(self.current_channel)
             self.change_channel(channel)
             result = self.synth.channel_info(channel)
