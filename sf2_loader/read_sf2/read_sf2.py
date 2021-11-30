@@ -570,14 +570,7 @@ current preset name: {self.get_current_instrument()}'''
     def channel_info(self, channel=None):
         if channel is None:
             channel = self.current_channel
-        if self.synth.program_info(channel)[0] != 0:
-            result = self.synth.channel_info(channel)
-        else:
-            current_channel = copy(self.current_channel)
-            self.change_channel(channel)
-            result = self.synth.channel_info(channel)
-            self.change_channel(current_channel)
-        return result
+        return self.synth.program_info(channel)
 
     def export_note(self,
                     note_name,
