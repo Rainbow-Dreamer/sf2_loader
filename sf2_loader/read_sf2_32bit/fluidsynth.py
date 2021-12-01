@@ -1000,8 +1000,7 @@ class Synth:
         if status == FLUID_FAILED: return status
         status = fluid_player_seek(self.player, 0)
         delete_fluid_player(self.player)
-        for i in range(16):
-            fluid_synth_all_sounds_off(self.synth, i)
+        self.system_reset()
         return status
 
     def player_set_tempo(self, tempo_type, tempo):

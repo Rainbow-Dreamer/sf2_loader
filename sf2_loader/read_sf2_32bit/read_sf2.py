@@ -179,6 +179,50 @@ def reset_capture(capture):
         capture.reset()
 
 
+def process_effect(sound, effects, **kwargs):
+    current_args = kwargs
+    for each in effects:
+        each.process_unknown_args(**current_args)
+        sound = each.process(sound)
+    return sound
+
+
+def set_effect(sound, *effects):
+    if len(effects) == 1:
+        current_effect = effects[0]
+        types = type(current_effect)
+        if types != effect:
+            if types == effect_chain:
+                effects = current_effect.effects
+            else:
+                effects = list(current_effect)
+        else:
+            effects = list(effects)
+    else:
+        effects = list(effects)
+    sound.effects = effects
+    return sound
+
+
+def check_effect(sound):
+    return hasattr(sound, 'effects') and type(
+        sound.effects) == list and sound.effects
+
+
+def adsr_func(sound, attack, decay, sustain, release):
+    change_db = percentage_to_db(sustain)
+    result_db = sound.dBFS + change_db
+    if attack > 0:
+        sound = sound.fade_in(attack)
+    if decay > 0:
+        sound = sound.fade(to_gain=result_db, start=attack, duration=decay)
+    else:
+        sound = sound[:attack].append(sound[attack:] + change_db)
+    if release > 0:
+        sound = sound.fade_out(release)
+    return sound
+
+
 class effect:
     def __init__(self, func, name=None, *args, unknown_args=None, **kwargs):
         self.func = func
@@ -255,28 +299,26 @@ class sf2_loader:
         self.file = []
         self.synth = fluidsynth.Synth()
         self.sfid_list = []
-        self.sfid = 1
         self._current_channel = 0
-        self.current_sfid = copy(self.sfid)
+        self.current_sfid = 1
         self.current_bank = 0
         self.current_preset = 0
         self.instruments = []
         self.instruments_ind = []
-        self.fluidsynth_playing = False
         if file:
-            self.file.append(file)
             capture = get_capture()
             try:
-                self.sfid = self.synth.sfload(file)
+                current_sfid = self.synth.sfload(file)
             except:
                 reset_capture(capture)
                 raise ValueError('Invalid SoundFont file')
-            if self.sfid == -1:
+            if current_sfid == -1:
                 reset_capture(capture)
                 raise ValueError('Invalid SoundFont file')
             self.synth.system_reset()
-            self.sfid_list.append(copy(self.sfid))
             reset_capture(capture)
+            self.sfid_list.append(current_sfid)
+            self.file.append(file)
             self.change_channel(0)
 
     @property
@@ -1163,70 +1205,75 @@ current preset name: {self.get_current_instrument()}'''
     def stop(self):
         mp.pygame.mixer.stop()
 
-    def fluidsynth_play_midi_file(self, filename):
+
+class sf2_player:
+    def __init__(self, file=None):
+        self.file = []
+        self.synth = fluidsynth.Synth()
+        self.sfid_list = []
+        self.playing = False
+        if file:
+            capture = get_capture()
+            try:
+                current_sfid = self.synth.sfload(file)
+            except:
+                reset_capture(capture)
+                raise ValueError('Invalid SoundFont file')
+            if current_sfid == -1:
+                reset_capture(capture)
+                raise ValueError('Invalid SoundFont file')
+            self.synth.system_reset()
+            reset_capture(capture)
+            self.sfid_list.append(current_sfid)
+            self.file.append(file)
+
+    def __repr__(self):
+        return f'''[soundfont player]
+loaded soundfonts: {self.file}
+soundfonts id: {self.sfid_list}'''
+
+    def load(self, file):
+        capture = get_capture()
+        try:
+            current_sfid = self.synth.sfload(file)
+        except:
+            reset_capture(capture)
+            raise ValueError('Invalid SoundFont file')
+        if current_sfid == -1:
+            reset_capture(capture)
+            raise ValueError('Invalid SoundFont file')
+        reset_capture(capture)
+        self.sfid_list.append(current_sfid)
+        self.file.append(file)
+
+    def unload(self, ind):
+        if ind > 0:
+            ind -= 1
+        del self.file[ind]
+        current_sfid = self.sfid_list[ind]
+        self.synth.sfunload(current_sfid)
+        del self.sfid_list[ind]
+
+    def play_midi_file(self, filename):
         if not self.synth.midi_driver:
             self.synth.start()
-        if self.fluidsynth_playing:
+        if self.playing:
             self.synth.play_midi_stop()
         self.synth.play_midi_file(filename)
-        self.fluidsynth_playing = True
+        self.playing = True
 
-    def fluidsynth_pause(self):
-        if self.fluidsynth_playing:
+    def pause(self):
+        if self.playing:
             self.synth.play_midi_pause()
 
-    def fluidsynth_unpause(self):
-        if self.fluidsynth_playing:
+    def unpause(self):
+        if self.playing:
             self.synth.play_midi_unpause()
 
-    def fluidsynth_stop(self):
-        if self.fluidsynth_playing:
+    def stop(self):
+        if self.playing:
             self.synth.play_midi_stop()
-            self.fluidsynth_playing = False
-
-
-def process_effect(sound, effects, **kwargs):
-    current_args = kwargs
-    for each in effects:
-        each.process_unknown_args(**current_args)
-        sound = each.process(sound)
-    return sound
-
-
-def set_effect(sound, *effects):
-    if len(effects) == 1:
-        current_effect = effects[0]
-        types = type(current_effect)
-        if types != effect:
-            if types == effect_chain:
-                effects = current_effect.effects
-            else:
-                effects = list(current_effect)
-        else:
-            effects = list(effects)
-    else:
-        effects = list(effects)
-    sound.effects = effects
-    return sound
-
-
-def check_effect(sound):
-    return hasattr(sound, 'effects') and type(
-        sound.effects) == list and sound.effects
-
-
-def adsr_func(sound, attack, decay, sustain, release):
-    change_db = percentage_to_db(sustain)
-    result_db = sound.dBFS + change_db
-    if attack > 0:
-        sound = sound.fade_in(attack)
-    if decay > 0:
-        sound = sound.fade(to_gain=result_db, start=attack, duration=decay)
-    else:
-        sound = sound[:attack].append(sound[attack:] + change_db)
-    if release > 0:
-        sound = sound.fade_out(release)
-    return sound
+            self.playing = False
 
 
 reverse = effect(lambda s: s.reverse(), 'reverse')
