@@ -194,7 +194,7 @@ current preset name: Stereo Grand
 
 ### Change current channel, soundfont id, bank number and preset number
 
-You can use the `change` function of the sf2 loader to change either one or some or all of the current channel, soundfont id, bank number and preset number of the sf2 loader.
+You can use the `change` function of the sf2 loader to change either one or some or all of the current channel, soundfont id, bank number and preset number of the sf2 loader. You can use either preset number or preset name to change current preset of a channel.
 
 There are also some syntactic sugar I added for this sf2 loader, which is very convenient in many cases. 
 
@@ -205,10 +205,6 @@ You can also use `loader % channel` to change current channel.
 There are also a change function for each attribute of current channel, soundfont id, bank number and preset number, namely `change_channel`, `change_sfid`, `change_bank`, `change_preset`.
 
 Each change function except `change_channel` has an optional argument `channel` to specify change which channel's attribute, if not specified, then change current channel's attribute by default.
-
-Note that if you want to change the preset by the name of the preset, you can use `change_preset` function or the syntactic sugar `loader < preset` and `loader < (preset, bank)`, but not to use `change` function because it only accepts numbers.
-
-
 
 ```python
 loader.change(channel=None,
@@ -232,11 +228,14 @@ loader.change(channel=None,
 # hide_warnings: prevent warning messages from external C/C++ libraries printed to the terminal or not
 
 # mode: if set to 0, then when channel is specified, the current channel of the sf2 loader will be changed
-# to that channel, and then change other specified attributes, otherwise, change other attributes within the specified channel, but current channel of the sf2 loader remain unchanged
+# to that channel, and then change other specified attributes, otherwise,
+# change other attributes within the specified channel,
+# but current channel of the sf2 loader remain unchanged
 
 
 # examples
 loader.change(preset=2) # change current preset number to 2
+loader.change(preset='Strings') # change current preset to Strings
 loader.change(bank=9, preset=3) # change current bank number to 9 and current preset number to 3
 loader.change_preset(2) # change current preset number to 2
 loader.change_preset('Strings') # change current preset to Strings
@@ -477,7 +476,7 @@ loader.play_chord(sf.mp.C('Cmaj7', 5)) # play a Cmaj7 chord starts at C5
 
 
 
-You can use `play_piece` function of the sf2 loader to play a piece using current channel and soundfont id. The piece must be a musicpy piece instance. Here piece means a piece of music with multiple individual tracks with different instruments on each of them (it is also ok if you want some or all of the tracks has the same instruments). You can custom which instrument you want the soundfont to play for each track by setting the `instruments_numbers` attribute of the piece instance, instrument of a track of the piece instance could be preset or [preset, bank, (channel), (sfid)].
+You can use `play_piece` function of the sf2 loader to play a piece using current channel and soundfont id. The piece must be a musicpy piece instance. Here piece means a piece of music with multiple individual tracks with different instruments on each of them (it is also ok if you want some or all of the tracks has the same instruments). You can custom which instrument you want the soundfont to play for each track by setting the `instruments_numbers` attribute of the piece instance, instrument of a track of the piece instance could be preset or [preset, bank, (sfid)].
 
 ```python
 loader.play_piece(current_chord,
