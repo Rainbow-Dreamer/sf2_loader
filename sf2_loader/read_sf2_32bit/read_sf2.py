@@ -757,7 +757,9 @@ current preset name: {self.get_current_instrument()}'''
                         current_channel)
                     self.synth.program_change(current_channel, each.program)
                     self.synth.program_select(current_channel,
-                                              *current_channel_info)
+                                              current_channel_info[0],
+                                              current_channel_info[1],
+                                              each.program)
             if k != current_timestamps_length - 1:
                 append_time = current_timestamps[
                     k + 1].start_time - current.start_time
