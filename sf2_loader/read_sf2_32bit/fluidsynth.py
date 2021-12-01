@@ -205,6 +205,9 @@ fluid_synth_write_s16 = cfunc('fluid_synth_write_s16', c_void_p,
                               ('lincr', c_int, 1), ('rbuf', c_void_p, 1),
                               ('roff', c_int, 1), ('rincr', c_int, 1))
 
+fluid_synth_all_sounds_off = cfunc('fluid_synth_all_sounds_off', c_int,
+                                   ('synth', c_void_p, 1), ('chan', c_int, 1))
+
 
 class fluid_synth_channel_info_t(Structure):
     _fields_ = [('assigned', c_int), ('sfont_id', c_int), ('bank', c_int),
@@ -983,11 +986,22 @@ class Synth:
         status = fluid_player_play(self.player)
         return status
 
+    def play_midi_pause(self):
+        status = fluid_player_stop(self.player)
+        if status == FLUID_FAILED: return status
+        return status
+
+    def play_midi_unpause(self):
+        status = fluid_player_play(self.player)
+        return status
+
     def play_midi_stop(self):
         status = fluid_player_stop(self.player)
         if status == FLUID_FAILED: return status
         status = fluid_player_seek(self.player, 0)
         delete_fluid_player(self.player)
+        for i in range(16):
+            fluid_synth_all_sounds_off(self.synth, i)
         return status
 
     def player_set_tempo(self, tempo_type, tempo):

@@ -1111,29 +1111,6 @@ current preset name: {self.get_current_instrument()}'''
         self.change(current_channel, current_sfid, current_bank,
                     current_preset)
 
-    def reload(self, file):
-        capture = get_capture()
-        self.file = [file]
-        self.synth = fluidsynth.Synth()
-        try:
-            self.sfid = self.synth.sfload(file)
-        except:
-            reset_capture(capture)
-            raise ValueError('Invalid SoundFont file')
-        if self.sfid == -1:
-            reset_capture(capture)
-            raise ValueError('Invalid SoundFont file')
-        reset_capture(capture)
-        self.synth.system_reset()
-        self.sfid_list = [copy(self.sfid)]
-        self._current_channel = 0
-        self.current_sfid = copy(self.sfid)
-        self.current_bank = 0
-        self.current_preset = 0
-        self.instruments = []
-        self.instruments_ind = []
-        self.change_channel(0)
-
     def load(self, file):
         capture = get_capture()
         try:
