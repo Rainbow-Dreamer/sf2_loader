@@ -1168,6 +1168,7 @@ current preset name: {self.get_current_instrument()}'''
         self.sfid_list.append(current_sfid)
         self.file.append(file)
         if len(self.file) == 1:
+            self.synth.system_reset()
             self.change_channel(0)
 
     def unload(self, ind):
@@ -1213,19 +1214,7 @@ class sf2_player:
         self.sfid_list = []
         self.playing = False
         if file:
-            capture = get_capture()
-            try:
-                current_sfid = self.synth.sfload(file)
-            except:
-                reset_capture(capture)
-                raise ValueError('Invalid SoundFont file')
-            if current_sfid == -1:
-                reset_capture(capture)
-                raise ValueError('Invalid SoundFont file')
-            self.synth.system_reset()
-            reset_capture(capture)
-            self.sfid_list.append(current_sfid)
-            self.file.append(file)
+            self.load(file)
 
     def __repr__(self):
         return f'''[soundfont player]
@@ -1242,6 +1231,7 @@ soundfonts id: {self.sfid_list}'''
         if current_sfid == -1:
             reset_capture(capture)
             raise ValueError('Invalid SoundFont file')
+        self.synth.system_reset()
         reset_capture(capture)
         self.sfid_list.append(current_sfid)
         self.file.append(file)
