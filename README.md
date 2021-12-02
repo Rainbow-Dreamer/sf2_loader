@@ -14,11 +14,13 @@ This is probably the most handy soundfont loader, player and renderer via pure p
   - [Load sondfont files](#Load-sondfont-files)
   - [The representation of the soundfont loader](#The-representation-of-the-soundfont-loader)
   - [Change current channel, soundfont id, bank number and preset number](#Change-current-channel-soundfont-id-bank-number-and-preset-number)
+  - [About channel initialization](#About-channel-initialization)
   - [Get the instrument names](#Get-the-instrument-names)
   - [Play notes, chords, pieces and midi files](#Play-notes-chords-pieces-and-midi-files)
   - [Export notes, chords, pieces and midi files](#Export-notes-chords-pieces-and-midi-files)
   - [Export sound modules](#Export-sound-modules)
   - [Audio effects](#Audio-effects)
+  - [pause, unpause and stop current playing sounds](#pause-unpause-and-stop-current-playing-sounds)
 
 ## Introduction
 This sf2 loader is heavily combined with [musicpy](https://github.com/Rainbow-Dreamer/musicpy), which is one of my most popular project, focusing on music programming and music analysis and composition. If you have already learned how to use musicpy to build notes, chords and pieces, you can straightly pass them to the sf2 loader and let it play what you write. Besides of playing music with the loaded soundfonts files, I also write an audio renderer in the sf2 loader, which could render the audio from the loaded soundfont files with the input musicpy data structures and output as audio files, you can choose the output format, such as wav, mp3, ogg, and output file names, sample width, frame rate, channels and so on. In fact, this project borns with my attempt at making muscipy's sampler module being able to load soundfont files to play and export audio files.
@@ -194,6 +196,8 @@ current preset name: Stereo Grand
 
 ### Change current channel, soundfont id, bank number and preset number
 
+Each channel of the sf2 loader has 3 attributes, which are SoundFont id, bank number and preset number. The sf2 loader has a attribute `current_channel` which is used when displaying current information of current channel.
+
 You can use the `change` function of the sf2 loader to change either one or some or all of the current channel, soundfont id, bank number and preset number of the sf2 loader. You can use either preset number or preset name to change current preset of a channel.
 
 There are also some syntactic sugar I added for this sf2 loader, which is very convenient in many cases. 
@@ -253,6 +257,24 @@ loader < (3, 9) # change current bank number to 9, current preset number to 3
 loader < ('Strings', 9) # change current bank number to 9, current preset to Strings
 loader % 1 # change current channel to 1
 ```
+
+
+
+### About channel initialization
+
+Note that when a sf2 loader is initialized, the channel 0 will be automatically initialized, but other channels are not initialized. If you use a channel that is not initialized to play a sound or render audio, you will get no sound. But there are automatic initialization of channels built in this sf2 loader to make things easier.
+
+When you change to a channel that is not initialized, the program will automatically initialize that channel by select the first loaded SoundFont id to that channel and select the first valid instrument in bank 0 (or bank 128 for channel 9). If no valid instrument is found in bank 0 (or bank 128 for channel 9), then that channel will be initialized with no valid current preset, you will need to select a valid preset for that channel by looking at the result of the function `all_instruments` which returns all of the available banks and presets in current SoundFont file, I will talk about this function later.
+
+The automatic initialization of channels that are not initialized will also take place when you trying to play or export a sound using channels that are not initialized. However, there is at least one situation that you will still get no sound with uninitialized channels, that is when the automatic initialization of a channel cannot find a valid preset of the initial bank number, then it will remain initialized but with no valid current preset. In this case, you will need to select a valid preset for that channel yourself in order to get sound when playing or exporting using that channel.
+
+If you want to manually initialize a channel, you can use `init_channel` function of sf2 loader, which takes a paremeter `channel`.
+
+The initial bank number is 0 for each channel except channel 9, which is 128, since channel 9 is for percussion as default. The initial preset number for each channel is 0, but this might not be the first valid preset number for current SoundFont id and current bank number. The initial SoundFont id for a channel that is not initialized is 0, if a channel is initialized, then it will have a SoundFont id that is >= 1. You can use this information to check if a channel is already initialized or not. To get current SoundFont id of a channel, using `get_sfid` function of sf2 loader, which I will talk about later, or you can use `valid_channel` function of sf2 loader to check if a channel is already initialized or not.
+
+You can initialize channels as much as you can in this sf2 loader, which could be more than 16 channels (the restriction of MIDI 1.0). But since most MIDI files out there are at most 16 channels, so this advantage does not actually works well if you directly use MIDI files for this sf2 loader. If you use `export_piece` function to export a piece instance of musicpy to audio files, the number of channels and tracks of a piece instance could be more than 16, and they will be successfully rendered to audio. If you are interested in this, you can check out the piece data structure in the wiki of musicpy.
+
+To reset the current configuration of all channels, you can use `reset_all_channels` function of sf2 loader, which will reset all channels to uninitialized state.
 
 
 
@@ -318,10 +340,17 @@ loader.get_current_instrument()
 
 To get current soundfont id, bank number and preset number of a given channel, you can use `channel_info` function, which returns a tuple `(sfid, bank, preset)`.
 
+To get one of current SoundFont id, current bank number, current preset number and current preset name of a channel, you can use functions `get_sfid`, `get_bank`, `get_preset`, `get_preset_name`, which all takes a parameter `channel`, which has a default value `None`, if the channel parameter is None, then use current channel. For the function `get_preset_name`, if the channel has not yet initialized, it will return None.
+
 ```python
 loader.channel_info(channel=None)
 
 # channel: if channel is None, then returns the channel info of current channel
+
+loader.get_sfid() # get current channel's SoundFont id
+loader.get_bank(1) # get current bank number of channel 1
+loader.get_preset(1) # get current preset number of channel 1
+loader.get_preset_name(1) # get current preset name of channel 1
 ```
 
 
@@ -717,4 +746,10 @@ loader.play_note('C5', effects=[fade_in(duration=2000)])
 # export a note C5 using current instrument with a reverse audio effect
 loader.export_note('C5', effects=[reverse])
 ```
+
+
+
+### pause, unpause and stop current playing sounds
+
+When you start playing sounds, you can use `pause` function of sf2 loader to pause current playing, `unpause` function to unpause, `stop` function to stop.
 
