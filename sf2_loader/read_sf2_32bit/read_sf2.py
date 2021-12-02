@@ -1265,6 +1265,9 @@ soundfonts id: {self.sfid_list}'''
             self.synth.play_midi_stop()
             self.playing = False
 
+    def set_tempo(self, bpm):
+        self.synth.player_set_tempo(1, bpm)
+
 
 reverse = effect(lambda s: s.reverse(), 'reverse')
 offset = effect(lambda s, bar, bpm: s[bar_to_real_time(bar, bpm, 1):],
