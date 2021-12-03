@@ -53,13 +53,16 @@ Run this line in cmd/terminal to install.
 pip install sf2_loader
 ```
 
-Note: This package uses pydub as a required python package, which requires ffmpeg or libav installed to have abilities to deal with non-wav files (like mp3, ogg files),
-so I strongly recommend to install ffmpeg/libav and configure it correctly to make pydub working perfectly. You can refer to this [link](https://github.com/jiaaro/pydub#getting-ffmpeg-set-up) which is pydub's github main page readme to see how to do it, or you can follow the steps I provide here, which is easier and faster.
+Note: This package uses pydub as a required python package, which requires ffmpeg or libav installed to have abilities to deal with non-wav files (like mp3, ogg files), so I strongly recommend to install ffmpeg/libav and configure it correctly to make pydub working perfectly. You can refer to this [link](https://github.com/jiaaro/pydub#getting-ffmpeg-set-up) which is pydub's github main page readme to see how to do it, or you can follow the steps I provide here, which is easier and faster.
 
-Firstly, download the ffmpeg rar file from this [link](https://github.com/Rainbow-Dreamer/musicpy/releases/latest), this is from the release page of musicpy which requires ffmpeg for the musicpy's sampler module.  
-Then, unzip the folder `ffmpeg` from the rar file, put the folder in C:\ (or equivalent root path if you are using Linux/macOS).  
-Then, add the path `C:\\ffmpeg\\bin` (this will be different for Linux/macOS) to the system environment variable PATH.  
-Finally, restart the computer.  
+Firstly, download the ffmpeg rar file from this [link](https://github.com/Rainbow-Dreamer/musicpy/releases/latest), this is from the release page of musicpy which requires ffmpeg for the musicpy's sampler module.
+
+Then, unzip the folder `ffmpeg` from the rar file, put the folder in `C:\`
+
+Then, add the path `C:\\ffmpeg\\bin` to the system environment variable PATH.
+
+Finally, restart the computer.
+
 Now you are all done with the set up of ffmpeg for pydub. If there are no warnings about ffmpeg from pydub pop up after you import this package, then you are good to go.
 
 ### Linux
@@ -84,15 +87,17 @@ sudo apt-get install ffmpeg libavcodec-extra
 ```
 ### macOS
 
-You can download the macOS compatible version of sf2_loader from [release page](https://github.com/Rainbow-Dreamer/sf2_loader/releases/latest) of this project.
+You can use pip to install this sf2 loader.
 
-Open terminal in the folder `sf2_loader (for macOS)`, firstly run `pip install midiutil`, and then run `python setup.py install` to install this package.
+Run this line in cmd/terminal to install.
 
-(some of the codes are changed for macOS compatible version of this pakcage for compatibility, so you cannot use pip to install this package, because that will install the version for Windows)
+```
+pip install sf2_loader
+```
 
 Then, there are some important and necessary steps to configure this package in order to use it on macOS:
 
-Firstly, you need to install fluidsynth on macOS, the easiest way to install ffmpeeg in macOS is using homebrew. You need to make sure you have installed homebrew in macOS first, and then run `brew install fluidsynth` in terminal, and waiting for fluidsynth to be installed.
+Firstly, you need to install fluidsynth on macOS, the easiest way to install ffmpeg in macOS is using homebrew. You need to make sure you have installed homebrew in macOS first, and then run `brew install fluidsynth` in terminal, and waiting for fluidsynth to be installed.
 
 If you haven't installed homebrew before and cannot find a good way to install homebrew, here I will provide a very easy way to install homebrew on macOS, thanks from Ferenc Yim's answer from this [Stack Overflow question](https://stackoverflow.com/questions/29910217/homebrew-installation-on-mac-os-x-failed-to-connect-to-raw-githubusercontent-com):
 
