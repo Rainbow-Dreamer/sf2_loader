@@ -31,9 +31,11 @@ This sf2 loader is compatible with both 32-bit and 64-bit python versions, for p
 
 This package is currently being tested on Windows, Linux and macOS. For Windows version, this package is tested on Windows 10.
 
-Update: (2021/9/5) The Linux compatible version is ready, the installation and configuration of Linux compatible version is at the installation section of this readme. This Linux compatible version of sf2_loader is tested on Ubuntu 18.04.5.
+Update: (2021/12/3) After many updates, currently the latest version is all compatible with Windows, Linux and macOS, so no compatible version is needed anymore, on Linux and macOS you just need to pip install sf2 loader the same as in Windows, and then you need to install fluidsynth and ffmpeg separately on Linux and macOS, the installation instruction is updated.
 
 Update: (2021/9/5) The macOS compatible version is ready, the installation and configuration of Linux compatible version is at the installation section of this readme. This macOS compatible version of sf2_loader is tested on Catalina 10.15.5.
+
+Update: (2021/9/5) The Linux compatible version is ready, the installation and configuration of Linux compatible version is at the installation section of this readme. This Linux compatible version of sf2_loader is tested on Ubuntu 18.04.5.
 
 **Important note: the required python package musicpy is updated very frequently, so please regularly update musicpy by running**
 
@@ -67,11 +69,7 @@ Now you are all done with the set up of ffmpeg for pydub. If there are no warnin
 
 ### Linux
 
-You can download the Linux compatible version of sf2_loader from [release page](https://github.com/Rainbow-Dreamer/sf2_loader/releases/latest) of this project.
-
-Open terminal in the folder `sf2_loader (for Linux)`, firstly run `pip install midiutil`, and then run `sudo python setup.py install` to install this package.
-
-(some of the codes are changed for Linux compatible version of this pakcage for compatibility, so you cannot use pip to install this package, because that will install the version for Windows)
+You can use pip to install this sf2 loader, which is the same as in Windows.
 
 Then, there are some important and necessary steps to configure this package in order to use it on Linux:
 
@@ -87,13 +85,7 @@ sudo apt-get install ffmpeg libavcodec-extra
 ```
 ### macOS
 
-You can use pip to install this sf2 loader.
-
-Run this line in cmd/terminal to install.
-
-```
-pip install sf2_loader
-```
+You can use pip to install this sf2 loader, which is the same as in Windows.
 
 Then, there are some important and necessary steps to configure this package in order to use it on macOS:
 
