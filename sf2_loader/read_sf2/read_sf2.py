@@ -111,7 +111,7 @@ def get_timestamps(current_chord,
     for i in range(len(current_chord.notes)):
         current = current_chord.notes[i]
         if isinstance(current, mp.pitch_bend) and current.start_time is None:
-            current.start_time = sum(current_chord.interval[:i]) + 1
+            current.start_time = sum(current_chord.interval[:i])
     noteon_part = [
         general_event(
             'noteon',
@@ -130,7 +130,7 @@ def get_timestamps(current_chord,
     ]
     pitch_bend_part = [
         general_event('pitch_bend',
-                      bar_to_real_time(i.start_time - 1, bpm, 1) / 1000, i)
+                      bar_to_real_time(i.start_time, bpm, 1) / 1000, i)
         for i in current_chord.notes if isinstance(i, mp.pitch_bend)
     ]
     result = noteon_part + noteoff_part + pitch_bend_part
@@ -145,7 +145,7 @@ def get_timestamps(current_chord,
         pan_part = [
             general_event(
                 'message',
-                bar_to_real_time(i.start_time - 1, bpm, 1) / 1000,
+                bar_to_real_time(i.start_time, bpm, 1) / 1000,
                 mp.controller_event(channel=i.channel,
                                     controller_number=10,
                                     parameter=i.value)) for i in pan
@@ -155,7 +155,7 @@ def get_timestamps(current_chord,
         volume_part = [
             general_event(
                 'message',
-                bar_to_real_time(i.start_time - 1, bpm, 1) / 1000,
+                bar_to_real_time(i.start_time, bpm, 1) / 1000,
                 mp.controller_event(channel=i.channel,
                                     controller_number=7,
                                     parameter=i.value)) for i in volume
