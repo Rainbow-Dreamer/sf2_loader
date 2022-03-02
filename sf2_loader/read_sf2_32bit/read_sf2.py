@@ -1293,6 +1293,18 @@ soundfonts id: {self.sfid_list}'''
         if self.default_audio_driver:
             self.synth.setting('audio.driver', self.default_audio_driver)
 
+    def set_pos(self, ticks):
+        self.synth.player_seek(ticks)
+
+    def get_current_tick(self):
+        return self.synth.get_current_tick()
+
+    def get_total_ticks(self):
+        return self.synth.get_total_ticks()
+
+    def get_current_tempo(self):
+        return self.synth.get_current_tempo()
+
 
 reverse = effect(lambda s: s.reverse(), 'reverse')
 offset = effect(lambda s, bar, bpm: s[bar_to_real_time(bar, bpm, 1):],

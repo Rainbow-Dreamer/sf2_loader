@@ -411,6 +411,15 @@ fluid_player_set_tempo = cfunc('fluid_player_set_tempo', c_int,
 fluid_player_seek = cfunc('fluid_player_seek', c_int, ('player', c_void_p, 1),
                           ('ticks', c_int, 1))
 
+fluid_player_get_current_tick = cfunc('fluid_player_get_current_tick', c_int,
+                                      ('player', c_void_p, 1))
+
+fluid_player_get_total_ticks = cfunc('fluid_player_get_total_ticks', c_int,
+                                     ('player', c_void_p, 1))
+
+fluid_player_get_midi_tempo = cfunc('fluid_player_get_midi_tempo', c_int,
+                                    ('player', c_void_p, 1))
+
 fluid_player_stop = cfunc('fluid_player_stop', c_int, ('player', c_void_p, 1))
 
 # fluid audio driver
@@ -1003,7 +1012,25 @@ class Synth:
         return status
 
     def player_set_tempo(self, tempo_type, tempo):
-        return fluid_player_set_tempo(self.player, tempo_type, tempo)
+        if fluid_player_set_tempo:
+            return fluid_player_set_tempo(self.player, tempo_type, tempo)
+
+    def player_seek(self, ticks):
+        if fluid_player_seek:
+            status = fluid_player_seek(self.player, ticks)
+            return status
+
+    def get_current_tick(self):
+        if fluid_player_get_current_tick:
+            return fluid_player_get_current_tick(self.player)
+
+    def get_total_ticks(self):
+        if fluid_player_get_total_ticks:
+            return fluid_player_get_total_ticks(self.player)
+
+    def get_current_tempo(self):
+        if fluid_player_get_midi_tempo:
+            return fluid_player_get_midi_tempo(self.player)
 
 
 class Sequencer:
