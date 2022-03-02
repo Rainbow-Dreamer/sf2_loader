@@ -1305,6 +1305,9 @@ soundfonts id: {self.sfid_list}'''
     def get_current_tempo(self):
         return self.synth.get_current_tempo()
 
+    def get_status(self):
+        return self.synth.get_status()
+
 
 reverse = effect(lambda s: s.reverse(), 'reverse')
 offset = effect(lambda s, bar, bpm: s[bar_to_real_time(bar, bpm, 1):],
