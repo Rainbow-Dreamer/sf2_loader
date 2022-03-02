@@ -420,6 +420,9 @@ fluid_player_get_total_ticks = cfunc('fluid_player_get_total_ticks', c_int,
 fluid_player_get_midi_tempo = cfunc('fluid_player_get_midi_tempo', c_int,
                                     ('player', c_void_p, 1))
 
+fluid_player_get_bpm = cfunc('fluid_player_get_bpm', c_int,
+                             ('player', c_void_p, 1))
+
 fluid_player_get_status = cfunc('fluid_player_get_status', c_int,
                                 ('player', c_void_p, 1))
 
@@ -1034,6 +1037,10 @@ class Synth:
     def get_current_tempo(self):
         if fluid_player_get_midi_tempo:
             return fluid_player_get_midi_tempo(self.player)
+
+    def get_current_bpm(self):
+        if fluid_player_get_bpm:
+            return fluid_player_get_bpm(self.player)
 
     def get_status(self):
         if fluid_player_get_status:

@@ -1284,9 +1284,9 @@ soundfonts id: {self.sfid_list}'''
             self.synth.play_midi_stop()
             self.playing = False
 
-    def set_tempo(self, bpm):
+    def set_tempo(self, bpm, tempo_type=1):
         if fluidsynth.fluid_player_set_tempo:
-            self.synth.player_set_tempo(1, bpm)
+            self.synth.player_set_tempo(tempo_type, bpm)
 
     def set_default_audio_driver(self, driver):
         self.default_audio_driver = driver
@@ -1304,6 +1304,9 @@ soundfonts id: {self.sfid_list}'''
 
     def get_current_tempo(self):
         return self.synth.get_current_tempo()
+
+    def get_current_bpm(self):
+        return self.synth.get_current_bpm()
 
     def get_status(self):
         return self.synth.get_status()
