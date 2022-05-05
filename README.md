@@ -16,8 +16,8 @@ This is probably the most handy soundfont loader, player and renderer via pure p
   - [Change current channel, soundfont id, bank number and preset number](#Change-current-channel-soundfont-id-bank-number-and-preset-number)
   - [About channel initialization](#About-channel-initialization)
   - [Get the instrument names](#Get-the-instrument-names)
-  - [Play notes, chords, pieces and midi files](#Play-notes-chords-pieces-and-midi-files)
-  - [Export notes, chords, pieces and midi files](#Export-notes-chords-pieces-and-midi-files)
+  - [Play notes, chords, pieces and MIDI files](#Play-notes-chords-pieces-and-MIDI-files)
+  - [Export notes, chords, pieces and MIDI files](#Export-notes-chords-pieces-and-MIDI-files)
   - [Export sound modules](#Export-sound-modules)
   - [Audio effects](#Audio-effects)
   - [Pause, unpause and stop current playing sounds](#pause-unpause-and-stop-current-playing-sounds)
@@ -25,7 +25,7 @@ This is probably the most handy soundfont loader, player and renderer via pure p
 ## Introduction
 This sf2 loader is heavily combined with [musicpy](https://github.com/Rainbow-Dreamer/musicpy), which is one of my most popular project, focusing on music programming and music analysis and composition. If you have already learned how to use musicpy to build notes, chords and pieces, you can straightly pass them to the sf2 loader and let it play what you write. Besides of playing music with the loaded soundfonts files, I also write an audio renderer in the sf2 loader, which could render the audio from the loaded soundfont files with the input musicpy data structures and output as audio files, you can choose the output format, such as wav, mp3, ogg, and output file names, sample width, frame rate, channels and so on. In fact, this project borns with my attempt at making muscipy's sampler module being able to load soundfont files to play and export audio files.
 
-If you are not familiar with musicpy data structures and is not willing to learn it in recent times, you can also straightly using midi files as input to the sf2 loader, and export the rendered audio files using the loaded soundfont files. However, I still recommend you to learn about musicpy, even not to consider music programming and analysis, it could also be very useful for midi files editing and reconstructing.
+If you are not familiar with musicpy data structures and is not willing to learn it in recent times, you can also straightly using MIDI files as input to the sf2 loader, and export the rendered audio files using the loaded soundfont files. However, I still recommend you to learn about musicpy, even not to consider music programming and analysis, it could also be very useful for MIDI files editing and reconstructing.
 
 This sf2 loader is compatible with both 32-bit and 64-bit python versions, for python >= 3.6, so be sure your installed python version match the requirements for this package to use.
 
@@ -368,7 +368,7 @@ Here is an example of getting all of the instrument names of all of the availabl
 
 
 
-### Play notes, chords, pieces and midi files
+### Play notes, chords, pieces and MIDI files
 
 You can use `play_note` function of the sf2 loader to play a note with specified pitch using current channel, soundfont id, bank number and preset number. The note could be a string representing a pitch (for example, `C5`) or a musicpy note instance. If you want to play the note by another instrument, you need to change current preset (and other program parameters if needed) before you use `play_note` function, the same goes for other play functions.
 
@@ -395,7 +395,7 @@ loader.play_note(note_name,
 
 # decay: the decay time of the note in seconds
 
-# volume: the volume of the note in midi velocity from 0 - 127
+# volume: the volume of the note in MIDI velocity from 0 - 127
 
 # channel: the channel to play the note
 
@@ -484,7 +484,7 @@ loader.play_chord(current_chord,
 
 # volume: the volume effects you want to add to the rendered audio
 
-# the pan and volume effects are corresponding to the midi CC messages
+# the pan and volume effects are corresponding to the MIDI CC messages
 
 # length: you can specify the whole length of the rendered audio in seconds (used in case of audio effects)
 
@@ -556,14 +556,14 @@ loader.play_piece(current_chord,
 current_piece = sf.mp.P([sf.mp('C'), sf.mp.chord('A2')], [2, 35], bpm=150)
 loader.play_piece(current_piece)
 
-# read a midi file to a musicpy piece instance and play it using the sf2 loader
+# read a MIDI file to a musicpy piece instance and play it using the sf2 loader
 current_midi_file = sf.mp.read(midi_file_path)
 loader.play_piece(current_midi_file)
 ```
 
 
 
-You can use `play_midi_file` function of the sf2 loader to play a midi file using current channel and soundfont id. You can set the first parameter to the midi file path, and then the sf2 loader will read the midi file and analyze it into a musicpy piece instance, and then render it to audio data.
+You can use `play_midi_file` function of the sf2 loader to play a MIDI file using current channel and soundfont id. You can set the first parameter to the MIDI file path, and then the sf2 loader will read the MIDI file and analyze it into a musicpy piece instance, and then render it to audio data.
 
 ```python
 loader.play_midi_file(current_chord,
@@ -585,14 +585,14 @@ loader.play_midi_file(current_chord,
                       show_msg=False,
                       **read_args)
 
-# current_chord: the midi file path
+# current_chord: the MIDI file path
 
 # decay - clear_program_change: same as play_piece
 
 # instruments: the list of the instruments you want to play, the sf2 loader
-# will use this instrument list instead of the instrument settings in the midi file,
+# will use this instrument list instead of the instrument settings in the MIDI file,
 # note that this instruments list must be the same length as the number of tracks
-# of the midi file
+# of the MIDI file
 
 # length - show_msg: same as play_piece
 
@@ -601,12 +601,12 @@ loader.play_midi_file(current_chord,
 
 # examples
 
-# play a midi file given a file path using current soundfont file
+# play a MIDI file given a file path using current soundfont file
 loader.play_midi_file(r'C:\Users\Administrator\Desktop\test.mid')
 
 loader.change_soundfont('celeste2.sf2') # change to another loaded soundfont file
 
-# play a midi file given a file path using another soundfont file
+# play a MIDI file given a file path using another soundfont file
 loader.play_midi_file(r'C:\Users\Administrator\Desktop\test.mid')
 
 # you can also specify which channel use which soundfont files in the instruments
@@ -615,20 +615,20 @@ loader.play_midi_file(r'C:\Users\Administrator\Desktop\test.mid')
 
 
 
-You can specify which bank and preset (including channel and sfid) that each track of the midi file uses by setting the `instruments` parameter of the `play_midi_file` function.
+You can specify which bank and preset (including channel and sfid) that each track of the MIDI file uses by setting the `instruments` parameter of the `play_midi_file` function.
 
 
 
-### Export notes, chords, pieces and midi files
+### Export notes, chords, pieces and MIDI files
 
-You can export notes, chords, pieces and midi files using loaded soundfont files in the sf2 loader using `export_note`, `export_chord`, `export_piece`, `export_midi_file` function of the sf2 loader.
+You can export notes, chords, pieces and MIDI files using loaded soundfont files in the sf2 loader using `export_note`, `export_chord`, `export_piece`, `export_midi_file` function of the sf2 loader.
 
 All of the parameters of these export functions can refer to their corresponding play functions, except a parameter `get_audio`, if this parameter is set to True, then the export functions will return an AudioSegment instance (this is an audio instance in pydub) which contains raw audio data for further audio process. If this parameter is set to False (which is default), then the export functions will export the rendered audio data to an audio file with the file name and the audio file format you specify.
 
 ```python
 # examples
 
-# render a midi file with current soundfont files and export as a mp3 file 'test.mp3'
+# render a MIDI file with current soundfont files and export as a mp3 file 'test.mp3'
 loader.export_midi_file(r'C:\Users\Administrator\Desktop\test.mid', name='test.mp3', format='mp3')
 
 # if you want to specify the bitrate of the exported mp3 file to be 320Kbps
