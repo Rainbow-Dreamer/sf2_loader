@@ -20,7 +20,7 @@ This is probably the most handy soundfont loader, player and renderer via pure p
   - [Export notes, chords, pieces and midi files](#Export-notes-chords-pieces-and-midi-files)
   - [Export sound modules](#Export-sound-modules)
   - [Audio effects](#Audio-effects)
-  - [pause, unpause and stop current playing sounds](#pause-unpause-and-stop-current-playing-sounds)
+  - [Pause, unpause and stop current playing sounds](#pause-unpause-and-stop-current-playing-sounds)
 
 ## Introduction
 This sf2 loader is heavily combined with [musicpy](https://github.com/Rainbow-Dreamer/musicpy), which is one of my most popular project, focusing on music programming and music analysis and composition. If you have already learned how to use musicpy to build notes, chords and pieces, you can straightly pass them to the sf2 loader and let it play what you write. Besides of playing music with the loaded soundfonts files, I also write an audio renderer in the sf2 loader, which could render the audio from the loaded soundfont files with the input musicpy data structures and output as audio files, you can choose the output format, such as wav, mp3, ogg, and output file names, sample width, frame rate, channels and so on. In fact, this project borns with my attempt at making muscipy's sampler module being able to load soundfont files to play and export audio files.
@@ -746,7 +746,7 @@ loader.export_note('C5', effects=[reverse])
 
 
 
-### pause, unpause and stop current playing sounds
+### Pause, unpause and stop current playing sounds
 
 When you start playing sounds, you can use `pause` function of sf2 loader to pause current playing, `unpause` function to unpause, `stop` function to stop.
 
