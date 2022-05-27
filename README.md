@@ -96,7 +96,7 @@ If you haven't installed homebrew before and cannot find a good way to install h
 open this [link](https://raw.githubusercontent.com/Homebrew/install/master/install.sh) in your browser, right-click and save it to your computer, and then open a terminal and run it with:  
 `/bin/bash path-to/install.sh`, and waiting for homebrew to be installed.
 
- It is also recommended to install fluidsynth by MacPorts, which might be faster than homebrew, and also very easy to install, you can click this [link](https://ports.macports.org/port/fluidsynth/) to install MacPorts and then install fluidsynth using MacPorts with the command provided by the website.
+It is also recommended to install fluidsynth by MacPorts, which might be faster than homebrew, and also very easy to install, you can click this [link](https://ports.macports.org/port/fluidsynth/) to install MacPorts and then install fluidsynth using MacPorts with the command provided by the website.
 
 Secondly, you need to install ffmpeg on macOS (the same reason as in Windows), you can just run this command in terminal to install ffmpeg on macOS using homebrew:
 ```
