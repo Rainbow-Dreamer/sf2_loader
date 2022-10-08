@@ -4,7 +4,7 @@ from os import path
 setup(
     name='sf2_loader',
     packages=find_packages(),
-    version='1.12',
+    version='1.14',
     license='LGPLv2.1',
     description=
     'This is an easy-to-use soundfonts loader, player and audio renderer in python',
@@ -12,7 +12,7 @@ setup(
     author_email='1036889495@qq.com',
     url='https://github.com/Rainbow-Dreamer/sf2_loader',
     download_url=
-    'https://github.com/Rainbow-Dreamer/sf2_loader/archive/1.12.tar.gz',
+    'https://github.com/Rainbow-Dreamer/sf2_loader/archive/1.14.tar.gz',
     keywords=['soundfont', 'sf2', 'python'],
     install_requires=['pydub', 'musicpy', 'numpy', 'py'],
     classifiers=[

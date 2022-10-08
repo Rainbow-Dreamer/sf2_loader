@@ -141,7 +141,7 @@ def get_timestamps(current_chord,
     if not ignore_other_messages:
         other_messages_part = [
             general_event('message',
-                          bar_to_real_time(i.time / 4, bpm, 1) / 1000, i)
+                          bar_to_real_time(i.start_time, bpm, 1) / 1000, i)
             for i in current_chord.other_messages
         ]
         result += other_messages_part
