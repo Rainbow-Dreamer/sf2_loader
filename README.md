@@ -1,7 +1,14 @@
 # sf2_loader
 This is an easy-to-use soundfonts loader, player and audio renderer in python.
 
-This is probably the most handy soundfont loader, player and renderer via pure programming at the time I am writing now (2021/8/29). This is a python package, it can load any soundfont files, including sf2 and sf3, you can listen to every preset in every bank in the soundfont files that are loaded using very simple syntax, play or export audio files for each note in a pitch range for any instruments in the soundfont files, play or export the whole piece of music as audio files with custom audio effects, and the loader could accpet loading as much soundfont files as you can. For more functionalities that this soundfont loader provides, please continue reading.
+This is probably the most handy soundfont loader, player and renderer via pure programming at the time I am writing now (2021/8/29). This is a python package for handling SoundFont files, it has the following functionality:
+
+* Load any soundfont files, including sf2 and sf3
+* Listen to every preset in every bank in the soundfont files that are loaded using very simple syntax
+* Play or export audio files for each note in a pitch range for any instruments in the soundfont files
+* Play or export the whole piece of music as audio files with custom audio effects
+* Loading as much soundfont files as you can
+* For more functionalities that this soundfont loader provides, please continue reading.
 
 ## Contents
 * [Introduction](#Introduction)
