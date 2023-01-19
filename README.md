@@ -44,14 +44,14 @@ Update: (2021/9/5) The macOS compatible version is ready, the installation and c
 
 Update: (2021/9/5) The Linux compatible version is ready, the installation and configuration of Linux compatible version is at the installation section of this readme. This Linux compatible version of sf2_loader is tested on Ubuntu 18.04.5.
 
-**Important note1: the required python package musicpy is updated very frequently, so please regularly update musicpy by running**
+**Important note 1: the required python package musicpy is updated very frequently, so please regularly update musicpy by running**
 
 ```python
 pip install --upgrade musicpy
 ```
 **in cmd/terminal.**
 
-**Important note2: If you cannot hear any sound when running the play functions, this is because some IDE won't wait till the pygame's playback ends, they will stops the whole process after all of the code are executed without waiting for the playback. You can set `wait=True` in the parameter of the play functions, which will block the function till the playback ends, so you can hear the sounds.**
+**Important note 2: If you cannot hear any sound when running the play functions, this is because some IDE won't wait till the pygame's playback ends, they will stops the whole process after all of the code are executed without waiting for the playback. You can set `wait=True` in the parameter of the play functions, which will block the function till the playback ends, so you can hear the sounds.**
 
 ## Installation
 
