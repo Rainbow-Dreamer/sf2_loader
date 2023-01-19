@@ -44,12 +44,14 @@ Update: (2021/9/5) The macOS compatible version is ready, the installation and c
 
 Update: (2021/9/5) The Linux compatible version is ready, the installation and configuration of Linux compatible version is at the installation section of this readme. This Linux compatible version of sf2_loader is tested on Ubuntu 18.04.5.
 
-**Important note: the required python package musicpy is updated very frequently, so please regularly update musicpy by running**
+**Important note1: the required python package musicpy is updated very frequently, so please regularly update musicpy by running**
 
 ```python
 pip install --upgrade musicpy
 ```
 **in cmd/terminal.**
+
+**Important note2: If you cannot hear any sound when running the play functions, this is because some IDE won't wait till the pygame's playback ends, they will stops the whole process after all of the code are executed without waiting for the playback. You can set `wait=True` in the parameter of the play functions, which will block the function till the playback ends, so you can hear the sounds.**
 
 ## Installation
 
@@ -393,7 +395,8 @@ loader.play_note(note_name,
                  format='wav',
                  effects=None,
                  bpm=80,
-                 export_args={})
+                 export_args={},
+                 wait=False)
 
 # note_name: the name of the note, i.e. C5, D5, C (if the octave number
 # is not specified, then the default octave number is 4), or musicpy note instance
@@ -427,7 +430,9 @@ loader.play_note(note_name,
 # a useful situation is to specify the bitrate of the exported mp3 file
 # to be exported (when you set the format parameter to 'mp3'), for example,
 # we want to specify the bitrate to be 320Kbps,
-# then this parameter could be {'bitrate': '320k'}
+# then this parameter could be {'bitrate': '320k
+
+# wait: if set to True, wait till the playback ends
 
 
 # examples
@@ -470,7 +475,8 @@ loader.play_chord(current_chord,
                   volume=None,
                   length=None,
                   extra_length=None,
-                  export_args={})
+                  export_args={},
+                  wait=False)
 
 # current_chord: musicpy chord instance
 
@@ -498,6 +504,8 @@ loader.play_chord(current_chord,
 # extra_length: you can specify the extra length of the rendered audio in seconds (used in case of audio effects)
 
 # export_args: same as play_note
+
+# wait: same as play_note
 
 
 # examples
@@ -527,7 +535,8 @@ loader.play_piece(current_chord,
                   track_lengths=None,
                   track_extra_lengths=None,
                   export_args={},
-                  show_msg=False)
+                  show_msg=False,
+                  wait=False)
 
 # current_chord: musicpy piece instance
 
@@ -556,11 +565,13 @@ loader.play_piece(current_chord,
 
 # show_msg: if it is set to True, then when the sf2 loader is rendering a piece instance to audio, it will print some messages showing current process, such as `rendering track 1/16 ...` (rendering the first track of the total 16 tracks), the default value is False
 
+# wait: same as play_note
+
 
 # examples
 
 # construct a musicpy piece instance and play it using the sf2 loader
-current_piece = sf.mp.P([sf.mp('C'), sf.mp.chord('A2')], [2, 35], bpm=150)
+current_piece = sf.mp.P([sf.mp.C('C'), sf.mp.chord('A2')], [2, 35], bpm=150)
 loader.play_piece(current_piece)
 
 # read a MIDI file to a musicpy piece instance and play it using the sf2 loader
@@ -590,6 +601,7 @@ loader.play_midi_file(current_chord,
                       track_extra_lengths=None,
                       export_args={},
                       show_msg=False,
+                      wait=False,
                       **read_args)
 
 # current_chord: the MIDI file path
@@ -602,6 +614,8 @@ loader.play_midi_file(current_chord,
 # of the MIDI file
 
 # length - show_msg: same as play_piece
+
+# wait: same as play_note
 
 # **read_args: this is the keyword arguments for the musicpy read function
 
