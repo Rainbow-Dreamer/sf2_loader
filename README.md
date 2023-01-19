@@ -519,6 +519,8 @@ loader.play_chord(sf.mp.C('Cmaj7', 5)) # play a Cmaj7 chord starts at C5
 
 You can use `play_piece` function of the sf2 loader to play a piece using current channel and soundfont id. The piece must be a musicpy piece instance. Here piece means a piece of music with multiple individual tracks with different instruments on each of them (it is also ok if you want some or all of the tracks has the same instruments). You can custom which instrument you want the soundfont to play for each track by setting the `instruments_numbers` attribute of the piece instance, instrument of a track of the piece instance could be preset or [preset, bank, (sfid)].
 
+You can learn more about piece data structure [here](https://github.com/Rainbow-Dreamer/musicpy/wiki/Basic-syntax-of-piece-type) at musicpy wiki.
+
 ```python
 loader.play_piece(current_chord,
                   decay=0.5,
@@ -570,8 +572,21 @@ loader.play_piece(current_chord,
 
 # examples
 
-# construct a musicpy piece instance and play it using the sf2 loader
-current_piece = sf.mp.P([sf.mp.C('C'), sf.mp.chord('A2')], [2, 35], bpm=150)
+# construct a musicpy piece instance and play it using the sf2 loader,
+# here we have a chord progression from Cmaj7 to Fmaj7, with different instruments of each chord
+current_piece = sf.mp.P(
+    tracks=[
+        # C function is to translate human-readable chord name to chord
+        sf.mp.C('Cmaj7') % (1, 1 / 8) * 4,
+        sf.mp.C('Fmaj7') % (1, 1 / 8) * 4,
+
+        # The code below does exactly the same job
+        # sf.mp.chord('C, E, G, B') % (1, 1 / 8) * 4,
+        # sf.mp.chord('F, A, C, E') % (1, 1 / 8) * 4
+    ],
+    instruments=[1, 47],
+    start_times=[0, 2],
+    bpm=150)
 loader.play_piece(current_piece)
 
 # read a MIDI file to a musicpy piece instance and play it using the sf2 loader
