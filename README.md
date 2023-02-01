@@ -30,7 +30,7 @@ This is probably the most handy soundfont loader, player and renderer via pure p
   - [Pause, unpause and stop current playing sounds](#pause-unpause-and-stop-current-playing-sounds)
 
 ## Introduction
-This sf2 loader is heavily combined with [musicpy](https://github.com/Rainbow-Dreamer/musicpy), which is one of my most popular project, focusing on music programming and music analysis and composition. If you have already learned how to use musicpy to build notes, chords and pieces, you can straightly pass them to the sf2 loader and let it play what you write. Besides of playing music with the loaded soundfonts files, I also write an audio renderer in the sf2 loader, which could render the audio from the loaded soundfont files with the input musicpy data structures and output as audio files, you can choose the output format, such as wav, mp3, ogg, and output file names, sample width, frame rate, channels and so on. In fact, this project borns with my attempt at making muscipy's sampler module being able to load soundfont files to play and export audio files.
+This sf2 loader is heavily combined with [musicpy](https://github.com/Rainbow-Dreamer/musicpy), which is one of my most popular project, focusing on music programming and music analysis and composition. If you have already learned how to use musicpy to build notes, chords and pieces, you can straightly pass them to the sf2 loader and let it play what you write. Besides of playing music with the loaded soundfonts files, I also write an audio renderer in the sf2 loader, which could render the audio from the loaded soundfont files with the input musicpy data structures and output as audio files, you can choose the output format, such as wav, mp3, ogg, and output file names, sample width, frame rate, channels and so on. In fact, this project borns with my attempt at making muscipy's daw module being able to load soundfont files to play and export audio files.
 
 If you are not familiar with musicpy data structures and is not willing to learn it in recent times, you can also straightly using MIDI files as input to the sf2 loader, and export the rendered audio files using the loaded soundfont files. However, I still recommend you to learn about musicpy, even not to consider music programming and analysis, it could also be very useful for MIDI files editing and reconstructing.
 
@@ -66,7 +66,7 @@ pip install sf2_loader
 
 Note: This package uses pydub as a required python package, which requires ffmpeg or libav installed to have abilities to deal with non-wav files (like mp3, ogg files), so I strongly recommend to install ffmpeg/libav and configure it correctly to make pydub working perfectly. You can refer to this [link](https://github.com/jiaaro/pydub#getting-ffmpeg-set-up) which is pydub's github main page readme to see how to do it, or you can follow the steps I provide here, which is easier and faster.
 
-Firstly, download the ffmpeg zip file from this [link](https://github.com/Rainbow-Dreamer/musicpy/releases/latest), this is from the release page of musicpy which requires ffmpeg for the musicpy's sampler module.
+Firstly, download the ffmpeg zip file from this [link](https://github.com/Rainbow-Dreamer/musicpy/releases/latest), this is from the release page of musicpy which requires ffmpeg for the musicpy's daw module.
 
 Then, unzip the folder `ffmpeg` from the zip file, put the folder in `C:\`
 
@@ -755,7 +755,7 @@ There is a `effects` parameter in the play and export functions, but how to use 
 
 This python package provides a class `effect`, which could store a type of audio effect, such as reverse, offset, fade in, fade out, ADSR envelope, and you can customize your own audio effect functions. You can use `effect` class to package an audio effect function and put it as an element in a list, the list could be used as the value of `effects` in the play and export functions. There are already some predefined effect instances such as `reverse`, `fade`, `adsr`.
 
-For more details and usages of `effect` class, and the parameters of predefined audio effects, please refer to the sampler module of musicpy, here is the [link](https://github.com/Rainbow-Dreamer/musicpy/wiki/musicpy-sampler-module#audio-mixing-and-editing) for the documentation of the audio effects.
+For more details and usages of `effect` class, and the parameters of predefined audio effects, please refer to the daw module of musicpy, here is the [link](https://github.com/Rainbow-Dreamer/musicpy/wiki/musicpy-daw-module#audio-mixing-and-editing) for the documentation of the audio effects.
 
 ```python
 effect(func, name=None, *args, unknown_args=None, **kwargs)
