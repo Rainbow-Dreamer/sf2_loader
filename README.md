@@ -25,7 +25,7 @@ This is probably the most handy soundfont loader, player and renderer via pure p
   - [Get the instrument names](#Get-the-instrument-names)
   - [Play notes, chords, pieces and MIDI files](#Play-notes-chords-pieces-and-MIDI-files)
   - [Export notes, chords, pieces and MIDI files](#Export-notes-chords-pieces-and-MIDI-files)
-  - [Export sound modules](#Export-sound-modules)
+  - [Export instruments](#Export-sound-modules)
   - [Audio effects](#Audio-effects)
   - [Pause, unpause and stop current playing sounds](#pause-unpause-and-stop-current-playing-sounds)
 
@@ -673,9 +673,9 @@ loader.export_midi_file(r'C:\Users\Administrator\Desktop\test.mid', name='test.m
 
 
 
-### Export sound modules
+### Export instruments
 
-You can export sound modules of a specified instrument of the loaded soundfont files using `export_sound_modules` function of the sf2 loader.
+You can export instruments of a specified instrument of the loaded soundfont files using `export_instruments` function of the sf2 loader.
 
 You can specify the pitch range of the notes, the default is from A0 to C8, which is the most common 88 keys on the piano.
 
@@ -686,7 +686,7 @@ The format of the export audio files is wav by default, you can set the export a
 The exported audio file name of each note will be in the format `pitch.format` by default, where pitch is the note name such as `C5`, format is the audio file format you specify such as `wav`, so for example, the exported audio file names of notes will be like `C5.wav`, `C#5.wav`, `D5.wav`. You can custom the name format of each note with the parameter `name` in the function, it could either be a list of each note's name (without file extension) or a function to format each note's name (without file extension).
 
 ```python
-loader.export_sound_modules(channel=None,
+loader.export_instruments(channel=None,
                             sfid=None,
                             bank=None,
                             preset=None,
@@ -713,7 +713,7 @@ loader.export_sound_modules(channel=None,
 
 # duration - format: refer to play_note function
 
-# folder_name: the folder name of the exported sound modules
+# folder_name: the folder name of the exported instruments
 
 # effects: refer to play_note function, will be applied to each note
 
@@ -736,15 +736,15 @@ loader.export_sound_modules(channel=None,
 # examples
 
 # export notes from A0 to C8 of current instrument
-loader.export_sound_modules()
+loader.export_instruments()
 
 # export notes from C5 to C6 of current instrument
-loader.export_sound_modules(start='C5', stop='C6')
+loader.export_instruments(start='C5', stop='C6')
 
 # export notes from A0 to C8 of current instrument of
 # the loaded soundfont file with id 2
 # (or you can change current soundfont file in advance)
-loader.export_sound_modules(sfid=2)
+loader.export_instruments(sfid=2)
 ```
 
 
