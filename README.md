@@ -687,24 +687,24 @@ The exported audio file name of each note will be in the format `pitch.format` b
 
 ```python
 loader.export_instruments(channel=None,
-                            sfid=None,
-                            bank=None,
-                            preset=None,
-                            start='A0',
-                            stop='C8',
-                            duration=6,
-                            decay=1,
-                            volume=127,
-                            sample_width=2,
-                            channels=2,
-                            frame_rate=44100,
-                            format='wav',
-                            folder_name='Untitled',
-                            effects=None,
-                            bpm=80,
-                            name=None,
-                            show_full_path=False,
-                            export_args={})
+                          sfid=None,
+                          bank=None,
+                          preset=None,
+                          start='A0',
+                          stop='C8',
+                          duration=6,
+                          decay=1,
+                          volume=127,
+                          sample_width=2,
+                          channels=2,
+                          frame_rate=44100,
+                          format='wav',
+                          folder_name='Untitled',
+                          effects=None,
+                          bpm=80,
+                          name=None,
+                          show_full_path=False,
+                          export_args={})
 
 # channel, sfid, bank, preset: use which instrument to play, you can refer to
 # change function
