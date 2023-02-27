@@ -25,7 +25,7 @@ This is probably the most handy soundfont loader, player and renderer via pure p
   - [Get the instrument names](#Get-the-instrument-names)
   - [Play notes, chords, pieces and MIDI files](#Play-notes-chords-pieces-and-MIDI-files)
   - [Export notes, chords, pieces and MIDI files](#Export-notes-chords-pieces-and-MIDI-files)
-  - [Export instruments](#Export-sound-modules)
+  - [Export instruments](#Export-instruments)
   - [Audio effects](#Audio-effects)
   - [Pause, unpause and stop current playing sounds](#pause-unpause-and-stop-current-playing-sounds)
 
