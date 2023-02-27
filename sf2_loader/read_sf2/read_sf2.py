@@ -225,7 +225,9 @@ def adsr_func(sound, attack, decay, sustain, release):
     if decay > 0:
         sound = sound.fade(to_gain=result_db, start=attack, duration=decay)
     else:
-        sound = sound[:attack].append(sound[attack:] + change_db)
+        if sustain > 0:
+            sound = sound[:attack].append(sound[attack:] + change_db,
+                                          crossfade=0)
     if release > 0:
         sound = sound.fade_out(release)
     return sound
