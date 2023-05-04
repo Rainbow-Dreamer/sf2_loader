@@ -517,7 +517,7 @@ loader.play_chord(sf.mp.C('Cmaj7', 5)) # play a Cmaj7 chord starts at C5
 
 
 
-You can use `play_piece` function of the sf2 loader to play a piece using current channel and soundfont id. The piece must be a musicpy piece instance. Here piece means a piece of music with multiple individual tracks with different instruments on each of them (it is also ok if you want some or all of the tracks has the same instruments). You can custom which instrument you want the soundfont to play for each track by setting the `instruments_numbers` attribute of the piece instance, instrument of a track of the piece instance could be preset or [preset, bank, (sfid)].
+You can use `play_piece` function of the sf2 loader to play a piece using current channel and soundfont id. The piece must be a musicpy piece instance. Here piece means a piece of music with multiple individual tracks with different instruments on each of them (it is also ok if you want some or all of the tracks has the same instruments). You can custom which instrument you want the soundfont to play for each track by setting the `instruments` attribute of the piece instance, instrument of a track of the piece instance could be preset or [preset, bank, (sfid)].
 
 You can learn more about piece data structure [here](https://github.com/Rainbow-Dreamer/musicpy/wiki/Basic-syntax-of-piece-type) at musicpy wiki.
 
