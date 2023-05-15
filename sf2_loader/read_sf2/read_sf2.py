@@ -756,14 +756,14 @@ current preset name: {self.get_current_instrument()}'''
                 pan = copy(pan)
                 for each in pan:
                     each.start_time -= piece_start_time
-                    if each.start_time < 1:
-                        each.start_time = 1
+                    if each.start_time < 0:
+                        each.start_time = 0
             if volume:
                 volume = copy(volume)
                 for each in volume:
                     each.start_time -= piece_start_time
-                    if each.start_time < 1:
-                        each.start_time = 1
+                    if each.start_time < 0:
+                        each.start_time = 0
 
         current_timestamps = get_timestamps(current_chord,
                                             bpm,
