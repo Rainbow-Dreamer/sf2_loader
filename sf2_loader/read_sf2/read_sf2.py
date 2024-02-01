@@ -1142,6 +1142,7 @@ current preset name: {self.get_current_instrument()}'''
                            name=None,
                            show_full_path=False,
                            export_args={}):
+        original_dir = os.getcwd()
         try:
             os.mkdir(folder_name)
             os.chdir(folder_name)
@@ -1185,6 +1186,7 @@ current preset name: {self.get_current_instrument()}'''
                              name=current_name,
                              export_args=export_args)
         print('exporting finished')
+        os.chdir(original_dir)
         self.change(current_channel, current_sfid, current_bank,
                     current_preset)
 
