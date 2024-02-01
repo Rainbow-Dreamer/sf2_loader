@@ -1146,7 +1146,7 @@ current preset name: {self.get_current_instrument()}'''
         try:
             os.mkdir(folder_name)
             os.chdir(folder_name)
-        except:
+        except FileExistsError:
             os.chdir(folder_name)
         current_channel = copy(self.current_channel)
         current_sfid = copy(self.current_sfid)
