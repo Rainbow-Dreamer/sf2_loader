@@ -110,6 +110,13 @@ Secondly, you need to install ffmpeg on macOS (the same reason as in Windows), y
 brew install ffmpeg
 ```
 
+### Install audioop-lts (Python >=3.13)
+
+The `audioop` library was removed from Python 3.13 ([doc](https://docs.python.org/3/library/audioop.html)) so it is necessary to also install [a third-party port](https://pypi.org/project/audioop-lts/):
+```
+pip install audioop-lts
+```
+
 ## Usage
 
 Here are the syntax for the most important functionalities of this sf2 loader.
