@@ -98,16 +98,11 @@ You can use pip to install this sf2 loader, which is the same as in Windows.
 
 Then, there are some important and necessary steps to configure this package in order to use it on macOS:
 
-Firstly, you need to install fluidsynth on macOS, the easiest way to install ffmpeg in macOS is using homebrew. You need to make sure you have installed homebrew in macOS first, and then run `brew install fluidsynth` in terminal, and waiting for fluidsynth to be installed.
+Firstly, you need to install fluidsynth on macOS, the easiest way to install ffmpeg in macOS is using MacPorts. You need to make sure you have installed MacPorts in macOS first, you can refer to this [link](https://www.macports.org/install.php) for installation instructions. Then run `sudo port install fluidsynth` in terminal, and waiting for fluidsynth to be installed.
 
-If you haven't installed homebrew before and cannot find a good way to install homebrew, here I will provide a very easy way to install homebrew on macOS, thanks from Ferenc Yim's answer from this [Stack Overflow question](https://stackoverflow.com/questions/29910217/homebrew-installation-on-mac-os-x-failed-to-connect-to-raw-githubusercontent-com):
-
-open this [link](https://raw.githubusercontent.com/Homebrew/install/master/install.sh) in your browser, right-click and save it to your computer, and then open a terminal and run it with:  
-`/bin/bash path-to/install.sh`, and waiting for homebrew to be installed.
-
-Secondly, you need to install ffmpeg on macOS (the same reason as in Windows), you can just run this command in terminal to install ffmpeg on macOS using homebrew:
+Secondly, you need to install ffmpeg on macOS (the same reason as in Windows), you can just run this command in terminal to install ffmpeg on macOS using MacPorts:
 ```
-brew install ffmpeg
+sudo port install ffmpeg
 ```
 
 ### Install audioop-lts (Python >=3.13)
